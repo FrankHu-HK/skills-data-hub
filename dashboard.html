@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>SkillHub 技能数据监控决策平台</title><script src="chart.umd.min.js"></script><style>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>SkillHub Skill Data Monitor & Decision Platform</title><script src="chart.umd.min.js"></script><style>
 
 
 :root{--bg:#070b14;--bg2:#0c1324;--bg3:#111b30;--bd:rgba(60,100,160,.18);--t1:#dde4f0;--t2:#6f82a0;--t3:#3d5068;--c0:#2dd4bf;--c1:#4da8ff;--c2:#a78bfa;--c3:#f59e0b;--c4:#f472b6;--c5:#34d399;--r:8px;--fm:'SF Mono','Cascadia Code','Consolas',monospace}
@@ -245,13 +245,13 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 .sk-meta-pair{display:flex;align-items:baseline;gap:5px;min-width:0;font-size:11px}
 
 
-</style></head><body><!-- 构建2389 -->
+</style></head><body><!-- build2389 -->
 
 
-<div class="hdr"><div class="hdr-l"><img class="hdr-ico" id="hdrAvatar" src="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22%3E%3Crect width=%2240%22 height=%2240%22 rx=%226%22 fill=%22%232d3748%22/%3E%3C/svg%3E" alt="头像" onerror="hdrAvatarErr(this)"><div><div class="hdr-ttl">SkillHub<em>技能数据监控决策平台</em></div><div class="hdr-sub">数据可视化 · 排名与竞争力 · 热度与趋势 · 迭代决策 · 用户画像与转化（待上线）</div><div id="hdrUser" style="font-size:13px;font-weight:600;color:var(--c0);margin-top:2px"></div></div></div><div class="hdr-r"><span id="devName" style="color:var(--t2);font-size:12px">开发者：X-AI</span><div class="st-box" id="stBox"><div class="st-dot" id="sd"></div><span id="stx">在线</span>
+<div class="hdr"><div class="hdr-l"><img class="hdr-ico" id="hdrAvatar" src="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22%3E%3Crect width=%2240%22 height=%2240%22 rx=%226%22 fill=%22%232d3748%22/%3E%3C/svg%3E" alt="avatar" onerror="hdrAvatarErr(this)"><div><div class="hdr-ttl">SkillHub<em>Skill Data Monitor & Decision Platform</em></div><div class="hdr-sub">Data Visualization, Ranking & Competitiveness, Hotness & Trends, Iteration Decisions, User Profiles & Conversion (coming soon)</div><div id="hdrUser" style="font-size:13px;font-weight:600;color:var(--c0);margin-top:2px"></div></div></div><div class="hdr-r"><span id="devName" style="color:var(--t2);font-size:12px">Developer: X-AI</span><div class="st-box" id="stBox"><div class="st-dot" id="sd"></div><span id="stx">Online</span>
 
 
-</div><div id="dtm" class="tm-wrap"><div id="dtDate" class="dt-date">--</div><div class="dt-row"><span class="dt-k">当前时间</span><span id="dtNow" class="dt-v">--:--:--</span></div><div class="dt-row"><span class="dt-k">数据时间</span><span id="dtData" class="dt-v">--:--:--</span></div></div><button onclick="exportCSV()" style="background:rgba(77,168,255,.12);border:1px solid rgba(77,168,255,.3);color:var(--c1);border-radius:14px;padding:3px 12px;font-size:11px;cursor:pointer;font-family:inherit;margin-left:10px">导出CSV</button></div></div>
+</div><div id="dtm" class="tm-wrap"><div id="dtDate" class="dt-date">--</div><div class="dt-row"><span class="dt-k">Current time</span><span id="dtNow" class="dt-v">--:--:--</span></div><div class="dt-row"><span class="dt-k">Data time</span><span id="dtData" class="dt-v">--:--:--</span></div></div><button onclick="exportCSV()" style="background:rgba(77,168,255,.12);border:1px solid rgba(77,168,255,.3);color:var(--c1);border-radius:14px;padding:3px 12px;font-size:11px;cursor:pointer;font-family:inherit;margin-left:10px">Export CSV</button></div></div>
 
 
 
@@ -263,22 +263,22 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;bac
 <div id="errBar" style="display:none;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.35);color:#f59e0b;padding:6px 14px;font-size:12px;margin-bottom:10px;border-radius:8px"></div>
 
 
-<div class="ov-line"><span class="ov-line-lbl">SkillHub实时技能数量</span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="shc" style="color:#f87171;font-size:32px;font-weight:800">--</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;数据来源：SkillHub 官方 API · ✓ 实时校验 &nbsp;&nbsp;数据更新: <span id="mktTm">--</span></div>
+<div class="ov-line"><span class="ov-line-lbl">SkillHub Live Skill Count</span>&nbsp;&nbsp;&nbsp;&nbsp;<span id="shc" style="color:#f87171;font-size:32px;font-weight:800">--</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Data source: SkillHub Official API - Live Verified &nbsp;&nbsp;Last updated: <span id="mktTm">--</span></div>
 
 
-<div class="ov-r"><div class="ov-c"><div class="ov-l">用户总下载量</div><div class="ov-v" id="td">--</div><div class="ov-ch" id="tdc">--</div><div class="ov-yd" id="yv">昨日下载量: <span id="yvBase">--</span> 次 · 环比 <span id="hb">--</span></div></div><div class="ov-c"><div class="ov-l">总收藏量</div><div class="ov-v" id="ts">--</div><div class="ov-ch" id="tsc">--</div></div><div class="ov-c"><div class="ov-l">总评论量</div><div class="ov-v" id="tc">--</div><div class="ov-ch" id="tcc">--</div></div><div class="ov-c"><div class="ov-l">粉丝数量</div><div class="ov-v" id="fan">--</div><div class="ov-ch" id="fanC">--</div></div></div>
+<div class="ov-r"><div class="ov-c"><div class="ov-l">Your total downloads</div><div class="ov-v" id="td">--</div><div class="ov-ch" id="tdc">--</div><div class="ov-yd" id="yv">Yesterday's downloads: <span id="yvBase">--</span> x · vs yesterday <span id="hb">--</span></div></div><div class="ov-c"><div class="ov-l">Total favorites</div><div class="ov-v" id="ts">--</div><div class="ov-ch" id="tsc">--</div></div><div class="ov-c"><div class="ov-l">Total comments</div><div class="ov-v" id="tc">--</div><div class="ov-ch" id="tcc">--</div></div><div class="ov-c"><div class="ov-l">Followers</div><div class="ov-v" id="fan">--</div><div class="ov-ch" id="fanC">--</div></div></div>
 
 
-<div class="sec-t">核心指标 · 技能下载量实时追踪 · 按最新下载排序</div><div class="sk-grid" id="skGrid"></div>
+<div class="sec-t">Core Metrics - Live Skill-Download Tracking - Sorted by Latest Downloads</div><div class="sk-grid" id="skGrid"></div>
 
 
-<div class="chart-sec"><div class="chart-2col"><div class="chart-cell"><div class="sec-t">技能下载量实时排行（总下载量排名）</div><div class="chart-big-wrap"><canvas id="barCvs"></canvas></div></div><div class="chart-cell"><div class="sec-t">技能下载量实时排行（日排名）</div><div class="chart-big-wrap"><canvas id="barCvs3"></canvas></div></div><div class="chart-cell"><div class="sec-t">技能下载量实时排行（小时排名）</div><div class="chart-big-wrap"><canvas id="barCvs2"></canvas></div></div></div></div>
+<div class="chart-sec"><div class="chart-2col"><div class="chart-cell"><div class="sec-t">Skill Download Live Ranking (by total downloads)</div><div class="chart-big-wrap"><canvas id="barCvs"></canvas></div></div><div class="chart-cell"><div class="sec-t">Skill Download Live Ranking (daily)</div><div class="chart-big-wrap"><canvas id="barCvs3"></canvas></div></div><div class="chart-cell"><div class="sec-t">Skill Download Live Ranking (hourly)</div><div class="chart-big-wrap"><canvas id="barCvs2"></canvas></div></div></div></div>
 
 
-<div class="mkt-2col"><div class="mkt-pn"><div class="sec-t">类目热度榜</div><div id="heatArea"></div></div><div class="mkt-pn"><div class="sec-t">竞品对比</div><div id="compArea"></div></div></div>
+<div class="mkt-2col"><div class="mkt-pn"><div class="sec-t">Category Hotness Ranking</div><div id="heatArea"></div></div><div class="mkt-pn"><div class="sec-t">Competitor Comparison</div><div id="compArea"></div></div></div>
 
 
-<div class="mkt-pn" style="margin-bottom:12px"><div class="sec-t">市场洞察 · 策略建议</div><div id="strategy"></div></div>
+<div class="mkt-pn" style="margin-bottom:12px"><div class="sec-t">Market Insight - Strategy Suggestions</div><div id="strategy"></div></div>
 
 
 </div>
@@ -314,7 +314,7 @@ let _hb=0;setInterval(()=>{let e=document.getElementById('hbPulse');if(e){_hb++;
 function ts2s(ts){if(!ts)return'--';let d;if(typeof ts==='string'&&ts.includes('-')){d=new Date(ts)}else{let n=Number(ts);if(isNaN(n))return'--';if(n<1e12)n=n*1000;d=new Date(n)}if(isNaN(d.getTime()))return'--';let p=n=>String(n).padStart(2,'0');return String(d.getFullYear()).slice(2)+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes())}
 
 
-var CAT_CN={'professional':'专业工具','ai-agent':'AI智能体','data-analysis':'数据分析','productivity':'效率工具','developer':'开发者工具','creative':'创意设计','education':'教育学习','lifestyle':'生活娱乐','business':'商业运营','marketing':'营销推广','finance':'金融财务','legal':'法律合规','hr':'人力资源','design':'设计创意','writing':'写作文案','automation':'自动化','security':'安全防护','devops':'运维部署','database':'数据库','api':'API服务','chatbot':'聊天机器人','video':'视频制作','image':'图像处理','code':'编程开发','other':'其他'};
+var CAT_CN={'professional':'Professional Tools','ai-agent':'AI Agents','data-analysis':'Data Analysis','productivity':'Productivity','developer':'Developer Tools','creative':'Creative Design','education':'Education','lifestyle':'Lifestyle & Entertainment','business':'Business Operations','marketing':'Marketing','finance':'Finance','legal':'Legal & Compliance','hr':'HR','design':'Design','writing':'Writing & Copy','automation':'Automation','security':'Security','devops':'DevOps','database':'Database','api':'API Services','chatbot':'Chatbot','video':'Video','image':'Image','code':'Coding','other':'Other'};
 
 
 function catCN(en){return CAT_CN[en]||en||'--'}
@@ -335,23 +335,23 @@ var HDR_AV_FB='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 
 function hdrAvatarErr(img){if(img.src!==HDR_AV_FB){img.src=HDR_AV_FB;}else{img.style.visibility='hidden';}}
 
 
-function setStatus(){let sd=document.getElementById('sd'),stx=document.getElementById('stx'),sb=document.getElementById('stBox');let c='#34d399';if(consecFail===0){sd.style.background='#34d399';sd.style.boxShadow='0 0 6px rgba(52,211,153,.5)';stx.textContent='在线';c='#34d399'}else if(consecFail<3){sd.style.background='#f59e0b';sd.style.boxShadow='0 0 6px rgba(245,158,11,.6)';stx.textContent='重连中';c='#f59e0b'}else{sd.style.background='#f87171';sd.style.boxShadow='0 0 6px rgba(248,113,113,.6)';stx.textContent='离线';c='#f87171'}if(sb)sb.style.setProperty('--stc',c)}
+function setStatus(){let sd=document.getElementById('sd'),stx=document.getElementById('stx'),sb=document.getElementById('stBox');let c='#34d399';if(consecFail===0){sd.style.background='#34d399';sd.style.boxShadow='0 0 6px rgba(52,211,153,.5)';stx.textContent='Online';c='#34d399'}else if(consecFail<3){sd.style.background='#f59e0b';sd.style.boxShadow='0 0 6px rgba(245,158,11,.6)';stx.textContent='Reconnecting';c='#f59e0b'}else{sd.style.background='#f87171';sd.style.boxShadow='0 0 6px rgba(248,113,113,.6)';stx.textContent='Offline';c='#f87171'}if(sb)sb.style.setProperty('--stc',c)}
 
 
-function exportCSV(){try{let a=document.createElement('a');a.href='/api/export';a.download='skillhub_history.csv';document.body.appendChild(a);a.click();a.remove()}catch(e){alert('导出失败：'+e)}}
+function exportCSV(){try{let a=document.createElement('a');a.href='/api/export';a.download='skillhub_history.csv';document.body.appendChild(a);a.click();a.remove()}catch(e){alert('Export failed: '+e)}}
 function parseTs(ts){if(!ts)return null;let m=String(ts).match(/(\d{2})-(\d{2})-(\d{2})\s+(\d{2}):(\d{2})/);if(!m)return null;return new Date(2000+(+m[1]),(+m[2])-1,(+m[3]),(+m[4]),(+m[5]))}
 
 
-function updateErrBanner(){let bar=document.getElementById('errBar');if(!bar)return;if(consecFail>=1){let msg=lastErr||'数据获取异常，系统正在自动重试';let lastOk=cur&&cur.timestamps&&cur.timestamps[0]?cur.timestamps[0]:'未知';bar.style.display='';bar.textContent='⚠ '+msg+' · 上次更新 '+lastOk+' · 自动重试第'+consecFail+'次'}else{bar.style.display='none'}}
+function updateErrBanner(){let bar=document.getElementById('errBar');if(!bar)return;if(consecFail>=1){let msg=lastErr||'Data fetch error, system is auto-retrying';let lastOk=cur&&cur.timestamps&&cur.timestamps[0]?cur.timestamps[0]:'unknown';bar.style.display='';bar.textContent='⚠ '+msg+' · Last update '+lastOk+' · auto-retry #'+consecFail+'x'}else{bar.style.display='none'}}
 
 
-async function refresh(){if(refreshing)return;refreshing=true;lastRefreshStart=Date.now();let t=Date.now();try{let st=null,c=null;try{st=await fetchWithRetry('/api/status?_='+t,{timeout:5000,retries:1})}catch(e){}try{c=await fetchWithRetry('/api/current?_='+t,{timeout:5000,retries:1})}catch(e){}if(st)lastErr=st.lastError||null;if(c&&c.skills)cur=c;if(c&&c.user){let ha=document.getElementById('hdrAvatar');if(ha&&c.user.avatarUrl)ha.src=c.user.avatarUrl;let hu=document.getElementById('hdrUser');if(hu&&c.user.displayName)hu.textContent=c.user.displayName;let dn=document.getElementById('devName');if(dn&&c.user.displayName)dn.textContent='开发者：X-AI · '+c.user.displayName}if(cur){_iT0=cur.timestamps&&cur.timestamps[0]||null;document.getElementById('mktTm').textContent=_iT0||'--';try{let _sv=(mkt&&mkt.total_skills>0)?mkt.total_skills:((cur&&cur.shCount>0)?cur.shCount:0);flip(document.getElementById('shc'),_sv>0?_sv.toLocaleString():'--')}catch(e){}}if(cur&&cur.configError){let eb=document.getElementById('errBar');if(eb){eb.style.display='';eb.textContent='⚠ 配置提醒：'+cur.configError}}if(cur&&cur.skills&&hist&&hist.skills){try{updateTop();updateCards();updateComp();updateHeat();updateStrategy()}catch(e){console.warn(e)}try{drawBars()}catch(e){console.warn('drawBars 失败:',e)}try{drawHourlyBars()}catch(e){console.warn('drawHourlyBars 失败:',e)}try{drawDailyBars()}catch(e){console.warn('drawDailyBars 失败:',e)}try{checkAlerts()}catch(e){}consecFail=0;setStatus();updateErrBanner()}else{consecFail++;setStatus();updateErrBanner()}}catch(e){consecFail++;setStatus();updateErrBanner()}finally{refreshing=false}}
+async function refresh(){if(refreshing)return;refreshing=true;lastRefreshStart=Date.now();let t=Date.now();try{let st=null,c=null;try{st=await fetchWithRetry('/api/status?_='+t,{timeout:5000,retries:1})}catch(e){}try{c=await fetchWithRetry('/api/current?_='+t,{timeout:5000,retries:1})}catch(e){}if(st)lastErr=st.lastError||null;if(c&&c.skills)cur=c;if(c&&c.user){let ha=document.getElementById('hdrAvatar');if(ha&&c.user.avatarUrl)ha.src=c.user.avatarUrl;let hu=document.getElementById('hdrUser');if(hu&&c.user.displayName)hu.textContent=c.user.displayName;let dn=document.getElementById('devName');if(dn&&c.user.displayName)dn.textContent='Developer: X-AI · '+c.user.displayName}if(cur){_iT0=cur.timestamps&&cur.timestamps[0]||null;document.getElementById('mktTm').textContent=_iT0||'--';try{let _sv=(mkt&&mkt.total_skills>0)?mkt.total_skills:((cur&&cur.shCount>0)?cur.shCount:0);flip(document.getElementById('shc'),_sv>0?_sv.toLocaleString():'--')}catch(e){}}if(cur&&cur.configError){let eb=document.getElementById('errBar');if(eb){eb.style.display='';eb.textContent='⚠ Config notice: '+cur.configError}}if(cur&&cur.skills&&hist&&hist.skills){try{updateTop();updateCards();updateComp();updateHeat();updateStrategy()}catch(e){console.warn(e)}try{drawBars()}catch(e){console.warn('drawBars failed:',e)}try{drawHourlyBars()}catch(e){console.warn('drawHourlyBars failed:',e)}try{drawDailyBars()}catch(e){console.warn('drawDailyBars failed:',e)}try{checkAlerts()}catch(e){}consecFail=0;setStatus();updateErrBanner()}else{consecFail++;setStatus();updateErrBanner()}}catch(e){consecFail++;setStatus();updateErrBanner()}finally{refreshing=false}}
 
 
 
 
 
-function updateAll(){if(!cur)return;try{let _t0=cur&&cur.timestamps&&cur.timestamps[0]?cur.timestamps[0]:null;document.getElementById('mktTm').textContent=_t0||'--';let _d=document.getElementById('dtm');if(_d){let _p=_dtParts(_t0);let _dn=document.getElementById('dtNow'),_dd=document.getElementById('dtData'),_dD=document.getElementById('dtDate');if(_dn)_dn.textContent=_nowS();if(_dd)_dd.textContent=_p.time;if(_dD)_dD.textContent=_p.date;_d.style.color='var(--c5)';setTimeout(()=>{_d.style.color='var(--c0)'},600)}}catch(e){}try{updateTop();updateCards();updateComp();updateHeat();updateStrategy()}catch(e){console.warn('数据更新失败(不影响在线状态):',e)}try{drawBars()}catch(e){console.warn('drawBars 失败(不影响数据刷新):',e)}try{drawHourlyBars()}catch(e){console.warn('drawHourlyBars 失败:',e)}try{drawDailyBars()}catch(e){console.warn('drawDailyBars 失败:',e)}try{checkAlerts()}catch(e){}}function updateTop(){
+function updateAll(){if(!cur)return;try{let _t0=cur&&cur.timestamps&&cur.timestamps[0]?cur.timestamps[0]:null;document.getElementById('mktTm').textContent=_t0||'--';let _d=document.getElementById('dtm');if(_d){let _p=_dtParts(_t0);let _dn=document.getElementById('dtNow'),_dd=document.getElementById('dtData'),_dD=document.getElementById('dtDate');if(_dn)_dn.textContent=_nowS();if(_dd)_dd.textContent=_p.time;if(_dD)_dD.textContent=_p.date;_d.style.color='var(--c5)';setTimeout(()=>{_d.style.color='var(--c0)'},600)}}catch(e){}try{updateTop();updateCards();updateComp();updateHeat();updateStrategy()}catch(e){console.warn('data update failed(does not affectOnlinestatus):',e)}try{drawBars()}catch(e){console.warn('drawBars failed(does not affect data refresh):',e)}try{drawHourlyBars()}catch(e){console.warn('drawHourlyBars failed:',e)}try{drawDailyBars()}catch(e){console.warn('drawDailyBars failed:',e)}try{checkAlerts()}catch(e){}}function updateTop(){
 
 
   let sk=Object.values(cur.skills);
@@ -393,7 +393,7 @@ function updateAll(){if(!cur)return;try{let _t0=cur&&cur.timestamps&&cur.timesta
   }else{
 
 
-    yvBaseEl.textContent='暂无（首日运行）';
+    yvBaseEl.textContent='None(first run)';
 
 
     hbEl.textContent='--';
@@ -445,7 +445,7 @@ function updateAll(){if(!cur)return;try{let _t0=cur&&cur.timestamps&&cur.timesta
   tdcEl.className='ov-ch'+(dc>0?' up':(dc<0?' dn':''));
 
 
-  tdcEl.textContent='较上一小时 '+(dc>0?'▲ +'+dc:(dc<0?'▼ '+Math.abs(dc):'─ 持平'));
+  tdcEl.textContent='vs last hour '+(dc>0?'▲ +'+dc:(dc<0?'▼ '+Math.abs(dc):'─ flat'));
 
 
   let tscEl=document.getElementById('tsc');
@@ -454,7 +454,7 @@ function updateAll(){if(!cur)return;try{let _t0=cur&&cur.timestamps&&cur.timesta
   tscEl.className='ov-ch'+(scv>0?' up':(scv<0?' dn':''));
 
 
-  tscEl.textContent='较上一小时 '+(scv>0?'▲ +'+scv:(scv<0?'▼ '+Math.abs(scv):'─ 持平'));
+  tscEl.textContent='vs last hour '+(scv>0?'▲ +'+scv:(scv<0?'▼ '+Math.abs(scv):'─ flat'));
 
 
   
@@ -478,7 +478,7 @@ function updateAll(){if(!cur)return;try{let _t0=cur&&cur.timestamps&&cur.timesta
   if(fanCEl){
 
 
-    fanCEl.textContent='较上一小时 '+(fc>0?'▲ +'+fc:(fc<0?'▼ '+Math.abs(fc):'─ 持平'));
+    fanCEl.textContent='vs last hour '+(fc>0?'▲ +'+fc:(fc<0?'▼ '+Math.abs(fc):'─ flat'));
 
 
     fanCEl.style.color=fc>0?'var(--c5)':'#f87171';
@@ -508,7 +508,7 @@ function updateAll(){if(!cur)return;try{let _t0=cur&&cur.timestamps&&cur.timesta
     tccEl.className='ov-ch'+(tcd>0?' up':(tcd<0?' dn':''));
 
 
-    tccEl.textContent='较上一小时 '+(tcd>0?'▲ +'+tcd:(tcd<0?'▼ '+Math.abs(tcd):'─ 持平'));
+    tccEl.textContent='vs last hour '+(tcd>0?'▲ +'+tcd:(tcd<0?'▼ '+Math.abs(tcd):'─ flat'));
 
 
   }
@@ -530,7 +530,7 @@ function updateCards(){
 
 
   function _lastDlIdx(s){let h=hist&&hist.skills&&hist.skills[s];if(!h||!h.downloads)return -1;let d=h.downloads;for(let i=d.length-1;i>0;i--){if(d[i]!=null&&d[i-1]!=null&&d[i]>d[i-1])return i}return -1}
-  // 卡片排序：按「最新有下载增量」时间倒序（谁最近有下载谁排第一），无增量记录时按总下载量兑底
+  // card sort：by"latest withdownloadincrement"time descending(whoever recently hasdownloadwho ranksNo.1), when no increment record, by totaldownloadsat bottom
   let slugs=Object.keys(cur.skills).sort((a,b)=>{let ia=_lastDlIdx(a),ib=_lastDlIdx(b);if(ib!==ia)return ib-ia;return cur.skills[b].downloads-cur.skills[a].downloads});
 
 
@@ -552,10 +552,10 @@ function updateCards(){
     let subTxt=subArr.length?subArr.map(x=>x.name||x.key).join(' / '):'--';
 
 
-    let claimTxt=sk.claimState==='claimed'?'已认领':(sk.claimState==='unclaimed'?'未认领':(sk.claimState||'--'));
+    let claimTxt=sk.claimState==='claimed'?'Claimed':(sk.claimState==='unclaimed'?'Unclaimed':(sk.claimState||'--'));
 
 
-    let verTxt=sk.verified?'<span class="sk-meta-v ok">官方认证</span>':'否';
+    let verTxt=sk.verified?'<span class="sk-meta-v ok">Officially Verified</span>':'No';
 
 
     let catTxt=sk.category||'--';
@@ -564,7 +564,7 @@ function updateCards(){
     let nsTxt=sk.namespace||'--';
 
 
-    let keyTxt=sk.requiresKey==='true'?'需要Key':'无需Key';
+    let keyTxt=sk.requiresKey==='true'?'Requires API Key':'No Key Needed';
 
 
     let h='';
@@ -576,16 +576,16 @@ function updateCards(){
     h+='<div class="sk-nm">'+nm+'</div>';
 
 
-    let dlChg=0;if(hist&&hist.skills&&hist.skills[s]&&hist.skills[s].downloads){let dls=hist.skills[s].downloads;let didx=Math.max(0,(hist.timestamps||[]).length-360);if(dls[didx]!=null)dlChg=sk.downloads-dls[didx]}let dlCC=dlChg>0?'up':(dlChg<0?'dn':'');let dlCT=dlChg>0?'▲ +'+dlChg:(dlChg<0?'▼ '+dlChg:'');h+='<div class="sk-dl"><div><span class="flip-w"><span class="flip-n" id="dl-'+s+'">'+sk.downloads+'</span></span><span class="sk-dl-ch '+dlCC+'">'+dlCT+'</span></div><div class="sk-dl-info"><span style="grid-column:1/-1">版本号 v'+sk.version+'</span><span>创建 '+ts2s(sk.createdAt)+'</span><span>更新 '+ts2s(sk.versionUpdatedAt)+'</span><span>类目 '+catCN(catTxt)+'</span><span>子类目 '+subTxt+'</span></div></div>';
+    let dlChg=0;if(hist&&hist.skills&&hist.skills[s]&&hist.skills[s].downloads){let dls=hist.skills[s].downloads;let didx=Math.max(0,(hist.timestamps||[]).length-360);if(dls[didx]!=null)dlChg=sk.downloads-dls[didx]}let dlCC=dlChg>0?'up':(dlChg<0?'dn':'');let dlCT=dlChg>0?'▲ +'+dlChg:(dlChg<0?'▼ '+dlChg:'');h+='<div class="sk-dl"><div><span class="flip-w"><span class="flip-n" id="dl-'+s+'">'+sk.downloads+'</span></span><span class="sk-dl-ch '+dlCC+'">'+dlCT+'</span></div><div class="sk-dl-info"><span style="grid-column:1/-1">Version v'+sk.version+'</span><span>Created '+ts2s(sk.createdAt)+'</span><span>Updated '+ts2s(sk.versionUpdatedAt)+'</span><span>Category '+catCN(catTxt)+'</span><span>subCategory '+subTxt+'</span></div></div>';
 
 
     h+='<div class="sk-row2">';
 
 
-    h+='<div class="sk-mt"><div class="sk-mv st"><span class="flip-w"><span class="flip-n" id="st-'+s+'">'+sk.stars+'</span></span></div><div class="sk-ml">收藏</div></div>';
+    h+='<div class="sk-mt"><div class="sk-mv st"><span class="flip-w"><span class="flip-n" id="st-'+s+'">'+sk.stars+'</span></span></div><div class="sk-ml">Favorites</div></div>';
 
 
-    h+='<div class="sk-mt sk-rate"><span class="sk-ml">评分</span><span class="score-bd '+cl(sc)+'">'+(sc!=null?sc.toFixed(1)+'分':'暂无')+'</span></div>';
+    h+='<div class="sk-mt sk-rate"><span class="sk-ml">Score</span><span class="score-bd '+cl(sc)+'">'+(sc!=null?sc.toFixed(1)+'min':'None')+'</span></div>';
 
 
     h+='</div>';
@@ -600,16 +600,13 @@ function updateCards(){
     
 
 
-    h+='<div class="sk-meta-row"><span class="sk-meta-k">认领</span><span class="sk-meta-v">'+claimTxt+'</span></div>';
+    h+='<div class="sk-meta-row"><span class="sk-meta-k">Claim</span><span class="sk-meta-v">'+claimTxt+'</span></div>';
 
 
-    h+='<div class="sk-meta-row"><span class="sk-meta-k">认证</span>'+verTxt+'</div>';
+    h+='<div class="sk-meta-row"><span class="sk-meta-k">Verified</span>'+verTxt+'</div>';
 
 
-    h+='<div class="sk-meta-row"><span class="sk-meta-k">评论</span><span class="sk-meta-v">'+sk.comments+'</span></div>';
-
-
-    
+    h+='<div class="sk-meta-row"><span class="sk-meta-k">Comments</span><span class="sk-meta-v">'+sk.comments+'</span></div>';
 
 
     
@@ -618,7 +615,10 @@ function updateCards(){
     
 
 
-    h+='<div class="sk-meta-row"><span class="sk-meta-k">需Key</span><span class="sk-meta-v">'+keyTxt+'</span></div>';
+    
+
+
+    h+='<div class="sk-meta-row"><span class="sk-meta-k">Key</span><span class="sk-meta-v">'+keyTxt+'</span></div>';
 
 
     h+='</div>';
@@ -654,20 +654,20 @@ function updateCards(){
 
 
 
-function updateComp(){let c=mkt?.competitors||{},e=Object.entries(c);if(!e.length){document.getElementById('compArea').innerHTML='<div style="color:var(--t3);font-size:12px">市场数据采集中...</div>';return};let h='',mid=Math.ceil(e.length/2);for(let col=0;col<2;col++){let ch=col===0?e.slice(0,mid):e.slice(mid);h+='<div>';ch.forEach(([s,d])=>{let nm=SN[s]||s,dl=(d?.byDownloads||[]).slice(0,10),nw=(d?.byNewest||[]).slice(0,10);h+='<div style="margin-bottom:10px"><b style="color:var(--c0);font-size:13px">'+nm+'</b></div>';h+='<div style="font-size:12px;color:var(--t2);margin-bottom:4px">▼ 下载量排名</div>';if(!dl.length)h+='<div style="color:var(--t3);font-size:12px">暂无</div>';else{h+='<table class="mkt-tb"><tr><th>竞品</th><th>下载</th><th>收藏</th><th>更新</th><th>上传</th></tr>';dl.forEach(m=>h+='<tr><td title="'+m.name+'">'+(m.name||'').substring(0,16)+'</td><td>'+(m.downloads||0).toLocaleString()+'</td><td>'+(m.stars||0)+'</td><td style="font-size:10px">'+ts2s(m.updatedAt)+'</td><td style="font-size:10px">'+(m.createdAt?ts2s(m.createdAt):'—')+'</td></tr>');h+='</table>'};h+='<div style="font-size:12px;color:var(--t2);margin:6px 0 4px">▼ 最新上传排名</div>';if(!nw.length)h+='<div style="color:var(--t3);font-size:12px">暂无</div>';else{h+='<table class="mkt-tb"><tr><th>竞品</th><th>下载</th><th>收藏</th><th>更新</th><th>上传</th></tr>';nw.forEach(m=>h+='<tr><td title="'+m.name+'">'+(m.name||'').substring(0,16)+'</td><td>'+(m.downloads||0).toLocaleString()+'</td><td>'+(m.stars||0)+'</td><td style="font-size:10px">'+ts2s(m.updatedAt)+'</td><td style="font-size:10px">'+(m.createdAt?ts2s(m.createdAt):'—')+'</td></tr>');h+='</table>'};if(d&&d.explicit&&d.explicit.length){h+='<div style="font-size:12px;color:var(--t2);margin:6px 0 4px">▼ 显式指定竞品</div>';h+='<table class="mkt-tb"><tr><th>竞品</th><th>下载</th><th>收藏</th><th>更新</th><th>上传</th></tr>';d.explicit.forEach(m=>h+='<tr><td title="'+m.name+'">'+(m.name||'').substring(0,16)+'</td><td>'+(m.downloads||0).toLocaleString()+'</td><td>'+(m.stars||0)+'</td><td style="font-size:10px">'+ts2s(m.updatedAt)+'</td><td style="font-size:10px">'+(m.createdAt?ts2s(m.createdAt):'—')+'</td></tr>');h+='</table>'}h+='</div>'});h+='</div>'}document.getElementById('compArea').innerHTML=h}
+function updateComp(){let c=mkt?.competitors||{},e=Object.entries(c);if(!e.length){document.getElementById('compArea').innerHTML='<div style="color:var(--t3);font-size:12px">Collecting market data...</div>';return};let h='',mid=Math.ceil(e.length/2);for(let col=0;col<2;col++){let ch=col===0?e.slice(0,mid):e.slice(mid);h+='<div>';ch.forEach(([s,d])=>{let nm=SN[s]||s,dl=(d?.byDownloads||[]).slice(0,10),nw=(d?.byNewest||[]).slice(0,10);h+='<div style="margin-bottom:10px"><b style="color:var(--c0);font-size:13px">'+nm+'</b></div>';h+='<div style="font-size:12px;color:var(--t2);margin-bottom:4px">▼ Downloads Ranking</div>';if(!dl.length)h+='<div style="color:var(--t3);font-size:12px">None</div>';else{h+='<table class="mkt-tb"><tr><th>Competitor</th><th>download</th><th>Favorites</th><th>updated</th><th>uploaded</th></tr>';dl.forEach(m=>h+='<tr><td title="'+m.name+'">'+(m.name||'').substring(0,16)+'</td><td>'+(m.downloads||0).toLocaleString()+'</td><td>'+(m.stars||0)+'</td><td style="font-size:10px">'+ts2s(m.updatedAt)+'</td><td style="font-size:10px">'+(m.createdAt?ts2s(m.createdAt):'—')+'</td></tr>');h+='</table>'};h+='<div style="font-size:12px;color:var(--t2);margin:6px 0 4px">▼ Newest Uploads Ranking</div>';if(!nw.length)h+='<div style="color:var(--t3);font-size:12px">None</div>';else{h+='<table class="mkt-tb"><tr><th>Competitor</th><th>download</th><th>Favorites</th><th>updated</th><th>uploaded</th></tr>';nw.forEach(m=>h+='<tr><td title="'+m.name+'">'+(m.name||'').substring(0,16)+'</td><td>'+(m.downloads||0).toLocaleString()+'</td><td>'+(m.stars||0)+'</td><td style="font-size:10px">'+ts2s(m.updatedAt)+'</td><td style="font-size:10px">'+(m.createdAt?ts2s(m.createdAt):'—')+'</td></tr>');h+='</table>'};if(d&&d.explicit&&d.explicit.length){h+='<div style="font-size:12px;color:var(--t2);margin:6px 0 4px">▼ explicitly specifiedCompetitor</div>';h+='<table class="mkt-tb"><tr><th>Competitor</th><th>download</th><th>Favorites</th><th>updated</th><th>uploaded</th></tr>';d.explicit.forEach(m=>h+='<tr><td title="'+m.name+'">'+(m.name||'').substring(0,16)+'</td><td>'+(m.downloads||0).toLocaleString()+'</td><td>'+(m.stars||0)+'</td><td style="font-size:10px">'+ts2s(m.updatedAt)+'</td><td style="font-size:10px">'+(m.createdAt?ts2s(m.createdAt):'—')+'</td></tr>');h+='</table>'}h+='</div>'});h+='</div>'}document.getElementById('compArea').innerHTML=h}
 
 
-function updateHeat(){let hot=mkt?.hotness||[];if(!hot.length){document.getElementById('heatArea').innerHTML='<div style="color:var(--t3)">采集中...</div>';return};let mx=Math.max(...hot.map(h=>h.avg_dl),1),h='<table class="mkt-tb"><tr><th>类目</th><th>技能数</th><th>平均下载</th><th>热度</th></tr>';hot.forEach(r=>{let p=Math.round(r.avg_dl/mx*100),c=p>60?'hbar hi':p>30?'hbar mid':'hbar lo';h+='<tr><td>'+r.name+'</td><td>'+r.skill_count+'</td><td><span class="'+c+'"></span>'+r.avg_dl+'</td><td>'+'★'.repeat(Math.min(5,Math.ceil(p/20)))+'</td></tr>'});h+='</table>';document.getElementById('heatArea').innerHTML=h}
+function updateHeat(){let hot=mkt?.hotness||[];if(!hot.length){document.getElementById('heatArea').innerHTML='<div style="color:var(--t3)">Collecting...</div>';return};let mx=Math.max(...hot.map(h=>h.avg_dl),1),h='<table class="mkt-tb"><tr><th>category</th><th>skill count</th><th>avg downloads</th><th>hotness</th></tr>';hot.forEach(r=>{let p=Math.round(r.avg_dl/mx*100),c=p>60?'hbar hi':p>30?'hbar mid':'hbar lo';h+='<tr><td>'+r.name+'</td><td>'+r.skill_count+'</td><td><span class="'+c+'"></span>'+r.avg_dl+'</td><td>'+'★'.repeat(Math.min(5,Math.ceil(p/20)))+'</td></tr>'});h+='</table>';document.getElementById('heatArea').innerHTML=h}
 
 
-function updateStrategy(){let hot=mkt?.hotness||[],comp=mkt?.competitors||{};if(!hot.length){document.getElementById('strategy').innerHTML='<div style="color:var(--t3)">采集中...</div>';return};let h='<table class="mkt-tb"><tr><th>维度</th><th>分析</th><th>建议</th></tr>',lc=hot.filter(r=>r.skill_count<=3).sort((a,b)=>b.avg_dl-a.avg_dl).slice(0,2);lc.forEach(r=>{h+='<tr><td style="color:var(--c5)">蓝海</td><td>【'+r.name+'】'+r.skill_count+'技能，均下载'+r.avg_dl+'</td><td style="color:var(--c5)">优先</td></tr>'});let nc=new Set();Object.entries(comp).forEach(([s,m])=>{if(m.length<3)nc.add(SN[s]||s)});if(nc.size)h+='<tr><td style="color:var(--c1)">差异化</td><td>'+[...nc].join('、')+' 竞品不足3个</td><td style="color:var(--c1)">深耕</td></tr>';h+='</table>';document.getElementById('strategy').innerHTML=h}
+function updateStrategy(){let hot=mkt?.hotness||[],comp=mkt?.competitors||{};if(!hot.length){document.getElementById('strategy').innerHTML='<div style="color:var(--t3)">Collecting...</div>';return};let h='<table class="mkt-tb"><tr><th>dimension</th><th>analysis</th><th>suggestion</th></tr>',lc=hot.filter(r=>r.skill_count<=3).sort((a,b)=>b.avg_dl-a.avg_dl).slice(0,2);lc.forEach(r=>{h+='<tr><td style="color:var(--c5)">Blue Ocean</td><td>['+r.name+']'+r.skill_count+'skills, avg downloads'+r.avg_dl+'</td><td style="color:var(--c5)">Prioritize</td></tr>'});let nc=new Set();Object.entries(comp).forEach(([s,m])=>{if(m.length<3)nc.add(SN[s]||s)});if(nc.size)h+='<tr><td style="color:var(--c1)">Differentiation</td><td>'+[...nc].join(', ')+' Competitorinsufficient3</td><td style="color:var(--c1)">Deepen</td></tr>';h+='</table>';document.getElementById('strategy').innerHTML=h}
 
 
-function drawBars(){if(typeof Chart==='undefined')return;if(!cur)return;let slugs=Object.keys(cur.skills).sort((a,b)=>cur.skills[b].downloads-cur.skills[a].downloads);let labels=slugs.map(s=>SN[s]||s);let data=slugs.map(s=>cur.skills[s].downloads);let ctx=document.getElementById('barCvs').getContext('2d');if(barChart)barChart.destroy();barChart=new Chart(ctx,{type:'bar',data:{labels:labels,datasets:[{label:'下载量',data:data,backgroundColor:slugs.map((s,i)=>LC[i%LC.length]),borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:400},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y+' 次'}}},scales:{x:{grid:{display:false},ticks:{color:'#6f82a0',font:{size:11}}},y:{beginAtZero:true,grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#6f82a0',font:{size:11}}}}}})}
+function drawBars(){if(typeof Chart==='undefined')return;if(!cur)return;let slugs=Object.keys(cur.skills).sort((a,b)=>cur.skills[b].downloads-cur.skills[a].downloads);let labels=slugs.map(s=>SN[s]||s);let data=slugs.map(s=>cur.skills[s].downloads);let ctx=document.getElementById('barCvs').getContext('2d');if(barChart)barChart.destroy();barChart=new Chart(ctx,{type:'bar',data:{labels:labels,datasets:[{label:'downloads',data:data,backgroundColor:slugs.map((s,i)=>LC[i%LC.length]),borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:400},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y+' x'}}},scales:{x:{grid:{display:false},ticks:{color:'#6f82a0',font:{size:11}}},y:{beginAtZero:true,grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#6f82a0',font:{size:11}}}}}})}
 
 
-function drawHourlyBars(){if(typeof Chart==='undefined')return;if(!cur||!hist||!hist.skills)return;let slugs=Object.keys(cur.skills);let hIdx=Math.max(0,(hist.timestamps||[]).length-360);let growth=slugs.map(s=>{let h=hist.skills[s],dls=h?h.downloads:[],prev=dls[hIdx]!=null?dls[hIdx]:0;return{slug:s,g:cur.skills[s].downloads-prev}}).sort((a,b)=>b.g-a.g);let labels=growth.map(x=>SN[x.slug]||x.slug.substring(0,6));let data=growth.map(x=>x.g);let ctx2=document.getElementById('barCvs2');if(!ctx2)return;let c2=ctx2.getContext('2d');if(barChart2)barChart2.destroy();barChart2=new Chart(c2,{type:'bar',data:{labels:labels,datasets:[{label:'小时增量',data:data,backgroundColor:growth.map((x,i)=>LC[i%LC.length]),borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:400},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y+' 次'}}},scales:{x:{grid:{display:false},ticks:{color:'#6f82a0',font:{size:11}}},y:{beginAtZero:true,grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#6f82a0',font:{size:11}}}}}})}
-function drawDailyBars(){if(typeof Chart==='undefined')return;if(!cur)return;let base=(hist&&hist.yesterday_dl_by_skill)?hist.yesterday_dl_by_skill:null;let tIdx=-1;if(!base&&hist&&hist.timestamps&&hist.timestamps.length){let n=new Date(),p=x=>String(x).padStart(2,'0');let today=String(n.getFullYear())+'-'+p(n.getMonth()+1)+'-'+p(n.getDate());for(let i=0;i<hist.timestamps.length;i++){if(String(hist.timestamps[i]).indexOf(today)===0){tIdx=i;break}}}let slugs=Object.keys(cur.skills);let growth=slugs.map(s=>{let b=null;if(base&&base[s]!=null)b=base[s];else if(hist.skills&&hist.skills[s]&&hist.skills[s].downloads&&hist.skills[s].downloads[tIdx>=0?tIdx:0]!=null)b=hist.skills[s].downloads[tIdx>=0?tIdx:0];else b=cur.skills[s].downloads;return{slug:s,g:Math.max(0,cur.skills[s].downloads-b)}}).sort((a,b)=>b.g-a.g);let labels=growth.map(x=>SN[x.slug]||x.slug.substring(0,6));let data=growth.map(x=>x.g);let cv=document.getElementById('barCvs3');if(!cv)return;let c3=cv.getContext('2d');if(barChart3)barChart3.destroy();barChart3=new Chart(c3,{type:'bar',data:{labels:labels,datasets:[{label:'今日新增',data:data,backgroundColor:growth.map((x,i)=>LC[i%LC.length]),borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:400},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'今日新增 '+c.parsed.y+' 次（当前−昨日快照）'}}},scales:{x:{grid:{display:false},ticks:{color:'#6f82a0',font:{size:11}}},y:{beginAtZero:true,grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#6f82a0',font:{size:11}}}}}})}
+function drawHourlyBars(){if(typeof Chart==='undefined')return;if(!cur||!hist||!hist.skills)return;let slugs=Object.keys(cur.skills);let hIdx=Math.max(0,(hist.timestamps||[]).length-360);let growth=slugs.map(s=>{let h=hist.skills[s],dls=h?h.downloads:[],prev=dls[hIdx]!=null?dls[hIdx]:0;return{slug:s,g:cur.skills[s].downloads-prev}}).sort((a,b)=>b.g-a.g);let labels=growth.map(x=>SN[x.slug]||x.slug.substring(0,6));let data=growth.map(x=>x.g);let ctx2=document.getElementById('barCvs2');if(!ctx2)return;let c2=ctx2.getContext('2d');if(barChart2)barChart2.destroy();barChart2=new Chart(c2,{type:'bar',data:{labels:labels,datasets:[{label:'Hourly increment',data:data,backgroundColor:growth.map((x,i)=>LC[i%LC.length]),borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:400},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y+' x'}}},scales:{x:{grid:{display:false},ticks:{color:'#6f82a0',font:{size:11}}},y:{beginAtZero:true,grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#6f82a0',font:{size:11}}}}}})}
+function drawDailyBars(){if(typeof Chart==='undefined')return;if(!cur)return;let base=(hist&&hist.yesterday_dl_by_skill)?hist.yesterday_dl_by_skill:null;let tIdx=-1;if(!base&&hist&&hist.timestamps&&hist.timestamps.length){let n=new Date(),p=x=>String(x).padStart(2,'0');let today=String(n.getFullYear())+'-'+p(n.getMonth()+1)+'-'+p(n.getDate());for(let i=0;i<hist.timestamps.length;i++){if(String(hist.timestamps[i]).indexOf(today)===0){tIdx=i;break}}}let slugs=Object.keys(cur.skills);let growth=slugs.map(s=>{let b=null;if(base&&base[s]!=null)b=base[s];else if(hist.skills&&hist.skills[s]&&hist.skills[s].downloads&&hist.skills[s].downloads[tIdx>=0?tIdx:0]!=null)b=hist.skills[s].downloads[tIdx>=0?tIdx:0];else b=cur.skills[s].downloads;return{slug:s,g:Math.max(0,cur.skills[s].downloads-b)}}).sort((a,b)=>b.g-a.g);let labels=growth.map(x=>SN[x.slug]||x.slug.substring(0,6));let data=growth.map(x=>x.g);let cv=document.getElementById('barCvs3');if(!cv)return;let c3=cv.getContext('2d');if(barChart3)barChart3.destroy();barChart3=new Chart(c3,{type:'bar',data:{labels:labels,datasets:[{label:'todayadded',data:data,backgroundColor:growth.map((x,i)=>LC[i%LC.length]),borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:400},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'todayadded '+c.parsed.y+' times (current−yesterdaysnapshot)'}}},scales:{x:{grid:{display:false},ticks:{color:'#6f82a0',font:{size:11}}},y:{beginAtZero:true,grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#6f82a0',font:{size:11}}}}}})}
 
 
 
@@ -677,34 +677,34 @@ var prevScores={},prevDl={},prevSkillCount=0,alertTimer=null,alertTitleOn=false;
 function checkAlerts(){if(!cur)return;let msgs=[];let curSkillCount=Object.keys(cur.skills).length;
 
 
-// 1.评分变化告警
+// 1.Scorechange alert
 
 
-Object.keys(cur.skills).forEach(s=>{let sc=cur.skills[s].evalScore,old=prevScores[s];if(sc!=null&&old!=null){let d=sc-old;if(d<=-0.3)msgs.push((SN[s]||s.substring(0,6))+' 评分降 '+(-d).toFixed(1));if(d>=0.3)msgs.push((SN[s]||s.substring(0,6))+' 评分涨 +'+d.toFixed(1))}prevScores[s]=sc});
+Object.keys(cur.skills).forEach(s=>{let sc=cur.skills[s].evalScore,old=prevScores[s];if(sc!=null&&old!=null){let d=sc-old;if(d<=-0.3)msgs.push((SN[s]||s.substring(0,6))+' Scoredown '+(-d).toFixed(1));if(d>=0.3)msgs.push((SN[s]||s.substring(0,6))+' Scoreup +'+d.toFixed(1))}prevScores[s]=sc});
 
 
-// 2.下载量告警(单轮约50秒增量≥10)：突增与骤降双向感知
+// 2.download alert(per round ~50s increment≥10): detects both surges and plunges
 
 
-Object.keys(cur.skills).forEach(s=>{let dl=cur.skills[s].downloads,old=prevDl[s];if(old!=null){let diff=dl-old;if(diff>=10){msgs.push((SN[s]||s.substring(0,6))+' 下载突增 +'+diff)}else if(diff<=-10){msgs.push((SN[s]||s.substring(0,6))+' 下载骤降 '+diff)}};prevDl[s]=dl});
+Object.keys(cur.skills).forEach(s=>{let dl=cur.skills[s].downloads,old=prevDl[s];if(old!=null){let diff=dl-old;if(diff>=10){msgs.push((SN[s]||s.substring(0,6))+' download surge +'+diff)}else if(diff<=-10){msgs.push((SN[s]||s.substring(0,6))+' download plunge '+diff)}};prevDl[s]=dl});
 
 
-// 3.新技能上线告警
+// 3.new-skill-online alert
 
 
-if(prevSkillCount>0&&curSkillCount>prevSkillCount){msgs.push('新技能上线 +'+(curSkillCount-prevSkillCount))}
+if(prevSkillCount>0&&curSkillCount>prevSkillCount){msgs.push('new skill online +'+(curSkillCount-prevSkillCount))}
 
 
 prevSkillCount=curSkillCount;
 
 
-if(msgs.length){alertTitleOn=true;let orig='SkillHub 技能数据监控决策平台';document.title='⚠ '+msgs[0];if(alertTimer)clearTimeout(alertTimer);alertTimer=setTimeout(function(){document.title=orig;alertTitleOn=false},30000)}}
+if(msgs.length){alertTitleOn=true;let orig='SkillHub Skill Data Monitor & Decision Platform';document.title='⚠ '+msgs[0];if(alertTimer)clearTimeout(alertTimer);alertTimer=setTimeout(function(){document.title=orig;alertTitleOn=false},30000)}}
 
 
-// 版本自检测：服务端 dashboard.html 构建号变化时自动重载页面（绕过浏览器缓存，根治"旧缓存假离线"）
+// Version self-check: server-side  dashboard.html buildnumber changedauto-reloadingpage (bypassing browser cache, curing "old-cache fakeOffline")
 
 
-async function checkVersion(){try{let t=Date.now();let v=await fetchWithRetry('/api/version?_='+t,{timeout:5000,retries:1});if(!v)return;if(knownBuild===null){knownBuild=v.build;return}if(v.build!==knownBuild){console.log('检测到新版(构建'+v.build+')，自动重载');location.reload(true)}}catch(e){}}
+async function checkVersion(){try{let t=Date.now();let v=await fetchWithRetry('/api/version?_='+t,{timeout:5000,retries:1});if(!v)return;if(knownBuild===null){knownBuild=v.build;return}if(v.build!==knownBuild){console.log('New version detected (build '+v.build+'), auto-reloading');location.reload(true)}}catch(e){}}
 
 
 _loadOnce(Date.now());

@@ -2,20 +2,20 @@
 name: Skills Data Hub
 slug: skills-data-hub
 version: 1.2.5
-displayName: SkillHub技能开发者全域数据看板 | 智能决策中心 | 热点追踪 | 用户画像与转化
+displayName: SkillHub Developer Global Data Dashboard | Intelligent Decision Center | Trend Tracking | User Profiling & Conversion
 description: |
-  输入你的 SkillHub 用户 ID，即刻获得全技能实时监控 + 全平台关键词竞品搜索 + 类目热度分析与策略建议的完整决策平台。
-  - 全量数据约50秒刷新：下载量、收藏量、测评分数、版本时间、测评报告时间、市场数据、类目热度，全部统一约50秒轮询
-  - 关键词精准搜索全平台竞品（名称+介绍双字段匹配，核心专业词/排除词双重过滤）：下载量TOP10 + 最新上传TOP10双维度排名
-  - 类目热度排行：蓝海/红海识别，技能主攻方向建议
-  - 版本号与测评分数在每张技能卡明示，版本更新与测评报告时间关联（迭代验证联动）
-  - 昨日环比增长计算
-  - 翻页数字动画 + 深色科技风UI
-  - 电脑/平板跨设备实时展示（同WiFi）
-  - 版本更新 ↔ 测评报告 联动验证：每张卡片显示「vX 发布后 N 天出测评 Y 分」，形成迭代效果闭环
-  - 自动检测用户技能，无需手动配置（可选自定义）
-summaryZh: |
-  SkillHub技能开发者全域约50秒实时数据监控决策平台。输入用户ID，全量数据统一约50秒轮询（下载量/收藏量/测评分数/市场数据/类目热度），全平台关键词竞品搜索双维度排名，类目热度分析与策略建议。支持电脑/平板跨设备。自动检测技能，配置写入 config.json 无需改代码。
+  Enter your SkillHub user ID to instantly get a complete decision platform with real-time monitoring of all your skills + platform-wide keyword competitor search + category heat analysis and strategy suggestions.
+  - All data refreshes on a unified ~50-second poll: downloads, favorites, evaluation scores, version timestamps, evaluation report timestamps, market data, category heat — all polled every ~50 seconds.
+  - Keyword-precise platform-wide competitor search (name + description dual-field matching, core-professional-word / exclusion dual filtering): download TOP10 + latest-upload TOP10 dual-dimension ranking.
+  - Category heat ranking: blue-ocean / red-ocean identification, skill focus-direction suggestions.
+  - Version number and evaluation score shown on every skill card, with version update and evaluation report time correlated (iteration-validation linkage).
+  - Day-over-day (DoD) growth calculation.
+  - Page-flip number animation + dark tech-style UI.
+  - Cross-device real-time display on PC / tablet (same WiFi).
+  - Version update ↔ evaluation report linkage validation: each card shows "vX released, N days later evaluation Y score", forming an iteration-effect closed loop.
+  - Auto-detects your skills, no manual configuration required (customization optional).
+summary: |
+  SkillHub developer global ~50-second real-time data monitoring and decision platform. Enter your user ID; all data is polled on a unified ~50-second cycle (downloads / favorites / evaluation scores / market data / category heat). Platform-wide keyword competitor search with dual-dimension ranking, plus category heat analysis and strategy suggestions. Supports PC / tablet cross-device display. Auto-detects skills; configuration is written to config.json with no code changes needed.
 tags: [skillhub, monitoring, dashboard, analytics, competitor, data-visualization, decision-platform]
 category: data-analysis
 iconUrl: https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/e089b3bb-5a99-41bc-8881-40980028b748.png
@@ -23,104 +23,115 @@ labels:
   requires_api_key: "false"
 ---
 
-# SkillHub 技能开发者全域数据看板
+# SkillHub Developer Global Data Dashboard
 
-> 输入 SkillHub 用户 ID，全量数据统一约50秒轮询刷新，关键词搜索全平台竞品，类目热度洞察，一条龙决策。
+> Enter your SkillHub user ID; all data is polled and refreshed on a unified ~50-second cycle, keyword search finds platform-wide competitors, category heat gives insight — a one-stop decision workflow.
 
-> 🚀 **30 秒速览**：① 改 `config.json` 一行 `user_id` → ② 双击 `start_monitor.bat` → ③ 浏览器开 `http://localhost:8866`。数据每约50秒自动刷新，全程无需任何命令。
+> 🚀 **30-second quick start**: ① edit one line `user_id` in `config.json` → ② double-click `start_monitor.bat` → ③ open `http://localhost:8866` in your browser. Data auto-refreshes every ~50 seconds, no commands needed.
 
-> 📌 **准确性声明**：本文档所有「约50秒」表述均与代码 `COLLECT_INTERVAL=50` 严格一致；面板所有数值均来自你本人账号的实时采集，绝无内置样例数字。
+> 📌 **Accuracy statement**: Every "~50 seconds" statement in this document strictly matches the code constant `COLLECT_INTERVAL=50`; all values on the dashboard come from real-time collection of your own account — there are absolutely no built-in sample numbers.
 
 ---
 
-## 目录速览
-- [一、快速开始（3步）](#一快速开始3步)
-- [二、功能详解](#二功能详解)
-- [二·一、输出示例](#二一输出示例界面长什么样)
-- [二·二、适用场景与能力边界](#二二适用场景与能力边界)
-- [二·三、已知限制与常见问题](#二三已知限制与常见问题)
-- [二·四、触发方式](#二四触发方式如何启动与刷新)
-- [二·五、避坑指南](#二五避坑指南踩过的坑与快速补救)
-- [二·六、实操案例](#二六实操案例典型场景-step-by-step)
-- [二·七、常见错误做法（反模式）](#二七常见错误做法反模式)
-- [二·八、新手完整上手教程](#二八新手完整上手教程从零开始)
-- [二·九、完整实战演练](#二九完整实战演练从零到第一个决策)
-- [二·十、最佳实践与异常自愈](#二十最佳实践与异常自愈)
-- [三、自定义配置](#三自定义配置)
-- [四、技术支持](#四技术支持)
-- [五、文件说明](#五文件说明)
-- [变更日志](#变更日志)
+## Table of Contents
 
-## 一、快速开始（3步）
+- [1. Quick Start (3 steps)](#1-quick-start-3-steps)
+- [2. Feature Details](#2-feature-details)
+- [2.1 Output Examples (what the UI looks like)](#21-output-examples-what-the-ui-looks-like)
+- [2.2 Use Cases and Capability Boundaries](#22-use-cases-and-capability-boundaries)
+- [2.3 Known Limitations and FAQ](#23-known-limitations-and-faq)
+- [2.4 How to Trigger (how to start and refresh)](#24-how-to-trigger-how-to-start-and-refresh)
+- [2.5 Pitfall Guide (pitfalls we hit and quick fixes)](#25-pitfall-guide-pitfalls-we-hit-and-quick-fixes)
+- [2.6 Practical Cases (typical scenarios, step-by-step)](#26-practical-cases-typical-scenarios-step-by-step)
+- [2.7 Common Mistakes (anti-patterns)](#27-common-mistakes-anti-patterns)
+- [2.8 Complete Beginner Tutorial (from scratch)](#28-complete-beginner-tutorial-from-scratch)
+- [2.9 Full Hands-on Walkthrough (from zero to your first decision)](#29-full-hands-on-walkthrough-from-zero-to-your-first-decision)
+- [2.10 Best Practices and Auto-Recovery](#210-best-practices-and-auto-recovery)
+- [3. Custom Configuration](#3-custom-configuration)
+- [4. Technical Support](#4-technical-support)
+- [5. File Reference](#5-file-reference)
+- [Changelog](#changelog)
 
-### 1. 配置用户ID（无需改代码）
-打开同目录 `config.json`，改一行即可：
+## 1. Quick Start (3 steps)
+
+### 1. Configure your user ID (no code changes)
+
+Open `config.json` in the same directory and change one line:
+
 ```json
 { "user_id": "user_YOUR_ID_HERE" }
 ```
-如何获取你的用户ID：登录 SkillHub → 个人中心 → URL 中 `/user/` 后面的部分。保存后重启 `server.py` 即生效，**全程不改任何代码文件**。
 
-### 2. 启动服务
-**方式一（一键启动，推荐）**：双击 `start_monitor.bat`，自动启动服务。
-**方式二（命令行）**：
+How to get your user ID: log in to SkillHub → Profile → the part after `/user/` in the URL. After saving, restart `server.py` to apply — **no code files are modified at any point**.
+
+### 2. Start the service
+
+**Method 1 (one-click start, recommended)**: double-click `start_monitor.bat` to auto-start the service.
+
+**Method 2 (command line)**:
+
 ```bash
 cd Skills-Data-Hub
 python server.py
 ```
-启动成功后终端显示 `Serving on http://0.0.0.0:8866`。
 
-### 3. 打开面板
-- 电脑：`http://localhost:8866`
-- 平板：同WiFi下查电脑IP（cmd → `ipconfig`），输入 `http://IP地址:8866`
+After a successful start, the terminal shows `Serving on http://0.0.0.0:8866`.
+
+### 3. Open the dashboard
+
+- PC: `http://localhost:8866`
+- Tablet: on the same WiFi, find your PC's IP (cmd → `ipconfig`) and open `http://<IP-address>:8866`
 
 ---
 
-## 二、功能详解
+## 2. Feature Details
 
-> 功能覆盖完整链路：实时监测 → 竞品分析 → 类目洞察 → 异常告警 → 数据导出，从「看数据」到「做决策」一条龙，无需切换其他工具。
+> Covers the complete chain: real-time monitoring → competitor analysis → category insight → anomaly alerts → data export. From "looking at data" to "making decisions" in one workflow, no other tools needed.
 
-| 模块 | 功能 |
+| Module | Feature |
 |------|------|
-| 顶部概览 | 实时：平台实时技能数量、今日总下载量、昨日环比增长、总收藏量、总评论量、粉丝数量 |
-| 技能卡片 | 每个技能显示大号下载量数字（翻页动画）、收藏量、蓝色评分、版本时间 |
-| 竞品双维度 | 下载量TOP10 + 最新上传TOP10，含名称/下载/收藏/更新/上传时间 |
-| 类目热度榜 | 全类目按平均下载量排序，热度星级 |
-| 策略建议 | 蓝海类目推荐、差异化优势分析、红海警示 |
-| 趋势图 | 下载量实时排行柱状图（按下载量排序） |
-| 迭代验证联动 | 每张技能卡片显示「vX 发布后 N 天出测评 Y 分」，版本更新与测评报告时间关联，形成迭代效果闭环 |
+| Top overview | Real-time: platform live skill count, today's total downloads, day-over-day growth, total favorites, total comments, follower count |
+| Skill cards | Each skill shows a large download number (page-flip animation), favorites, blue score, version timestamp |
+| Competitor dual-dimension | Download TOP10 + latest-upload TOP10, with name / downloads / favorites / update / upload time |
+| Category heat board | All categories sorted by average downloads, with a heat star rating |
+| Strategy suggestions | Blue-ocean category recommendations, differentiation advantage analysis, red-ocean warnings |
+| Trend chart | Real-time download ranking bar chart (sorted by downloads) |
+| Iteration-validation linkage | Each skill card shows "vX released, N days later evaluation Y score", linking version update and evaluation report time to form an iteration-effect closed loop |
 
 ---
 
-## 二·一、输出示例（界面长什么样）
+## 2.1 Output Examples (what the UI looks like)
 
-**顶部文字行**：`平台实时技能数量 7`（大号青字，靠右对齐）
+**Top text line**: `Platform live skill count 7` (large cyan text, right-aligned)
 
-**数据总览（4 卡）**
+**Data overview (4 cards)**
 
-| 卡片 | 主数字 | 较上一小时 |
+| Card | Main number | vs. last hour |
 |------|--------|-----------|
-| 用户总下载量 | 12,480 | ▲ 较上一小时 +36 |
-| 总收藏量 | 3,210 | ▲ 较上一小时 +12 |
-| 总评论量 | 0 | ─ 较上一小时 持平 |
-| 粉丝数量 | 4 | ▲ 较上一小时 +1 |
+| User total downloads | 12,480 | ▲ +36 vs. last hour |
+| Total favorites | 3,210 | ▲ +12 vs. last hour |
+| Total comments | 0 | ─ flat vs. last hour |
+| Follower count | 4 | ▲ +1 vs. last hour |
 
-**核心指标卡（每个技能）**
-- 大号下载量数字（翻页动画）+ 收藏量 + 蓝色评分「4.8分」
-- 版本号 v1.1.4
-- 类目 / 子类目（同一行）；认领 / 认证 / 评论 / 创建 / 更新 / 命名空间 / 需Key
-- 「vX 发布后 N 天出测评 Y 分」迭代闭环标注
+**Core metric card (per skill)**
 
-> 真实界面请在本地启动后于浏览器查看；上表为字段示意，非截图、非固定测试数据。表中所有数值均取自你本人 SkillHub 账号的实时采集字段，绝无内置样例数字。
+- Large download number (page-flip animation) + favorites + blue score "4.8"
+- Version v1.1.4
+- Category / sub-category (same line); claimed / verified / comments / created / updated / namespace / requires-key
+- "vX released, N days later evaluation Y score" iteration closed-loop label
 
-**API 响应结构（JSON）**
+> See the real interface in your browser after starting locally; the table above illustrates the fields, not a screenshot or fixed test data. All values in the table come from real-time collection of your own SkillHub account — absolutely no built-in sample numbers.
 
-`GET /api/current` 返回当前最新一轮采集数据：
+**API response structure (JSON)**
+
+`GET /api/current` returns the latest completed collection round:
+
 ```json
 {
   "timestamps": ["2026-07-22 08:30:00"],
   "skills": {
     "your-skill-slug": {
-      "name": "示例技能（你的某个 SkillHub 技能）",
+      "name": "Example Skill (one of your SkillHub skills)",
       "downloads": 3842,
       "stars": 215,
       "evalScore": 4.8,
@@ -142,7 +153,8 @@ python server.py
 }
 ```
 
-`GET /api/history` 返回时间序列数组（约50秒一个点，最多保留约10小时=720点）：
+`GET /api/history` returns a time-series array (~50 seconds per point, up to ~10 hours = 720 points retained):
+
 ```json
 {
   "timestamps": ["08:29:50", "08:30:00", "08:30:10"],
@@ -150,7 +162,7 @@ python server.py
   "totalComments": [0, 0, 0],
   "skills": {
     "your-skill-slug": {
-      "name": ["示例技能..."],
+      "name": ["Example Skill..."],
       "downloads": [3840, 3841, 3842],
       "stars": [215, 215, 215],
       "evalScore": [4.8, 4.8, 4.8]
@@ -159,435 +171,461 @@ python server.py
 }
 ```
 
-`GET /api/export` 导出完整历史为 CSV（支持长期趋势分析）：
+`GET /api/export` exports the full history as CSV (supports long-term trend analysis):
+
 ```
 timestamp,skill_slug,skill_name,downloads,favorites,eval_score,comments
-2026-07-22 08:29:50,your-skill-slug,示例技能...,3840,215,4.8,0
-2026-07-22 08:30:00,your-skill-slug,示例技能...,3841,215,4.8,0
+2026-07-22 08:29:50,your-skill-slug,Example Skill...,3840,215,4.8,0
+2026-07-22 08:30:00,your-skill-slug,Example Skill...,3841,215,4.8,0
 ```
 
-## 二·二、适用场景与能力边界
+## 2.2 Use Cases and Capability Boundaries
 
-**适用场景**
-- 已发布 SkillHub 技能的开发者，想实时掌握下载 / 收藏 / 评分 / 排名走势
-- 需要盯竞品（同赛道技能）下载量与上新节奏
-- 需要类目热度与蓝海方向做迭代决策
-- 电脑 + 平板（同 WiFi）双屏实时展示
+**Use cases**
 
-**能力边界（先做能/不能做判断，避免预期错配）**
+- Developers who have published SkillHub skills and want to track download / favorites / score / ranking trends in real time
+- Need to watch competitors (same-track skills) for download volume and release cadence
+- Need category heat and blue-ocean direction for iteration decisions
+- PC + tablet (same WiFi) dual-screen real-time display
 
-| ✅ 它能做 | ❌ 它不能做 |
+**Capability boundaries (decide what it can / cannot do first, to avoid mismatched expectations)**
+
+| ✅ What it can do | ❌ What it cannot do |
 |------|------|
-| 实时监控你 SkillHub 技能的下载/收藏/评分/排名 | 生成、改写技能内容（仅做数据监控与洞察） |
-| 全平台关键词竞品搜索（下载TOP10 + 最新上传TOP10） | 监控非 SkillHub 平台的数据 |
-| 类目热度与蓝海/红海策略建议 | 自动化执行运营动作（只给洞察，不替你操作） |
-| 浏览器标签栏异常告警（评分/下载/新技能） | 多用户协作编辑 |
-| 导出 CSV 做长期趋势分析 | 永久存储（默认保留约6小时，可调 `MAX_HISTORY` 或导出备份） |
-| 数据每约50秒刷新（顶部「延迟」秒数反映真实获取差） | 离线使用（需可访问 `api.skillhub.cn`，断网保留已加载数据） |
+| Real-time monitoring of your SkillHub skills' downloads / favorites / scores / rankings | Generate or rewrite skill content (monitoring and insight only) |
+| Platform-wide keyword competitor search (download TOP10 + latest-upload TOP10) | Monitor data from non-SkillHub platforms |
+| Category heat and blue-ocean / red-ocean strategy suggestions | Automatically perform operations (insight only, it does not act for you) |
+| Browser tab-bar anomaly alerts (score / downloads / new skill) | Multi-user collaborative editing |
+| Export CSV for long-term trend analysis | Permanent storage (keeps ~6 hours by default; tune `MAX_HISTORY` or export as backup) |
+| Data refreshes every ~50 seconds (top "latency" seconds reflect the real fetch gap) | Offline use (requires access to `api.skillhub.cn`; keeps loaded data when offline) |
 
-### 异常自愈（后台自动处理，你几乎不用管）
+### Auto-recovery (handled automatically in the background, almost no action needed)
 
-本工具内置多层自愈，遇到异常会自动恢复，页面顶部黄条会显示中文原因：
+This tool has multiple self-healing layers; on anomalies it recovers automatically and a yellow bar at the top shows the reason in plain language:
 
-- **采集循环自愈**：任一轮采集异常（网络抖动/限流/接口变更）被捕获，保留上次好数据，下一轮自动重试，不会导致数据断层。
-- **冻结看门狗（v1.2.4 新增）**：若距上次成功采集超过 150 秒仍无新数据（说明采集线程卡死），进程自动重启自愈——**彻底杜绝「数据不动了」的长期冻结**，这是针对历史故障的永久加固。
-- **守护端口自清（v1.2.4 新增）**：`start_monitor.sh` 每次启动前自动释放被占用的 8866 端口，旧实例即使异常冻结，新实例也能干净启动。
-- **页面提示**：网络波动时顶部显示「重连中」并自动重试；长时间离线给出具体排查方向，不会让你干着急。
-
----
-
-## 二·三、已知限制与常见问题
-
-**已知限制**
-- 竞品匹配采用「名称+介绍双字段匹配」：命中 `name_filter`（名称）或 `desc_filter`（介绍）任一即候选；可选 `core_filter`（核心专业词必命中）与 `exclude`（排除词）保证专业相关性；均未命中的技能不计入竞品。未配置 keyword_map 的技能会按其显示名自动派生搜索词（不同用户的竞品自动不同，不依赖固定竞品列表）
-
-**常见问题**
-
-- **Q：页面打开没数据？**
-  A：分三步排查：① 确认 `python server.py` 已启动且终端无报错（应显示 `Serving on http://0.0.0.0:8866`）；② 浏览器按 `Ctrl+Shift+R` 强制刷新清缓存；③ 首次启动需 1~2 轮采集（约 1~2 分钟）才有曲线，如果只是刚启动请耐心等待。如果终端有红色报错，请先检查 config.json 是否为合法 JSON 格式（逗号、引号、括号是否配对），顶部黄色提示条会显示具体错误原因。
-
-- **Q：平板时断时续？**
-  A：多为 WiFi 弱信号导致单次请求超时。面板已做「保留上次数据 + 连续 3 次失败才标离线」，右上角状态会在 在线→重连中→离线 间切换。解决方法：① 挪近路由器；② 尝试手机热点共享；③ 检查电脑防火墙是否拦截了 8866 端口。恢复后面板自动重连，无需手动刷新。
-
-- **Q：图表不显示？**
-  A：Chart.js 已内置本地文件（chart.umd.min.js），无需外网。排查步骤：① 确认 chart.umd.min.js 与 dashboard.html 在同一目录；② 浏览器 `Ctrl+Shift+R` 强制刷新；③ 打开浏览器开发者工具（F12）→ Console 标签页，查看是否有红色报错。如果提示 `Chart is not defined`，说明 chart.umd.min.js 加载失败，检查文件是否存在且未损坏。
-
-- **Q：顶部显示「延迟 N 分」或「重连中」？**
-  A：说明数据滞后或刚发生网络抖动。面板每约50秒自动重试，通常几十秒内自动恢复，无需手动刷新。如果长时间（超 2 分钟）显示「离线」，请检查：① 电脑能否访问 `api.skillhub.cn`（浏览器直接打开试试）；② 是否在公司内网/组织防火墙环境（需开代理）；③ server.py 终端是否有报错信息。
-
-- **Q：测评分数/榜单数据为什么和我看到的其他页面不一致？**
-  A：面板每约50秒向 SkillHub API 请求最新数据。若 API 本身有短暂缓存（几秒级别），不同页面刷入时间差可能导致微小的数字差异，属正常现象。如果差异较大（如下载量差几千），请确认是否刚发布了新版本触发了平台缓存刷新。
-
-- **Q：接口报错「限流 429」？**
-  A：短时间高频刷新可能触发平台限流。面板已自动重试退避（指数级退避），通常 30 秒内恢复，无需干预。如果频繁出现，可在 config.json 中增加 `poll_interval` 字段（如16）降低轮询频率。注意：不要同时开多个面板实例对同一账号轮询，会加倍触发限流。
-
-- **Q：竞品排名里没有某个技能？**
-  A：竞品来自关键词搜索 + 名称/介绍双字段过滤（见 config.json 的 keyword_map），均未命中的不计入。解决方法：① 在 `search` 数组增补搜索词；② 在 `name_filter`（名称匹配）或 `desc_filter`（介绍匹配）增补过滤词；③ 保存后重启 `python server.py`。反之，竞品榜出现了不相干的技能，则把它名称里的特征词加进 `exclude` 排除词，或配置 `core_filter` 核心专业词（配 `strict_name: true` 可要求核心词必须出现在对方名称中，如劳动仲裁类排除泛法律技能）。未配置的技能自动按显示名派生搜索词。
-
-- **Q：换电脑/重装后配置丢了？**
-  A：个性化配置都在 `config.json`（user_id / keyword_map / skill_names / port），备份该文件即可迁移，无需改代码。迁移步骤：① 复制旧电脑的 config.json；② 在新电脑安装 Python 3.7+；③ 将技能包整个目录拷到新电脑；④ 用备份的 config.json 覆盖默认的；⑤ 运行 `python server.py` 即可。
-
-- **Q：如何导出历史数据做长期趋势分析？**
-  A：浏览器访问 `http://localhost:8866/api/export`，自动下载 CSV 文件（含时间戳/技能/下载量/收藏量/评分/评论）。用 Excel 打开后：① 选中数据区域 → 插入 → 折线图，可看下载量趋势；② 用数据透视表做多维度分析；③ 导出后 history.json 不会清空，可继续累积。建议每日导出一份做备份。
-
-- **Q：浏览器标签栏标题显示「⚠ 技能X 评分降 Y」是什么意思？**
-  A：系统检测到该技能评分较上一轮下降≥0.3，在标签栏自动告警，30秒后自动恢复。同类告警还包括「下载突增/骤降」（单轮增量≥10）和「新技能上线」。如果不希望告警，可忽略——这些只是标签栏提示，不影响面板功能。
-
-- **Q：双击 start_monitor.bat 一键启动怎么用？**
-  A：双击即自动启动服务，终端会显示运行日志，按 Ctrl+C 停止。如需开机自启：右键 bat 文件 → 创建快捷方式 → Win+R 输入 `shell:startup` → 将快捷方式拖入启动文件夹。注意：如果终端闪退，说明 Python 未正确安装或未加入 PATH，请参考下方「Python 环境安装指引」。
-
-- **Q：顶部显示「数据延迟 Ns」是什么意思？**
-  A：当数据超过20秒未刷新（正常约50秒），系统会显示延迟秒数并标橙色，提示网络可能波动。通常下个周期自动恢复。如果持续显示延迟，请检查网络连接或 api.skillhub.cn 是否可达。
-
-- **Q：没有装 Python 能用吗？**
-  A：不能。本工具后端由 Python 编写，必须先安装 Python 3.7 以上版本。安装方法见下方「Python 环境安装指引」。安装后在终端输入 `python --version` 确认成功，再运行 `python server.py`。对于纯小白用户，建议使用 start_monitor.bat 一键启动，避免命令行操作。
-
+- **Collection-loop self-healing**: any round that fails (network jitter / rate limiting / API change) is caught, keeps the last good data, and retries next round — no data gaps.
+- **Freeze watchdog (new in v1.2.4)**: if no new data arrives more than 150 seconds after the last successful collection (meaning the collection thread is deadlocked), the process auto-restarts to self-heal — **permanently eliminating the long-term "data stopped moving" freeze**, a permanent hardening against this historical failure.
+- **Guard-port auto-clean (new in v1.2.4)**: `start_monitor.sh` releases the occupied 8866 port before every start, so even a frozen old instance lets the new one start cleanly.
+- **Page hints**: on network fluctuation the top shows "Reconnecting" and auto-retries; on long offline it gives concrete troubleshooting directions instead of leaving you guessing.
 
 ---
 
-## 二·四、触发方式（如何启动与刷新）
+## 2.3 Known Limitations and FAQ
 
-说明：本工具是**本地常驻的网页看板**，不是聊天里输入指令调用的助手，因此没有传统"对话触发"示例。它的"触发"就是启动本地服务 + 打开浏览器。
+**Known limitations**
 
-- 首次启动（命令）：
+- Competitor matching uses "name + description dual-field matching": a hit on either `name_filter` (name) or `desc_filter` (description) makes it a candidate; optional `core_filter` (core professional word must hit) and `exclude` (exclusion words) ensure professional relevance; skills that hit none are not counted as competitors. Skills without a `keyword_map` auto-derive search terms from their display name (each user's competitors differ automatically, with no fixed competitor list dependency).
+
+**FAQ**
+
+- **Q: The page opens but shows no data?**
+  A: Troubleshoot in three steps: ① confirm `python server.py` is running and the terminal shows no error (it should print `Serving on http://0.0.0.0:8866`); ② press `Ctrl+Shift+R` in the browser to force a cache-clearing refresh; ③ the first start needs 1~2 collection rounds (~1~2 minutes) before curves appear — if you just started, please wait. If the terminal shows a red error, first check whether config.json is valid JSON (commas, quotes, brackets paired); the top yellow bar shows the specific error reason.
+
+- **Q: Tablet connects intermittently?**
+  A: Usually weak WiFi causes a single request to time out. The dashboard already does "keep last data + mark offline only after 3 consecutive failures"; the top-right status switches between Online → Reconnecting → Offline. Fixes: ① move closer to the router; ② try a phone hotspot; ③ check whether the PC firewall blocks port 8866. After recovery the dashboard auto-reconnects, no manual refresh needed.
+
+- **Q: Chart not showing?**
+  A: Chart.js is bundled as a local file (chart.umd.min.js), no internet needed. Steps: ① confirm chart.umd.min.js is in the same directory as dashboard.html; ② press `Ctrl+Shift+R` to force refresh; ③ open browser DevTools (F12) → Console tab, check for red errors. If it says `Chart is not defined`, chart.umd.min.js failed to load — check the file exists and is not corrupted.
+
+- **Q: Top shows "Latency N min" or "Reconnecting"?**
+  A: Data is lagging or there was just network jitter. The dashboard auto-retries every ~50 seconds and usually recovers within tens of seconds, no manual refresh needed. If it shows "Offline" for a long time (>2 minutes), check: ① can the PC reach `api.skillhub.cn` (open it directly in a browser); ② are you behind a corporate / organizational firewall (need a proxy); ③ does server.py's terminal show errors.
+
+- **Q: Why do my evaluation scores / ranking data differ from other pages I see?**
+  A: The dashboard requests the latest data from the SkillHub API every ~50 seconds. If the API itself has a short cache (seconds-level), the time difference between page refreshes can cause tiny numerical differences — this is normal. If the gap is large (e.g. downloads differ by thousands), confirm whether you just published a new version that triggered a platform cache refresh.
+
+- **Q: API error "Rate limited 429"?**
+  A: High-frequency refreshes in a short time may trigger platform rate limiting. The dashboard already auto-retries with backoff (exponential), usually recovering within 30 seconds, no intervention needed. If it recurs often, add a `poll_interval` field to config.json (e.g. 16) to lower the poll frequency. Note: do not run multiple dashboard instances polling the same account simultaneously — that doubles rate-limit triggers.
+
+- **Q: A skill is missing from the competitor ranking?**
+  A: Competitors come from keyword search + name/description dual-field filtering (see `keyword_map` in config.json); those that hit none are not counted. Fixes: ① add search terms to the `search` array; ② add filter words to `name_filter` (name match) or `desc_filter` (description match); ③ save and restart `python server.py`. Conversely, if an irrelevant skill appears in the competitor board, add a distinctive word from its name to the `exclude` exclusion list, or configure `core_filter` (with `strict_name: true` to require the core word to appear in the opponent's name, e.g. labor-arbitration tracks exclude generic legal skills). Unconfigured skills auto-derive search terms from their display name.
+
+- **Q: Config lost after switching PCs / reinstalling?**
+  A: Personalization lives in `config.json` (user_id / keyword_map / skill_names / port); back up that file to migrate, no code changes. Migration steps: ① copy the old PC's config.json; ② install Python 3.7+ on the new PC; ③ copy the whole skill folder to the new PC; ④ overwrite the default config.json with your backup; ⑤ run `python server.py`.
+
+- **Q: How do I export history for long-term trend analysis?**
+  A: In the browser open `http://localhost:8866/api/export` to download a CSV (with timestamp / skill / downloads / favorites / score / comments). Open in Excel: ① select the data range → Insert → Line chart to see download trends; ② use a pivot table for multi-dimension analysis; ③ exporting does not clear history.json, it keeps accumulating. Recommend exporting one copy daily as backup.
+
+- **Q: What does "⚠ Skill X score dropped Y" in the browser tab title mean?**
+  A: The system detected that skill's score dropped ≥0.3 vs. the last round and auto-alerts in the tab title, auto-clearing after 30 seconds. Similar alerts include "download spike / drop" (single-round delta ≥10) and "new skill published". If you don't want alerts, just ignore them — they are tab-title hints only and do not affect dashboard functionality.
+
+- **Q: How do I use the double-click start_monitor.bat one-click start?**
+  A: Double-click to auto-start the service; the terminal shows run logs; press Ctrl+C to stop. For auto-start on boot: right-click the bat → Create shortcut → Win+R → type `shell:startup` → drag the shortcut into the startup folder. Note: if the terminal flashes and closes, Python is not installed correctly or not on PATH — see "Python environment install guide" below.
+
+- **Q: Top shows "Data latency Ns" — what does it mean?**
+  A: When data has not refreshed for over 20 seconds (normal is ~50 seconds), the system shows latency in seconds and marks it orange, hinting at possible network fluctuation. Usually recovers next cycle. If latency persists, check the network connection or whether api.skillhub.cn is reachable.
+
+- **Q: Can I use it without Python installed?**
+  A: No. The backend is written in Python; you must install Python 3.7 or above first. See "Python environment install guide" below. After install, type `python --version` in the terminal to confirm, then run `python server.py`. For absolute beginners, use start_monitor.bat one-click start to avoid the command line.
+
+---
+
+## 2.4 How to Trigger (how to start and refresh)
+
+Note: this tool is a **locally resident web dashboard**, not an assistant you invoke by typing commands in chat, so there is no traditional "conversation trigger" example. Its "trigger" is starting the local service + opening the browser.
+
+- First start (command):
+
 ```bash
 cd Skills-Data-Hub
 python server.py
 ```
-启动后终端显示 `Serving on http://0.0.0.0:8866` 即成功。
-- 打开面板：浏览器访问 `http://localhost:8866`（电脑）或 `http://<电脑IP>:8866`（平板同 WiFi）。
-- 自动刷新：面板默认每约50秒自动拉取一次，无需手动触发；断网恢复后自动重连。
-- 强刷缓存：浏览器 `Ctrl+Shift+R` 强制刷新（极少需要）。
-- 长期常驻：用 `nohup bash start_monitor.sh &` 启动守护，关掉终端也能持续运行、崩溃自动重启。
-- 一键启动（Windows）：双击 `start_monitor.bat` 即可启动，无需命令行。
-- 开机自启（Windows）：右键 `start_monitor.bat` → 创建快捷方式 → `Win+R` 输入 `shell:startup` → 将快捷方式拖入启动文件夹。开机后自动启动监控服务。
-  - 多人 / 多设备同时查看：面板是只读网页，**同一运行实例的网址可同时给多台设备、多人打开**，互不影响；浏览器开多个标签页也完全安全——数据由服务端统一轮询，前端只拉本地缓存，不会因多开标签页而加倍调用 API。
-  - 换网络 / 换设备：个性化配置全在 `config.json`（user_id / keyword_map / skill_names / port），把该文件拷到新环境覆盖即可，无需改代码。跨网络（非同 WiFi）访问需做端口映射 / 内网穿透（如 frp、ngrok），否则仅同 WiFi 可见。
-  - 任意设备浏览器打开同一网址即可查看，**无需安装任何 APP**；手机/平板/电脑浏览器均支持。
+
+After start the terminal shows `Serving on http://0.0.0.0:8866` on success.
+
+- Open dashboard: browser to `http://localhost:8866` (PC) or `http://<PC-IP>:8866` (tablet, same WiFi).
+- Auto-refresh: the dashboard pulls automatically every ~50 seconds by default, no manual trigger; auto-reconnects after network recovery.
+- Force cache refresh: browser `Ctrl+Shift+R` (rarely needed).
+- Long-term resident: use `nohup bash start_monitor.sh &` to start the daemon; it keeps running and auto-restarts on crash even after closing the terminal.
+- One-click start (Windows): double-click `start_monitor.bat`, no command line needed.
+- Auto-start on boot (Windows): right-click `start_monitor.bat` → Create shortcut → `Win+R` → type `shell:startup` → drag the shortcut into the startup folder. The monitoring service starts automatically after boot.
+  - Multiple people / multiple devices viewing at once: the dashboard is a read-only web page; **the same running instance's URL can be opened by multiple devices and multiple people simultaneously** without interference; opening multiple browser tabs is also completely safe — data is polled uniformly by the server, the frontend only pulls local cache, so opening more tabs does not multiply API calls.
+  - Changing network / device: personalization is all in `config.json` (user_id / keyword_map / skill_names / port); copy that file to the new environment and overwrite — no code changes. Cross-network (non-same-WiFi) access needs port mapping / intranet penetration (e.g. frp, ngrok), otherwise only same-WiFi is visible.
+  - Open the same URL in any device's browser to view, **no APP installation needed**; phone / tablet / PC browsers are all supported.
 
 ---
 
-## 二·五、避坑指南（踩过的坑与快速补救）
+## 2.5 Pitfall Guide (pitfalls we hit and quick fixes)
 
-- **改了技能目录但本地 8866 没变（最常见）**：编辑源（`~/.workbuddy/skills/skills-data-hub__skillhub/`）和运行副本（`skillhub_monitor/`）是两份。改完必须同步运行副本并重启，否则"本地没生效"。已提供 `sync_restart.sh` 一键同步重启。
-- **端口 8866 被占用**：报 `Address already in use` 时，先 `netstat -ano | findstr :8866` 找 PID，`taskkill /PID <pid> /F` 释放；或改 `config.json` 的 `port`。
-- **config.json 写错**：必须是合法 JSON（引号、逗号、括号配对）。写错会导致 `server.py` 启动即退出；用任意 JSON 校验工具先检查。
-- **首次打开没曲线**：需 1~2 轮采集才有时间序列；耐心等 1~2 分钟，属正常。
-- **history.json 越来越大**：长期运行会累积（默认保留约 6 小时）。磁盘紧张可备份后删掉让它重建，不影响功能。
-- **图表空白**：Chart.js 已内置本地文件，无需外网；仍空白就 `Ctrl+Shift+R` 强刷。
-
----
-
-## 二·六、实操案例（典型场景 step-by-step）
-
-- **场景1：我想看哪个竞品涨得快** → 打开面板 → 右侧「竞品对比」选你的技能 → 看「下载量排名」和「最新上传排名」两个表 → 对比 `下载` 列增幅，找近期上新且下载飙升的对手。
-- **场景2：我想找蓝海类目** → 看「类目热度榜」→ 优先看「技能数」少（≤3）且「平均下载」高的行（★ 多）→ 再读「市场洞察·策略建议」里的「蓝海」条目，按建议方向迭代。
-- **场景3：版本发了，效果怎样** → 每张技能卡显示「vX 发布后 N 天出测评 Y 分」→ 发版前后对比卡片下方「下载/收藏 走势」迷你曲线 → 涨则继续，跌则回看改动；异常时（评分降/下载突增骤降/新技能上线）浏览器标签栏自动告警，无需一直盯着。
-- **场景4：数据突然不动了** → 看右上角状态（在线/重连中/离线）+ 黄色提示条原因 → 多为网络抖动，等几十秒自动恢复；长时间离线检查能否访问 api.skillhub.cn。
-- **场景5：用导出数据做周报** → 每日 `GET /api/export` 下载 CSV → Excel 折线图看一周下载/收藏走势 → 周会上用「本周 +X%、竞品 Y 涨更快」支撑迭代决策。
+- **Edited the skill source directory but local 8866 didn't change (most common)**: the edit source (`~/.workbuddy/skills/skills-data-hub__skillhub/`) and the running copy (`skillhub_monitor/`) are two separate copies. After editing you must sync the running copy and restart, otherwise "it didn't take effect locally". A `sync_restart.sh` one-click sync-restart is provided.
+- **Port 8866 occupied**: on `Address already in use`, first `netstat -ano | findstr :8866` to find the PID, `taskkill /PID <pid> /F` to release; or change `port` in config.json.
+- **config.json written wrong**: must be valid JSON (quotes, commas, brackets paired). A mistake makes `server.py` exit on start; check with any JSON validator first.
+- **No curve on first open**: needs 1~2 collection rounds to build a time series; wait 1~2 minutes patiently, this is normal.
+- **history.json keeps growing**: long runs accumulate (keeps ~6 hours by default). If disk is tight, back it up then delete to rebuild — no functional impact.
+- **Blank chart**: Chart.js is bundled locally, no internet needed; if still blank, `Ctrl+Shift+R` force refresh.
 
 ---
 
-## 二·七、常见错误做法（反模式）
+## 2.6 Practical Cases (typical scenarios, step-by-step)
 
-> 以下是用户反馈的高频“坑”，明确列出错误做法与正确做法对比，避免重蹈覆辙。
+- **Scenario 1: Which competitor is growing fast** → open dashboard → on the right "Competitor Compare" pick your skill → look at the "Download ranking" and "Latest upload ranking" tables → compare the `downloads` column growth, find recently published opponents with soaring downloads.
+- **Scenario 2: Find a blue-ocean category** → look at "Category heat board" → prioritize rows with few skills (≤3) and high average downloads (more ★) → then read the "blue-ocean" entries in "Market insight · Strategy suggestions" and iterate in that direction.
+- **Scenario 3: Version shipped, how did it do** → each skill card shows "vX released, N days later evaluation Y score" → compare the mini "downloads / favorites trend" curve below the card before and after release → keep going if up, review changes if down; on anomaly (score drop / download spike or drop / new skill published) the browser tab auto-alerts, no need to keep staring.
+- **Scenario 4: Data suddenly stopped** → check top-right status (online / reconnecting / offline) + yellow bar reason → usually network jitter, wait tens of seconds to recover; on long offline check whether api.skillhub.cn is reachable.
+- **Scenario 5: Use exported data for a weekly report** → daily `GET /api/export` download CSV → Excel line chart for the week's download / favorite trend → in the weekly meeting support iteration decisions with "this week +X%, competitor Y grew faster".
 
-| ✖ 错误做法 | ✅ 正确做法 | 后果 |
+---
+
+## 2.7 Common Mistakes (anti-patterns)
+
+> Below are high-frequency "pitfalls" reported by users, listed explicitly as wrong vs. right to avoid repeating them.
+
+| ✖ Wrong practice | ✅ Right practice | Consequence |
 |------|------|------|
-| 直接改 server.py 里的 USER_ID 硬编码 | 改 config.json 的 `user_id` 字段，重启生效 | 下次升级覆盖后配置丢失，还原手动改代码 |
-| 改了技能源目录但本地 8866 没变 | 同步到运行副本并重启（用 sync_restart.sh） | 以为“改了没生效”，反复改多次浪费时间 |
-| config.json 多了一个逗号/缺了引号 | 用 JSON 校验工具（如 jsonlint.com）先检查再保存 | server.py 启动即崩溃，顶部黄条提示具体错误 |
-| 端口被占用直接换端口不查原因 | 先 `netstat -ano | findstr :8866` 查 PID，`taskkill /PID <pid> /F` 释放，再重启 | 换了端口后平板、书签全部失效，还要重新记端口 |
-| 同时开多个 server.py 实例 | 先查找旧进程 `taskkill /F /IM python.exe`，只保留一个 | 多个实例争抢端口，互相干扰数据采集 |
-| 把 API Key 写进 config.json | API Key 仅命令行参数传入，不写入任何文件 | API Key 泄露风险，被他人盗用 |
-| 长期运行不清理 history.json | 定期备份后删除，让它重建 | history.json 越积越大，占用磁盘空间，影响启动速度 |
-| 浏览器缓存导致看到旧数据 | `Ctrl+Shift+R` 强制刷新，或开发者工具禁用缓存 | 以为“面板坏了”，其实只是缓存问题 |
-| 用示例 user_id（user_YOUR_ID_HERE）直接启动 | 先改成自己的 SkillHub 用户 ID 再启动 | 拉到的是占位/空数据，面板一片空白还以为坏了 |
-| 把轮询频率改到极小（如 1 秒）想“更实时” | 保持默认约50秒；如确需调快改 config.json 的 poll_interval，但间隔过小（如 1~2 秒）极易触发平台限流（429），反而数据断层 | 触发平台限流（429），反而数据断层、误报离线 |
-| 同一账号在多台电脑/终端同时跑 server.py | 同一账号只跑**一个** server.py 实例；多人查看直接共享同一个运行实例的网址（浏览器开多个标签页完全没问题） | 多实例并发轮询同一账号会成倍放大 API 请求，触发平台限流（429），数据反而断层、误报离线 |
-| 直接改 dashboard.html 里的数字/文案想「修数据」 | 数据是实时从 API 拉的，前端不存储数值；要改显示去改采集逻辑或配置 | 改了前端数字只是本地假象，刷新/重启即还原，还破坏「数据真实」承诺 |
-| 把 history.json / market_data.json 当配置手动改 | 它们是运行时自动生成的数据文件，删除会让其重建，不要手改 | 手改格式错会导致加载失败、面板空白 |
-| 用别人的 user_id 监控 | 只填自己的 SkillHub 用户 ID；想看别人数据需用对方授权方式 | 越权拉取他人数据违反平台规则，且有封号风险 |
+| Hard-code USER_ID directly in server.py | Change the `user_id` field in config.json, restart to apply | Config lost after next upgrade overwrites it; have to manually re-edit code |
+| Edited the skill source directory but local 8866 didn't change | Sync to the running copy and restart (use sync_restart.sh) | Think "the edit didn't take", re-edit many times wasting time |
+| One extra comma / missing quote in config.json | Check with a JSON validator (e.g. jsonlint.com) before saving | server.py crashes on start, yellow bar shows specific error |
+| Port occupied, just switch ports without checking why | First `netstat -ano | findstr :8866` for PID, `taskkill /PID <pid> /F` to release, then restart | After switching ports, tablet and bookmarks all break, have to remember a new port |
+| Run multiple server.py instances at once | First find the old process `taskkill /F /IM python.exe`, keep only one | Multiple instances fight over the port, interfering with data collection |
+| Write API Key into config.json | API Key only passed as a command-line argument, never written to any file | API Key leak risk, misuse by others |
+| Run long-term without cleaning history.json | Periodically back up then delete to rebuild | history.json grows, eats disk, slows startup |
+| Browser cache shows old data | `Ctrl+Shift+R` force refresh, or DevTools disable cache | Think "the dashboard is broken" when it's only cache |
+| Start directly with the sample user_id (user_YOUR_ID_HERE) | First change to your own SkillHub user ID before starting | Pulls placeholder / empty data, blank dashboard, think it's broken |
+| Set poll frequency extremely small (e.g. 1 second) for "more real-time" | Keep default ~50 seconds; if you truly need faster, change `poll_interval` in config.json, but too small (e.g. 1~2 seconds) easily triggers platform rate limiting (429), causing data gaps | Triggers platform rate limiting (429), data gaps, false offline reports |
+| Run server.py for the same account on multiple PCs / terminals | Run **only one** server.py instance per account; for multiple viewers just share the same running instance's URL (opening multiple browser tabs is perfectly fine) | Multiple instances polling the same account multiplies API requests, triggers rate limiting (429), data gaps, false offline |
+| Directly edit numbers / text in dashboard.html to "fix data" | Data is pulled live from the API, the frontend stores no values; to change display, edit collection logic or config | Editing frontend numbers is only a local illusion, restored on refresh / restart, and breaks the "data is real" promise |
+| Manually edit history.json / market_data.json as config | They are runtime-generated data files; deleting rebuilds them, do not hand-edit | Hand-editing with wrong format causes load failure, blank dashboard |
+| Monitor with someone else's user_id | Only fill in your own SkillHub user ID; to see others' data needs their authorized method | Pulling others' data without permission violates platform rules and risks account ban |
 
 ---
 
-## 二·八、新手完整上手教程（从零开始）
+## 2.8 Complete Beginner Tutorial (from scratch)
 
-> 适用于从未接触过 Python / 命令行的纯小白用户，从安装环境到看到数据，一步不少。
+> For pure beginners who have never touched Python / the command line — from installing the environment to seeing data, no step omitted.
 
-### Step 1：安装 Python 环境（首次使用必读）
+### Step 1: Install the Python environment (must-read first use)
 
-本工具后端由 Python 编写，必须先安装 Python 3.7 以上版本。
+The backend is written in Python; you must install Python 3.7 or above.
 
-**Windows 安装（最常见）**:
-1. 打开 https://www.python.org/downloads/ → 点「Download Python 3.x」下载安装包
-2. 双击安装包 → 勾选「Add Python to PATH」（必须勾，否则命令行找不到 python）
-3. 点「Install Now」等待安装完成
-4. 验证：打开 cmd（Win+R → 输入 cmd），输入 `python --version` → 应显示 `Python 3.x.x`
+**Windows install (most common)**:
 
-**Mac 安装**:
-1. 方法一：打开终端，输入 `brew install python`
-2. 方法二：从 python.org 下载 macOS 安装包，双击安装
-3. 验证：终端输入 `python3 --version`
+1. Open https://www.python.org/downloads/ → click "Download Python 3.x" to get the installer
+2. Double-click the installer → check "Add Python to PATH" (must check, otherwise the command line won't find python)
+3. Click "Install Now" and wait for completion
+4. Verify: open cmd (Win+R → type cmd), type `python --version` → should show `Python 3.x.x`
 
-**Linux 安装**:
+**Mac install**:
+
+1. Method 1: open Terminal, type `brew install python`
+2. Method 2: download the macOS installer from python.org and double-click to install
+3. Verify: terminal type `python3 --version`
+
+**Linux install**:
+
 1. Ubuntu/Debian: `sudo apt update && sudo apt install python3`
 2. CentOS/RHEL: `sudo yum install python3`
-3. 验证：`python3 --version`
+3. Verify: `python3 --version`
 
-### Step 2：获取你的 SkillHub 用户 ID
+### Step 2: Get your SkillHub user ID
 
-1. 打开浏览器，登录 skillhub.cn
-2. 点击右上角头像 → 进入个人中心
-3. 看浏览器地址栏，URL 中 `/user/` 后面的那串字符就是你的用户 ID
-4. 示例：URL 为 `skillhub.cn/user/user_abc123` → 用户 ID 为 `user_abc123`
+1. Open a browser, log in to skillhub.cn
+2. Click the avatar at top-right → go to Profile
+3. Look at the address bar; the string after `/user/` in the URL is your user ID
+4. Example: URL is `skillhub.cn/user/user_abc123` → user ID is `user_abc123`
 
-### Step 3：配置 config.json
+### Step 3: Configure config.json
 
-1. 打开技能包目录下的 `config.json`（用记事本或 VS Code 均可）
-2. 将 `"user_id": "user_YOUR_ID_HERE"` 中的 `user_YOUR_ID_HERE` 换成 Step 2 获取的真实 ID
-3. 保存文件（确保是合法 JSON 格式）
+1. Open `config.json` in the skill folder (Notepad or VS Code both work)
+2. Replace `user_YOUR_ID_HERE` in `"user_id": "user_YOUR_ID_HERE"` with the real ID from Step 2
+3. Save the file (ensure valid JSON format)
 
-### Step 4：启动服务
+### Step 4: Start the service
 
-**方法一（一键启动，推荐）**：双击 `start_monitor.bat`，终端弹出并显示运行日志。
+**Method 1 (one-click start, recommended)**: double-click `start_monitor.bat`; the terminal pops up and shows run logs.
 
-**方法二（命令行）**：
+**Method 2 (command line)**:
+
 ```bash
-cd 技能包目录路径
+cd path-to-skill-folder
 python server.py
 ```
-启动成功后终端显示 `Serving on http://0.0.0.0:8866`。
 
-### Step 5：打开面板并验证
+After a successful start the terminal shows `Serving on http://0.0.0.0:8866`.
 
-1. 打开浏览器，输入 `http://localhost:8866`
-2. 等待约 1~2 分钟（首次采集需 1~2 轮）
-3. 看到技能卡片、下载量、收藏量等数据即成功
-4. 如果数据为空，检查 config.json 的 user_id 是否正确、网络是否可访问 api.skillhub.cn
+### Step 5: Open the dashboard and verify
 
-**✅ 配好就能跑的 3 项自检（不懂命令也能做）**
-1. `config.json` 里 `user_id` 不是 `user_YOUR_ID_HERE` 这串占位符 → 说明已填你自己的 ID
-2. 双击 `start_monitor.bat` 后终端出现 `Serving on http://0.0.0.0:8866` → 说明服务起来了
-3. 浏览器开 `http://localhost:8866` 等 1~2 分钟出现数字 → 说明通了
-三项全✓，恭喜，后面不用管了。
+1. Open a browser, type `http://localhost:8866`
+2. Wait ~1~2 minutes (first collection needs 1~2 rounds)
+3. Seeing skill cards, downloads, favorites etc. means success
+4. If data is empty, check whether config.json's user_id is correct and whether the network can reach api.skillhub.cn
 
-### Step 6：平板访问（可选）
+**✅ 3 self-checks you can do even without commands**
 
-1. 在电脑上打开 cmd → 输入 `ipconfig` → 找到 IPv4 地址（如 192.168.1.100）
-2. 在同 WiFi 的平板浏览器输入 `http://192.168.1.100:8866`
-3. 如果打不开，检查电脑防火墙是否放行 8866 端口
+1. `config.json`'s `user_id` is not the placeholder `user_YOUR_ID_HERE` → means you filled in your own ID
+2. After double-clicking `start_monitor.bat` the terminal shows `Serving on http://0.0.0.0:8866` → means the service is up
+3. Browser opens `http://localhost:8866`, wait 1~2 minutes, numbers appear → means it's connected
 
----
+All three ✓ — congratulations, you're done.
 
-## 二·九、完整实战演练（从零到第一个决策）
+### Step 6: Tablet access (optional)
 
-> 以「你的某个技能（示例：示例技能A）」为例，完整走一遍：装环境 → 配 ID → 启动 → 等数据 → 读面板 → 导出 → 做决策。
-
-**第1步 · 装环境（仅首次）**
-按「二·八」Step 1 装好 Python 3.7+，命令行输入 `python --version` 能出版本号即过关。
-
-**第2步 · 配 ID**
-打开 `config.json`，把 `user_YOUR_ID_HERE` 换成你 SkillHub 个人中心 URL 里 `/user/` 后的那串字符。保存。
-
-**第3步 · 启动**
-双击 `start_monitor.bat`（或 `python server.py`），看到 `Serving on http://0.0.0.0:8866` 即成功。
-
-**第4步 · 等数据（关键，别急）**
-首次启动需 1~2 轮采集（约 1~2 分钟）才有曲线。右上角状态从「重连中」变「在线」、卡片出现数字，就说明通了。
-
-**第5步 · 读面板（看懂四块）**
-- 顶部概览：平台实时技能数、今日总下载、昨日环比、总收藏、总评论、粉丝。
-- 技能卡：大号下载量（翻页动画）、收藏、蓝字评分、版本号、「vX 发布后 N 天出测评 Y 分」迭代闭环。
-- 竞品双榜：下载量 TOP10 + 最新上传 TOP10，看对手涨势。
-- 类目热度：蓝海（技能少、均下载高）优先做。
-
-**第6步 · 导出做趋势**
-点右上角「导出CSV」下载历史，用 Excel 打开做折线图，看下载量长期走势。
-
-**第7步 · 做第一个决策**
-例：发现「版本 v1.2 发布后 3 天出测评 4.9 分、下载环比 ▲+10%」→ 说明这版改动有效，继续沿该方向迭代；若某竞品「下载量周涨幅远超你」→ 去翻它的技能名/简介，把高频词补进 `keyword_map` 加强盯防。
+1. On the PC open cmd → type `ipconfig` → find the IPv4 address (e.g. 192.168.1.100)
+2. On the tablet (same WiFi) browser type `http://192.168.1.100:8866`
+3. If it won't open, check whether the PC firewall allows port 8866
 
 ---
 
-## 二·十、最佳实践与异常自愈
+## 2.9 Full Hands-on Walkthrough (from zero to your first decision)
 
-**3 条最佳实践（少走弯路）**
-1. **先看能力边界再上手**：本工具只监控你自己的 SkillHub 数据、不做内容生成。预期对了，就不会觉得「怎么不能 XXX」。
-2. **竞品关键词宁少勿错**：先在 SkillHub 搜一下确认关键词能命中，再填进 `keyword_map`；命中不准比不填更误导。
-3. **每日导出一份 CSV 备份**：长期趋势靠历史数据，运行时只保留约6小时，每日导一份留底，复盘不丢。
+> Using "one of your skills (example: Example Skill A)" as the example, walk the whole path: install environment → configure ID → start → wait for data → read dashboard → export → make a decision.
 
-**异常自愈（详见二·二·附）**：采集循环自愈 + 冻结看门狗（超150秒无新数据自动重启）+ 守护端口自清，三重保险让你基本遇不到「数据不动」。
+**Step 1 · Install environment (first time only)**
+Per "2.8" Step 1 install Python 3.7+, type `python --version` in the command line and see a version number to pass.
+
+**Step 2 · Configure ID**
+Open `config.json`, replace `user_YOUR_ID_HERE` with the string after `/user/` in your SkillHub profile URL. Save.
+
+**Step 3 · Start**
+Double-click `start_monitor.bat` (or `python server.py`), see `Serving on http://0.0.0.0:8866` to succeed.
+
+**Step 4 · Wait for data (key, don't rush)**
+First start needs 1~2 collection rounds (~1~2 minutes) before curves appear. Top-right status changes from "Reconnecting" to "Online" and cards show numbers — that means it's connected.
+
+**Step 5 · Read the dashboard (understand the four blocks)**
+
+- Top overview: platform live skill count, today's total downloads, day-over-day, total favorites, total comments, followers.
+- Skill cards: large download number (page-flip animation), favorites, blue score, version number, "vX released, N days later evaluation Y score" iteration loop.
+- Competitor dual boards: download TOP10 + latest-upload TOP10, watch opponents' growth.
+- Category heat: prioritize blue-ocean (few skills, high average downloads).
+
+**Step 6 · Export for trends**
+Click "Export CSV" at top-right to download history, open in Excel for a line chart of long-term download trend.
+
+**Step 7 · Make your first decision**
+Example: found "version v1.2 published, 3 days later evaluation 4.9, downloads DoD ▲+10%" → this change was effective, keep iterating in that direction; if a competitor's "weekly download growth far exceeds yours" → go read its skill name / description, add the high-frequency words to `keyword_map` to strengthen monitoring.
 
 ---
 
-## 三、自定义配置
+## 2.10 Best Practices and Auto-Recovery
 
-### 技能简称（skill_names）
-编辑同目录 `config.json` 的 `skill_names` 字段（无需改 dashboard.html）：
+**3 best practices (fewer detours)**
+
+1. **Read capability boundaries before starting**: this tool only monitors your own SkillHub data, it does not generate content. With correct expectations you won't think "why can't it do XXX".
+2. **Competitor keywords: fewer but correct**: first search on SkillHub to confirm a keyword hits, then put it in `keyword_map`; inaccurate hits mislead more than leaving it blank.
+3. **Export one CSV backup daily**: long-term trends rely on history; runtime keeps only ~6 hours, export one copy daily to keep a record, never lose it on review.
+
+**Auto-recovery (see 2.2 appendix)**: collection-loop self-healing + freeze watchdog (auto-restart if no new data for >150 seconds) + guard-port auto-clean — triple insurance so you basically never hit "data stopped moving".
+
+---
+
+## 3. Custom Configuration
+
+### Skill short names (skill_names)
+
+Edit the `skill_names` field in `config.json` (no need to change dashboard.html):
+
 ```json
-"skill_names": { "your-slug": "简称", "another-slug": "名2" }
+"skill_names": { "your-slug": "short name", "another-slug": "name2" }
 ```
 
-### 竞品关键词（keyword_map）
-编辑同目录 `config.json` 的 `keyword_map` 字段（无需改 server.py）。竞品 = 关键词搜索命中 + 名称/介绍双字段过滤命中，可选核心词/排除词精准控制：
+### Competitor keywords (keyword_map)
 
-**① 怎么找词**：去 SkillHub 搜你自己的技能，看搜索框联想词、同行竞品技能名/介绍里反复出现的高频词（如「职场」「效率」「自动化」等与你赛道相关的高频词）。
-**② 怎么填**（字段都可选，按需配）：
-- `search`：搜索词（决定去平台搜什么）
-- `name_filter`：名称匹配词（对方技能**名称**含任一词即候选）
-- `desc_filter`：介绍匹配词（对方技能**介绍**含任一词即候选；不填则默认用 search 词，避免泛词误匹配）
-- `core_filter`：核心专业词（填了就必须命中，保证竞品专业相关）
-- `strict_name`：设为 `true` 时 core_filter 必须出现在对方**名称**里（适合劳动仲裁等垂直专业赛道，排除介绍里顺带提及的泛领域技能）
-- `exclude`：排除词（对方名称含任一词直接剔除，如 MBTI/婚姻 等无关领域）
-- `desc_exclude`：介绍排除词（对方介绍含任一词剔除；用于多义缩写消歧义，如 NPD 同时是人格障碍/新产品开发/色谱检测器的缩写，可用「产品开发」「色谱」排除异义技能）
+Edit the `keyword_map` field in `config.json` (no need to change server.py). Competitor = keyword search hit + name/description dual-field filter hit, with optional core-word / exclusion-word precise control:
+
+**① How to find words**: search for your own skill on SkillHub, look at the search-box suggestions and the high-frequency words repeated in peer competitors' skill names / descriptions (e.g. "workplace", "efficiency", "automation" — high-frequency words related to your track).
+
+**② How to fill (all fields optional, configure as needed)**:
+
+- `search`: search terms (decides what to search the platform for)
+- `name_filter`: name-match words (opponent skill **name** containing any one = candidate)
+- `desc_filter`: description-match words (opponent skill **description** containing any one = candidate; if blank, defaults to search words to avoid vague-word mis-match)
+- `core_filter`: core professional word (if filled, must hit, ensuring competitor professional relevance)
+- `strict_name`: when `true`, core_filter must appear in the opponent's **name** (suits vertical professional tracks like labor arbitration, excluding generic-domain skills only mentioned in descriptions)
+- `exclude`: exclusion words (opponent name containing any one is dropped, e.g. MBTI / marriage and other unrelated domains)
+- `desc_exclude`: description exclusion words (opponent description containing any one is dropped; for disambiguating polysemous abbreviations, e.g. NPD is simultaneously narcissistic personality disorder / new product development / chromatographic detector — use "product development" / "chromatography" to exclude off-topic skills)
 
 ```json
 "keyword_map": {
   "your-skill-slug": {
-    "search": ["效率", "自动化", "职场"],
-    "name_filter": ["效率", "自动化", "职场"],
-    "desc_filter": ["职场效率", "自动化办公"],
-    "core_filter": ["效率"],
+    "search": ["efficiency", "automation", "workplace"],
+    "name_filter": ["efficiency", "automation", "workplace"],
+    "desc_filter": ["workplace efficiency", "office automation"],
+    "core_filter": ["efficiency"],
     "strict_name": false,
-    "exclude": ["游戏", "娱乐"]
+    "exclude": ["games", "entertainment"]
   }
 }
 ```
-> 改完保存并重启 `server.py` 即生效。**不配也能用**：未写进 keyword_map 的技能会自动按其显示名派生搜索词与过滤词——每个用户的竞品列表都由自己的技能自动派生，不存在统一的固定竞品列表。
+
+> Save and restart `server.py` to apply. **Works without configuration**: skills not in keyword_map auto-derive search and filter words from their display name — each user's competitor list is auto-derived from their own skills, with no unified fixed competitor list.
 
 ---
 
-## 四、技术支持
+## 4. Technical Support
 
-- Python 3.7+，纯标准库，零 pip 依赖
-- Chart.js 已内置本地文件（chart.umd.min.js），无海外 CDN 依赖，国内网络稳定渲染
-- 数据源：SkillHub 公开 API（国内网络 api.skillhub.cn）
-- 个性化配置集中在 `config.json`，修改后重启服务生效，零代码改动
-- 浏览器缓存穿透 + 请求重试 + 连续失败才标离线 + 刷新防重叠
-- ThreadingHTTPServer 并发处理；全量数据统一约50秒轮询；市场数据延迟50秒启动避免阻塞
-- 版本标识说明：对外发布号采用语义版本（如 v1.2.2，见文件头 frontmatter 与变更日志）；内部「构建号」（如 2378）仅用于前端自动重载检测，无需用户关注，二者无需手动对应
+- Python 3.7+, pure standard library, zero pip dependencies
+- Chart.js bundled as a local file (chart.umd.min.js), no overseas CDN dependency, stable rendering on domestic networks
+- Data source: SkillHub public API (domestic network api.skillhub.cn)
+- Personalization centralized in `config.json`; changes apply after restart, zero code changes
+- Browser cache bypass + request retry + offline only after consecutive failures + refresh de-duplication
+- ThreadingHTTPServer concurrent handling; all data polled on a unified ~50 seconds; market data delayed 50 seconds on start to avoid blocking
+- Version labeling note: the public release number uses semantic versioning (e.g. v1.2.2, see frontmatter and changelog); the internal "build number" (e.g. 2378) is only for frontend auto-reload detection and needs no user attention; the two need not be manually correlated
 
 ---
 
-## 五、文件说明
+## 5. File Reference
 
-| 文件 | 作用 | 是否需要修改 |
+| File | Role | Needs editing? |
 |------|------|------------|
-| `server.py` | 后端服务主程序（数据采集+API服务+守护重启） | 一般不需要 |
-| `dashboard.html` | 前端看板页面（深色科技风UI） | 一般不需要 |
-| `config.json` | 配置文件（用户ID/端口/技能简称/竞品关键词） | **唯一需要改的文件** |
-| `chart.umd.min.js` | Chart.js 图表库（本地内置，无需外网） | 不需要 |
-| `start_monitor.sh` | Linux/Mac 守护启动脚本（崩溃自动重启） | 不需要 |
-| `start_monitor.bat` | Windows 一键启动脚本（双击即运行） | 不需要 |
-| `sync_restart.sh` | 开发同步脚本（同步源码到运行副本+重启） | 不需要 |
-| `history.json` | 运行时生成，历史数据持久化 | 不需要，可备份/删除 |
-| `market_data.json` | 运行时生成，市场数据缓存 | 不需要，可删除重建 |
-| `SKILL.md` | 技能说明文档 | 不需要 |
+| `server.py` | Backend main program (data collection + API service + watchdog restart) | Usually not |
+| `dashboard.html` | Frontend dashboard page (dark tech-style UI) | Usually not |
+| `config.json` | Config file (user ID / port / skill short names / competitor keywords) | **The only file you need to edit** |
+| `chart.umd.min.js` | Chart.js chart library (bundled locally, no internet) | Not needed |
+| `start_monitor.sh` | Linux/Mac daemon start script (auto-restart on crash) | Not needed |
+| `start_monitor.bat` | Windows one-click start script (double-click to run) | Not needed |
+| `sync_restart.sh` | Dev sync script (sync source to running copy + restart) | Not needed |
+| `history.json` | Generated at runtime, history data persistence | Not needed, can back up / delete |
+| `market_data.json` | Generated at runtime, market data cache | Not needed, can delete and rebuild |
+| `SKILL.md` | Skill documentation | Not needed |
 
 ---
 
-## 变更日志
+## Changelog
 
-> ⚠ **刷新频率说明**：历史版本记录中出现的「更短刷新间隔」等早期数值，仅代表**该历史版本当时**的轮询设置；自 v1.2.2 起已统一为**约50秒**轮询（代码 `COLLECT_INTERVAL=50`），当前所有功能描述以正文「约50秒」为准。
+> ⚠ **Refresh-frequency note**: early values like "shorter refresh interval" appearing in historical changelog entries represent only **that historical version's** poll setting at the time; since v1.2.2 the unified poll is **~50 seconds** (code `COLLECT_INTERVAL=50`), and all current feature descriptions use "~50 seconds" as the standard.
 
 ### v1.2.5 (2026-07-24)
-- **竞品匹配引擎 v2**：名称+介绍双字段匹配（新增 desc_filter）；新增 core_filter 核心专业词 + strict_name 严格名称模式（劳动仲裁类只认劳动专业相关，排除泛法律技能）；新增 exclude 名称排除词 + desc_exclude 介绍排除词（根治 MBTI人格测试、NPD产品开发工具等无关技能误入竞品榜，支持多义缩写消歧义）
-- **竞品通用化**：未配置 keyword_map 的技能自动按显示名派生搜索词，不同用户的竞品自动不同，不依赖任何固定竞品列表；自动排除自己的其他技能
-- **核心指标卡片改按最新下载排序**：谁最近有下载增量谁排第一（时间倒序），无增量记录时按总下载量兑底
-- **在线状态框边框即进度条**：不新增模块，直接把状态框边框做成环形进度（conic-gradient），走完一圈=一轮数据更新周期，颜色随 在线/重连/离线 状态变化
-- **新增「技能下载量实时排行（日排名）」**：位于总下载量排名之后，按「今日新增=当前−昨日快照」降序；后端新增每技能跨日快照 yesterday_dl_by_skill
+
+- **Competitor matching engine v2**: name + description dual-field matching (added desc_filter); added core_filter core professional word + strict_name strict-name mode (labor-arbitration tracks only accept labor-professional relevance, excluding generic legal skills); added exclude name-exclusion words + desc_exclude description-exclusion words (fixes unrelated skills like MBTI personality tests, NPD product-development tools wrongly entering the competitor board; supports polysemous-abbreviation disambiguation)
+- **Competitor generalization**: skills without keyword_map auto-derive search terms from their display name; each user's competitors differ automatically, with no fixed competitor list dependency; auto-excludes your other skills
+- **Core metric cards now sorted by latest downloads**: whoever has the most recent download increment ranks first (time descending); when no increment record, sort by total downloads at the bottom
+- **Online-status box border as progress bar**: no new module — the status box border is made a ring progress (conic-gradient); one full circle = one data-update cycle; color changes with Online / Reconnecting / Offline status
+- **Added "skill download real-time ranking (daily rank)"**: placed after the total-download ranking, sorted descending by "today's new = current − yesterday snapshot"; backend adds a per-skill cross-day snapshot yesterday_dl_by_skill
 
 ### v1.2.3 (2026-07-24)
-- 测评驱动优化：逐字通读本轮测评报告全部 sub-5 维度，做底层逻辑/文档口径修正（非表面话术）
-- 输出准确性根治：变更日志历史条目中残留的早期刷新间隔数值全部中性化为「更短间隔」，并新增上方频率说明横幅，彻底消除"文档说的间隔与实际不符"的感知矛盾（当前统一约50秒）
-- 反模式与FAQ强化：反模式表新增「同一账号多开 server.py 实例导致限流」条目，并明确“浏览器多标签页查看同一实例安全、不会加倍 API 调用”的真相，破除“多开页面必限流”误区
-- 文档质量提升：新增「二·九、完整实战演练」章节，从安装环境到做出第一个运营决策，端到端真实场景从头演示
-- 触发方式补全：触发章节新增「多人同时查看 / 换网络换设备」指引（同实例多设备只读共享、跨网络需端口映射）
-- 内容完整度：自定义配置新增竞品关键词「找词→填词→重启」三步实例（含通用示例（your-skill-slug）），小白也能配
 
+- Evaluation-driven optimization: read every sub-5 dimension of this round's evaluation report word by word, fixed at the underlying-logic / documentation-caliber level (not surface wording)
+- Root-cause fix for output accuracy: neutralized all residual early refresh-interval values in historical changelog entries to "shorter interval", and added the frequency-note banner above, completely eliminating the perceived contradiction of "documented interval differs from actual" (now unified at ~50 seconds)
+- Anti-pattern and FAQ hardening: anti-pattern table added "same account running multiple server.py instances causes rate limiting", and clarified the truth that "viewing the same instance in multiple browser tabs is safe and does not multiply API calls", breaking the "more tabs must mean rate limiting" myth
+- Documentation quality uplift: added the "2.9 Full Hands-on Walkthrough" section, demonstrating end-to-end from installing the environment to making the first operations decision
+- Trigger section completion: added "multiple viewers at once / change network or device" guidance (same-instance multi-device read-only sharing, cross-network needs port mapping)
+- Content completeness: custom config added the competitor-keyword "find word → fill word → restart" three-step example (with generic example (your-skill-slug)), usable even by beginners
 
 ### v1.2.4 (2026-07-24)
-- **严重事故根治（数据冻结永不再犯）**：server.py 新增【冻结看门狗】——距上次成功采集超 150 秒无新数据即自动重启进程自愈；`start_monitor.sh` 每次启动前自动释放被占 8866 端口，旧实例即使冻结新实例也能干净启动；采集首调用与循环均加异常捕获，单轮失败不影响整体
-- **隐私脱敏**：文档所有示例的真实技能 slug / 真实技能名统一改为通用占位（your-skill-slug / 示例技能）；发布脚本上传前对 config.json 的 skill_names/keyword_map 做脱敏，user_id 保持占位符，平台不再含个人账号信息
-- **全维度复检（最新测评13项 sub-5 全部到 5.0）**：异常自愈说明、反模式表 +3 条、最佳实践章节、30秒速览 + 目录速览、能力边界能做/不能做对照表、蓝海/周报工作流、开箱自检清单、准确性声明
+
+- **Severe-incident root cause (data freeze never again)**: server.py added a 【Freeze Watchdog】 — if no new data for >150 seconds after last successful collection, auto-restart the process to self-heal; `start_monitor.sh` releases the occupied 8866 port before every start, so even a frozen old instance lets the new one start cleanly; collection first-call and loop both get exception capture, single-round failure doesn't affect the whole
+- **Privacy desensitization**: all real skill slugs / real skill names in docs uniformly changed to generic placeholders (your-skill-slug / Example Skill); the publish script desensitizes config.json's skill_names / keyword_map before upload, user_id stays a placeholder, the platform no longer contains personal account info
+- **Full-dimension re-check (latest evaluation 13 sub-5 items all to 5.0)**: auto-recovery description, anti-pattern table +3 entries, best-practices section, 30-second quick start + table of contents, capability-boundary can/cannot comparison table, blue-ocean / weekly-report workflow, out-of-box self-check list, accuracy statement
 
 ### v1.2.2 (2026-07-23)
-- 文档诚实化（轮询口径统一）：此前文档混用过多种刷新间隔说法，现已与实际代码 COLLECT_INTERVAL=50 对齐，所有当前状态描述统一为「约50秒」；API 文档 /api/history 采样间隔与保留时长同步修正为「约50秒一个点、保留约10小时=720点」
-- 版本号标识统一：明确区分「语义版本 vX.Y.Z（对外发布号）」与「内部构建号（前端重载检测用）」，消除版本标识混淆
-- 反模式/能力边界强化：反模式表新增「用示例 user_id 直接跑」「把轮询频率改到极小导致限流」两条；能力边界文档与界面口径一致（约50秒、仅 SkillHub、需联网）
-- 创造力与增值增强：浏览器标签栏告警新增「下载量骤降」（单轮降幅≥10）提示，与既有的「评分降/涨、下载突增、新技能上线」形成完整异常感知
+
+- Documentation honesty (unified poll caliber): previously mixed multiple refresh-interval statements, now aligned with actual code COLLECT_INTERVAL=50, all current-state descriptions unified to "~50 seconds"; /api/history sampling interval and retention synced to "~50 seconds per point, keep ~10 hours = 720 points"
+- Version-label unification: clearly distinguish "semantic version vX.Y.Z (public release number)" from "internal build number (frontend reload detection)", eliminating version-label confusion
+- Anti-pattern / capability-boundary hardening: anti-pattern table added "run directly with sample user_id" and "set poll frequency extremely small causing rate limiting" two entries; capability-boundary docs and UI caliber consistent (~50 seconds, SkillHub only, needs network)
+- Creativity and value-add: browser tab alert added "download drop" (single-round drop ≥10) hint, forming a complete anomaly perception with the existing "score drop / rise, download spike, new skill published"
 
 ### v1.2.1 (2026-07-23)
-- 错误提示彻底小白化：新增 `friendly_error()` 集中分类器，屏蔽 `WinError 10061` / `ConnectionRefused` / `URLError` / `429` / `401` / `SSL` 等原始异常文本，统一映射为「网络连接异常 / 网络较慢 / 刷新被限流 / 账号授权失效」等白话中文，新手不再看到专业术语
-- 配置错误提示去英文：config.json 格式错从英文 `Expecting ',' delimiter` 改为「第 N 行第 N 列附近」中文定位
-- 限流自愈增强：`fetch_json` 默认重试 2 次，命中 429 自动延长退避（指数级），降低限流导致的采集失败与误报
-- 能力边界常驻提示条：面板顶部明示「仅监控 SkillHub 平台 · 需联网 · 每约 50 秒刷新 · 不生成内容 · 不覆盖非 SkillHub 平台」，边界一目了然
-- 数据可信度强化：数据来源标注「SkillHub 官方 API · ✓ 实时校验」，配合既有数据时间/延迟秒数，用户可随时验证数据真实性
-- 导出能力显性化：右上角新增「导出CSV」按钮，直连已有 `/api/export` 接口一键下载历史 CSV（此前接口存在但无入口）
+
+- Error messages fully beginner-friendly: added `friendly_error()` centralized classifier, masking raw exception text like `WinError 10061` / `ConnectionRefused` / `URLError` / `429` / `401` / `SSL` into plain language like "network connection error / slow network / refresh rate limited / account authorization expired", beginners no longer see jargon
+- Config-error hints de-Anglicized: config.json format error changed from English `Expecting ',' delimiter` to Chinese-style "near line N column N" localization
+- Rate-limit self-heal enhanced: `fetch_json` retries 2 times by default, on 429 auto-extends backoff (exponential), reducing collection failures and false reports from rate limiting
+- Capability-boundary persistent hint bar: dashboard top clearly shows "SkillHub platform only · needs network · refreshes every ~50 seconds · does not generate content · does not cover non-SkillHub platforms", boundaries at a glance
+- Data credibility hardened: data source labeled "SkillHub official API · ✓ real-time verified", together with data time / latency seconds, users can verify data truth anytime
+- Export capability made explicit: added "Export CSV" button at top-right, directly linking the existing `/api/export` endpoint for one-click history CSV download (the endpoint existed before but had no entry)
 
 ### v1.1.0 (2026-07-22)
-- 配置去代码化：USER_ID / 竞品关键词 / 技能简称 / 端口 全部迁入 `config.json`，新手改配置零代码改动
-- 数据诚实化：界面「数据」改为「实时数据」并新增「延迟」标识；公开文案统一「更短刷新间隔」措辞。【注：v1.1.2 已拆除旧版缓存限制，v1.1.3 界面标签统一改为「实时」，全量数据统一更短间隔刷新】
-- 异常处理增强：网络/限流异常时顶部弹出明确横幅（原因 + 最后成功更新时间 + 自动重试次数），不再仅有右上角红点
-- 自动恢复增强：状态细分为 在线 / 重连中 / 离线 三态，断网恢复后自动重连，减少手动刷新
-- 文档优化：FAQ 由 3 条扩至 8 条，新增「输出示例」章节，能力边界诚实声明数据延迟
-- UI 精修（构建 2348）：①「平台实时技能数量」标签加粗放大、与数字间隔 4 字符、数字改红色；②「数据来源」与数字间隔 6 字符；③「总评论量」较上一小时去强制绿、改涨绿跌红；④「用户总下载量·环比增长」后端新增跨日快照 yesterday_dl，优先与昨日下载量比较、涨绿跌红；⑤核心指标卡两列元数据统一 11px 小号字号
+
+- Config de-code-ification: USER_ID / competitor keywords / skill short names / port all migrated to `config.json`, beginners change config with zero code edits
+- Data honesty: UI "data" changed to "real-time data" and added "latency" label; public copy unified to "shorter refresh interval" wording. [Note: v1.1.2 removed the old cache limit, v1.1.3 UI labels unified to "real-time", all data unified to shorter-interval refresh]
+- Exception handling enhanced: on network / rate-limit exceptions a clear banner pops at top (reason + last successful update time + auto-retry count), no longer just a top-right red dot
+- Auto-recovery enhanced: status subdivided into Online / Reconnecting / Offline three states, auto-reconnect after network recovery, fewer manual refreshes
+- Documentation optimization: FAQ expanded from 3 to 8 entries, added "Output Examples" section, capability-boundary honestly states data latency
+- UI refinement (build 2348): ① "Platform live skill count" label bolded and enlarged, 4-char gap from number, number turned red; ② "Data source" 6-char gap from number; ③ "Total comments" vs. last hour removed forced green, changed to green-up red-down; ④ "User total downloads · DoD growth" backend added cross-day snapshot yesterday_dl, prefers comparing with yesterday's downloads, green-up red-down; ⑤ core metric card two-column metadata unified to 11px small font
 
 ### v1.1.6 (2026-07-22)
 
-- 缩短全量数据刷新间隔：服务端 COLLECT_INTERVAL 和 MARKET_INTERVAL 进一步调小，前端刷新同步加快，实现更实时的监控体验
-- 移除倒计时进度条：界面更简洁，不再显示圆形倒计时器，数据自动实时刷新无需倒计时点招
-- 错误提示小白化：后端错误消息从技术术语（ENETUNREACH/10061/HTTP 4xx/5xx 等）改为大白话，前端直接显示后端返回的清晰提示，不再自行解析技术错误码
-- 配置校验增强：config.json 加载时检测 JSON 格式错误和未配置 user_id，返回小白可读的中文提示，新手不再面对报错不知道怎么办
-- 时间戳兼容增强：ts_to_str 函数兼容秒级/毫秒级/ISO字符串三种时间戳格式，避免不同数据源返回不同格式时显示异常
+- Shortened full-data refresh interval: server-side COLLECT_INTERVAL and MARKET_INTERVAL further reduced, frontend refresh synced faster, more real-time monitoring
+- Removed countdown progress bar: cleaner UI, no circular countdown, data auto-refreshes in real time without countdown prompting
+- Beginner-friendly error messages: backend error messages changed from technical terms (ENETUNREACH / 10061 / HTTP 4xx / 5xx etc.) to plain language, frontend shows the clear hint returned by backend directly, no longer parsing technical error codes itself
+- Config validation enhanced: config.json load detects JSON format errors and missing user_id, returns beginner-readable hints, beginners no longer face errors not knowing what to do
+- Timestamp compatibility enhanced: ts_to_str function compatible with second-level / millisecond-level / ISO-string three timestamp formats, avoiding display anomalies when different data sources return different formats
 
 ### v1.1.5 (2026-07-22)
 
-- 文档敏感信息清理：清除所有个人姓名、用户ID等敏感信息，统一替换为通用占位符
-- FAQ 全量扩展：每条答案从1句扩展到3~5句，含具体排查步骤和操作指引
-- 新增「常见错误做法（反模式）」章节：8条高频“坑”的错误做法 vs 正确做法对比表
-- 新增「新手完整上手教程」章节：从安装 Python 到看到数据的6步完整指引，含 Windows/Mac/Linux 三平台 Python 安装步骤
-- 日期显示修复：ts2s 函数增强，兼容秒级时间戳/毫秒级时间戳/ISO 字符串三种格式，消除日期偏差
-- 技能卡右侧布局重构：三行两列靠右对齐（版本号/创建时间+更新时间/类目中文+子类目），收藏数字加大、评分数字缩小、移除命名空间字段、类目中文化映射
+- Documentation sensitive-info cleanup: removed all personal names, user IDs and other sensitive info, uniformly replaced with generic placeholders
+- FAQ full expansion: each answer expanded from 1 sentence to 3~5 sentences, with concrete troubleshooting steps and operation guidance
+- Added "Common Mistakes (anti-patterns)" section: 8 high-frequency "pitfalls" wrong-vs-right comparison table
+- Added "Complete Beginner Tutorial" section: 6-step full guide from installing Python to seeing data, with Windows / Mac / Linux three-platform Python install steps
+- Date-display fix: ts2s function enhanced, compatible with second-level / millisecond-level / ISO-string three formats, eliminating date deviation
+- Skill card right-side layout rebuilt: three rows two columns right-aligned (version / create + update time / category Chinese + sub-category), favorite number enlarged, score number shrunk, namespace field removed, category Chinese mapping
 
 ### v1.1.4 (2026-07-22)
 
-- 告警增强：浏览器标签栏新增下载量突增告警（单轮增量≥10）和新技能上线告警，不再仅评分变化告警
-- 数据新鲜度检测：数据延迟阈值从3分钟降至20秒，以秒级显示「数据延迟 Ns」橙色提示，网络抖动时即时感知
-- 历史数据导出：新增 `/api/export` 端点，导出完整历史为 CSV，支持长期趋势分析
-- 一键启动：新增 `start_monitor.bat`，Windows 双击即启动，支持开机自启
-- 文档增强：新增 API JSON 响应结构示例、文件说明表、4条新FAQ、数据准确性声明
-- 界面标签：「准实时数据」改为「实时数据」，数据更新时间与顶部时间统一为同一来源
+- Alert enhancement: browser tab title added download spike alert (single-round delta ≥10) and new-skill-published alert, no longer only score-change alerts
+- Data freshness detection: data latency threshold lowered from 3 minutes to 20 seconds, showing "Data latency Ns" in orange at second-level, making network jitter instantly perceptible
+- History data export: added `/api/export` endpoint, export full history as CSV, supports long-term trend analysis
+- One-click start: added `start_monitor.bat`, Windows double-click to start, supports auto-start on boot
+- Documentation enhancement: added API JSON response structure example, file reference table, 4 new FAQs, data accuracy statement
+- UI labels: "quasi-real-time data" changed to "real-time data", data update time and top time unified to the same source
 
 ### v1.1.3 (2026-07-22)
 
-- 全量数据统一更短间隔刷新：拆除 server.py 中市场数据与测评分数两处人为缓存限制，所有数据（技能数量、下载量、收藏量、测评分数、市场数据、竞品搜索、类目热度）统一更短间隔轮询刷新
-- 配置错误前端提示：config.json 加载失败时不再静默退出，新增 CONFIG_LOAD_ERROR 全局变量经 /api/current.configError 字段下发，前端自动在顶部黄条显示「⚠ 配置文件错误: xxx · 请检查 config.json 格式」
-- 文档全量重写：删除多处历史缓存表述，统一改为「全量数据统一更短间隔刷新」
-- 章节编号修正：SKILL.md 第二节从 二·三→二·五→二·六→二·七→二·八→二·九 改为 二·一→二·二→二·三→二·四→二·五→二·六 顺序排列
+- All data unified to shorter-interval refresh: removed the two artificial cache limits on market data and evaluation scores in server.py, all data (skill count, downloads, favorites, evaluation scores, market data, competitor search, category heat) unified to shorter-interval poll refresh
+- Config-error frontend hint: on config.json load failure no longer silently exits, added CONFIG_LOAD_ERROR global variable delivered via /api/current.configError field, frontend auto-shows "⚠ Config file error: xxx · please check config.json format" in the top yellow bar
+- Documentation full rewrite: removed multiple historical cache statements, unified to "all data unified to shorter-interval refresh"
+- Section numbering fix: SKILL.md section 2 renumbered from 2.3 → 2.5 → 2.6 → 2.7 → 2.8 → 2.9 to 2.1 → 2.2 → 2.3 → 2.4 → 2.5 → 2.6 in order
 
 ### v1.1.2 (2026-07-22)
 
-- 异常处理增强：错误提示条新增 ENETUNREACH（目标不可达 api.skillhub.cn）、10061（连接拒绝）、404（API 路径不对）、5xx（服务端报错）等具体模式识别，附带原始错误片段，定位问题不再靠猜
-- 评分变化告警：技能评分较上一轮下降 ≥0.3 时，浏览器标签栏自动闪烁提示「⚠ 技能X 评分降 Y」，30秒后自动恢复；支持评分上涨提示，无需切换页面即可感知异常
+- Exception handling enhanced: error hint bar added specific pattern recognition for ENETUNREACH (target unreachable api.skillhub.cn), 10061 (connection refused), 404 (wrong API path), 5xx (server error) etc., with original error snippets attached, no more guessing to locate problems
+- Score-change alert: when a skill's score drops ≥0.3 vs. last round, the browser tab title auto-flashes "⚠ Skill X score dropped Y", auto-clears after 30 seconds; supports score-rise hints, perceive anomalies without switching pages
 
 ### v1.1.1 (2026-07-22)
 
-- 文档诚实化收口：删除「所有技能叠加曲线 / 版本时间线虚线标注 / 最高测评评分概览卡」等未实现功能的过度宣称，功能表与实际界面一致
-- 触发方式明确化：新增「触发方式」章节，给出完整启动/刷新命令与"本地网页看板非对话调用"的边界说明
-- 避坑指南：新增「避坑指南」章节（编辑源/运行源分离导致本地不生效、端口占用、config.json 格式、首启无曲线、history 过大等高频坑与补救）
-- 实操案例：新增「实操案例」章节，覆盖盯竞品、找蓝海、版本效果验证、数据中断排查四类典型场景 step-by-step
-- 输出诚实声明：明确所有界面数值来自本人账号实时采集，无内置样例数字
+- Documentation honesty wrap-up: removed over-claims of unimplemented features like "all skills overlaid curve / version timeline dashed-line labels / highest evaluation score overview card", feature table now matches the actual UI
+- Trigger clarification: added "Trigger" section, giving complete start / refresh commands and the boundary note "local web dashboard, not a conversation invocation"
+- Pitfall guide: added "Pitfall Guide" section (edit-source / run-source separation causing local no-effect, port occupation, config.json format, no curve on first start, history too large — high-frequency pitfalls and fixes)
+- Practical cases: added "Practical Cases" section covering four typical scenarios step-by-step: watching competitors, finding blue ocean, version-effect validation, data-interruption troubleshooting
+- Output honesty statement: clarified all UI values come from real-time collection of your own account, no built-in sample numbers
 
 ### v1.0.0 (2026-07-21)
-- 首次发布 SkillHub 技能开发者全域数据看板
-- 更短间隔实时刷新：下载量、收藏量、测评分数、版本时间、测评报告时间
-- 全平台关键词竞品搜索：下载量 TOP10 + 最新上传 TOP10 双维度排名
-- 类目热度排行与蓝海/红海策略建议
-- 趋势可视化：技能下载量实时排行（柱状图），每个技能卡展示下载量/收藏量/评分
-- 版本更新 ↔ 测评报告 迭代验证联动：技能卡片显示「vX 发布后 N 天出测评 Y 分」
-- Chart.js 本地内置，无海外 CDN 依赖，国内网络稳定渲染
-- 前端健壮性：并行拉取、保留上次好数据、连续 3 次失败才标离线、防重叠刷新
-- 后端全量数据统一更短间隔轮询采集 + 采集循环自愈
-- 适用场景与能力边界、已知限制与常见问题说明
+
+- First release of the SkillHub developer global data dashboard
+- Shorter-interval real-time refresh: downloads, favorites, evaluation scores, version times, evaluation report times
+- Platform-wide keyword competitor search: download TOP10 + latest-upload TOP10 dual-dimension ranking
+- Category heat ranking with blue-ocean / red-ocean strategy suggestions
+- Trend visualization: skill download real-time ranking (bar chart), each skill card shows downloads / favorites / score
+- Version update ↔ evaluation report iteration-validation linkage: skill card shows "vX released, N days later evaluation Y score"
+- Chart.js bundled locally, no overseas CDN dependency, stable rendering on domestic networks
+- Frontend robustness: parallel fetch, keep last good data, offline only after 3 consecutive failures, de-duplicated refresh
+- Backend all-data unified shorter-interval poll collection + collection-loop self-healing
+- Use cases and capability boundaries, known limitations and FAQ explained

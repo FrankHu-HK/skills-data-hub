@@ -1,6 +1,6 @@
 """
-SkillHub 信息决策平台 - 后端服务器
-个人技能监控 + 竞品分析 + 市场洞察 + 版本追踪
+SkillHub Info & Decision Platform - Backend Server
+Personal skill monitoring + competitor analysis + market insight + version tracking
 """
 import http.server
 import json
@@ -11,7 +11,7 @@ import time
 import os
 import re
 
-# ========== 配置 ==========
+# ========== Config ==========
 CONFIG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config.json")
 CFG = {}
 CONFIG_LOAD_ERROR = ""
@@ -24,20 +24,20 @@ except Exception as _cfg_ex:
     if "Expecting" in _raw_msg or "char" in _raw_msg:
         import re as _re
         _m = _re.search(r"line (\d+) column (\d+)", _raw_msg)
-        _loc = ("第" + _m.group(1) + "行第" + _m.group(2) + "列附近") if _m else "某处"
-        CONFIG_LOAD_ERROR = "config.json 格式有误（" + _loc + "）：请检查逗号、引号、括号是否配对，可用 jsonlint.com 在线校验"
+        _loc = ("No." + _m.group(1) + "line " + _m.group(2) + "column nearby") if _m else "somewhere"
+        CONFIG_LOAD_ERROR = "config.json format error (" + _loc + "): check that commas, quotes, and brackets are paired; validate online at jsonlint.com"
     else:
-        CONFIG_LOAD_ERROR = "无法读取 config.json：请确认文件存在且未损坏"
+        CONFIG_LOAD_ERROR = "Cannot read config.json: confirm the file exists and is not corrupted"
 PORT = int(CFG.get("port", 8866))
 USER_ID = CFG.get("user_id", "user_YOUR_ID_HERE")
 if USER_ID == "user_YOUR_ID_HERE":
-    CONFIG_LOAD_ERROR = "未配置用户ID | 请打开 config.json，将 user_id 改为你的 SkillHub 用户ID（登录 skillhub.cn → 个人中心 → URL 中 /user/ 后面的部分）"
+    CONFIG_LOAD_ERROR = "User ID not configured | Open config.json and set user_id to your SkillHub user ID (log in to skillhub.cn -> Profile -> the part after /user/ in the URL)"
     if not CONFIG_LOAD_ERROR:
-        CONFIG_LOAD_ERROR = "未配置用户ID"
+        CONFIG_LOAD_ERROR = "User ID not configured"
 API_BASE = "https://api.skillhub.cn"
 COLLECT_INTERVAL = 50
 MAX_HISTORY = 720
-MARKET_INTERVAL = 50      # 市场数据50秒刷新
+MARKET_INTERVAL = 50      # Market data refreshed every 50s
 HISTORY_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "history.json")
 MARKET_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "market_data.json")
 PUBLISH_STATUS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "publish_status.json")
@@ -49,24 +49,24 @@ headers = {
     "Referer": "https://skillhub.cn/",
 }
 
-# ========== 全局状态 ==========
+# ========== global state ==========
 history = {"timestamps": [], "skills": {}, "followers": [], "totalComments": []}
 market_data = {"categories": [], "showcase": [], "competitors": {}, "analysis": {}}
 user_info = {}
 collect_count = 0
 last_error = None
-LAST_OK = [time.time()]  # 上次成功采集时间戳，冻结看门狗据此判断是否需要自愈重启
+LAST_OK = [time.time()]  # Timestamp of last successful collection; freeze watchdog uses this to decide whether self-healing restart is needed
 data_lock = threading.Lock()
 market_lock = threading.Lock()
-eval_cache = {}  # slug -> {"score","createdAt","time"} 测评分数缓存，降低API压力
-# 评论数缓存：stats.comments 接口恒为 0，真实评论数来自 /api/v1/skills/{slug}/comments 的 total 字段
+eval_cache = {}  # slug -> {"score","createdAt","time"} Evaluation-score cache, reduces APIpressure
+# Comment-count cache: the stats.comments endpoint is always 0; real counts come from the 'total' field of /api/v1/skills/{slug}/comments
 comment_counts_cache = {}
 comment_fetch_counter = [0]
-COMMENT_FETCH_EVERY = 6  # 每 6 个采集周期(约5分钟)刷新一次评论数，避免高频撞限流导致数据冻结；首周期强制刷新
+COMMENT_FETCH_EVERY = 6  # Refresh comment counts every 6 collection cycles (~5 min) to avoid rate-limit-induced freezes; forced on first cycle
 
 
-# 发布状态（本地精准追踪）：公开 API 不暴露发布审核状态(安全审核中/已发布)，
-# 改由发布脚本写入 publish_status.json（slug->状态），或用户确认后人工更新。
+# Publish status (tracked locally): the public API does not expose review status (under security review / published).
+# The publish script writes publish_status.json (slug -> status), or the user updates it manually after confirmation.
 publish_status = {}
 def load_publish_status():
     global publish_status
@@ -76,22 +76,22 @@ def load_publish_status():
     except Exception:
         publish_status = {}
 
-# ========== 前端构建号（用于版本自检测，避免浏览器缓存旧版导致"假离线"）==========
+# ========== Frontend build number (used for version self-check; avoids cached old frontend causing "fake offline")==========
 def get_dashboard_build():
-    """从 dashboard.html 提取「构建XXXX」号，作为前端版本标识；文件缺失时回退 0"""
+    """ from dashboard.html Extract 'buildXXXX' number as the frontend version id; falls back if the file is missing 0"""
     try:
         fp = os.path.join(os.path.dirname(os.path.abspath(__file__)), "dashboard.html")
         with open(fp, "r", encoding="utf-8") as f:
             txt = f.read()
-        m = re.search(r"构建(\d+)", txt)
+        m = re.search(r"build(\d+)", txt)
         return int(m.group(1)) if m else 0
     except Exception:
         return 0
 
-# ========== 工具 ==========
+# ========== tool ==========
 def fetch_json(url, method="GET", body=None, retries=2, backoff=1.0):
-    """请求 SkillHub API；遇瞬时拒绝连接(WinError 10061)/超时/限流自动重试+退避，
-    限流(429)自动延长退避，降低采集失败与误报"""
+    """Call the SkillHub API; auto-retry + backoff on transient connection-refused (WinError 10061) / timeout / rate-limit.
+    Rate-limit (429) auto-extends backoff, reducing collection failures and false alarms"""
     last_exc = None
     for attempt in range(retries):
         try:
@@ -103,7 +103,7 @@ def fetch_json(url, method="GET", body=None, retries=2, backoff=1.0):
                 return json.loads(r.read().decode("utf-8"))
         except urllib.error.HTTPError as e:
             last_exc = e
-            # 限流：延长退避，避免高频撞墙
+            # Rate limit: extend backoff to avoid frequent hard hits
             if e.code == 429 and attempt < retries - 1:
                 time.sleep(backoff * 3 * (attempt + 1))
             elif attempt < retries - 1:
@@ -115,22 +115,22 @@ def fetch_json(url, method="GET", body=None, retries=2, backoff=1.0):
     raise last_exc
 
 def friendly_error(e):
-    """把采集异常映射为新手可读的白话中文，绝不暴露原始异常文本/技术栈"""
+    """Map collection exceptions to beginner-readable plain language; never expose raw exception text / tech stack"""
     em = str(e).lower()
     et = type(e).__name__
     if any(k in str(e) for k in ("10061", "10054", "WinError", "ConnectionRefused", "ConnectionReset", "NameResolution", "getaddrinfo", "[Errno")) or "URLError" in et or "ConnectionError" in et:
-        return "网络连接异常：暂时连不上 SkillHub，已保留上次数据，系统每约 50 秒自动重试"
+        return "Network connection error: cannot reach SkillHub temporarily; last good data retained, system auto-retries every ~50s"
     if "timeout" in em or "timed out" in em:
-        return "网络较慢：服务器响应超时，已保留上次数据，系统正在自动重试"
-    if "429" in str(e) or "rate" in em or "请求过于频繁" in str(e) or "too many" in em:
-        return "刷新频率过高被限流：系统已自动减速，请稍候片刻"
-    if "401" in str(e) or "403" in str(e) or "未授权" in str(e) or "forbidden" in em:
-        return "账号授权失效：请检查 config.json 里的 user_id 是否正确"
+        return "Slow network: server response timed out; last good data retained, system is auto-retrying"
+    if "429" in str(e) or "rate" in em or "Requests too frequent" in str(e) or "too many" in em:
+        return "Rate-limited due to high refresh frequency: system has auto-slowed down, please wait a moment"
+    if "401" in str(e) or "403" in str(e) or "unauthorized" in str(e) or "forbidden" in em:
+        return "Account authorization invalid: check that user_id in config.json is correct"
     if "404" in str(e):
-        return "接口地址变更：请联系技能开发者更新"
+        return "API endpoint changed: please contact the skill developer to update"
     if "ssl" in em or "certificate" in em:
-        return "网络安全校验失败：请检查本机网络代理或证书设置"
-    return "数据获取失败：已保留上次数据，系统会自动重试（错误详情已记入服务端日志）"
+        return "Network security check failed: check your local network proxy or certificate settings"
+    return "Data fetch failed: last good data retained, system will auto-retry (details logged on server)"
 
 
 def ts_to_str(ts):
@@ -159,7 +159,7 @@ def _last_valid(arr):
     return None
 
 def calc_eval_score(dims):
-    """五维度→子维度均→五维度总平"""
+    """five dimensions→sub-dimension averages→five-dimension overall average"""
     dim_avgs = []
     for d_key, d_val in dims.items():
         if isinstance(d_val, dict) and "items" in d_val:
@@ -170,8 +170,8 @@ def calc_eval_score(dims):
     return round(sum(dim_avgs)/len(dim_avgs), 2) if dim_avgs else None
 
 def calc_security_status(sec_reports):
-    """从技能详情 securityReports（源码安全扫描：keen/sanbu 等）推导发布/安全状态
-    返回: 安全审核中 / 安全通过 / 安全风险 / —（无数据）"""
+    """Derive publish/security status from the skill detail's securityReports (source-code security scan: keen/sanbu etc.)
+    Returns: Under Security Review / Security Passed / Security Risk / - (no data)"""
     if not isinstance(sec_reports, dict) or not sec_reports:
         return "—"
     scanning = False
@@ -185,39 +185,39 @@ def calc_security_status(sec_reports):
         elif st in ("malicious", "danger", "risk", "unsafe", "blocked"):
             risk = True
     if risk:
-        return "安全风险"
+        return "Security Risk"
     if scanning:
-        return "安全审核中"
-    # 其余（含 benign / passed / safe）视为已通过安全扫描
-    return "安全通过"
+        return "Under Security Review"
+    # the rest (including benign / passed / safe) is treated as having passed security scan
+    return "Security Passed"
 
-# ========== 个人技能采集 ==========
+# ========== Personal skill collection ==========
 def collect_self_data():
     global collect_count, last_error, user_info
     from datetime import datetime, timezone, timedelta
     from concurrent.futures import ThreadPoolExecutor, as_completed
     ts = datetime.now(timezone(timedelta(hours=8))).strftime("%Y-%m-%d %H:%M:%S")
     try:
-        load_publish_status()  # 每次采集重载本地发布状态；用户编辑 publish_status.json 后10秒内网页生效
-        # 用户信息 + 技能列表 — 并发拉取；失败时不覆盖 user_info（保留上次成功值）
+        load_publish_status()  # Reload local publish status on every collection; user edits  publish_status.json  after10s for the web page to take effect
+        # userinfo + skill list — Concurrent fetch; do not overwrite on failure user_info(keep last successful value)
         skills_list = []
         _pool = ThreadPoolExecutor(max_workers=4)
         try:
             _f_user = _pool.submit(fetch_json, f"{API_BASE}/api/v1/users/{USER_ID}")
             _f_skills = _pool.submit(fetch_json, f"{API_BASE}/api/v1/users/{USER_ID}/skills?page=1&pageSize=20")
-            for _f, _name in [(_f_user,"用户"),(_f_skills,"技能列表")]:
+            for _f, _name in [(_f_user,"user"),(_f_skills,"skill list")]:
                 try:
                     _r = _f.result(timeout=15)
-                    if _name == "用户":
+                    if _name == "user":
                         user_info = _r.get("user", {})
                     else:
                         skills_list = _r.get("skills", [])
                 except Exception as _e:
-                    print(f"[{ts}] {_name}拉取失败: {_e}")
+                    print(f"[{ts}] {_name} fetch failed: {_e}")
         finally:
-            _pool.shutdown(wait=False)  # 不等待后台线程，防卡死
+            _pool.shutdown(wait=False)  # Do not wait for background threads, to prevent freezing
 
-        # 技能详情 — 并发拉取，总超时 20s
+        # Skill details - concurrent fetch, 20s total timeout
         skill_details = {}
         if skills_list:
             _pool2 = ThreadPoolExecutor(max_workers=4)
@@ -231,7 +231,7 @@ def collect_self_data():
             finally:
                 _pool2.shutdown(wait=False)
 
-                # 评论数采集：stats.comments 恒为0，改走专属列表接口拿 total（节流，首周期强制）
+                # Comment collection: stats.comments always0, use the dedicated list endpoint to get  total(throttled, forced on first cycle)
                 comment_fetch_counter[0] += 1
                 _do_fetch_cm = (comment_fetch_counter[0] == 1) or (comment_fetch_counter[0] % COMMENT_FETCH_EVERY == 0)
                 if _do_fetch_cm and skills_list:
@@ -244,7 +244,7 @@ def collect_self_data():
                                 if isinstance(_cj, dict) and "total" in _cj:
                                     comment_counts_cache[_slug] = int(_cj.get("total", 0) or 0)
                             except Exception:
-                                pass  # 保留上次缓存值，确保平滑
+                                pass  # Keep last cached value to ensure smoothness
                     finally:
                         _poolc.shutdown(wait=False)
 
@@ -254,7 +254,7 @@ def collect_self_data():
                 history["timestamps"].append(ts)
                 if len(history["timestamps"]) > MAX_HISTORY:
                     history["timestamps"] = history["timestamps"][-MAX_HISTORY:]
-                # 粉丝数量：用户级指标，单独按时间线追踪，用于"较上一小时"环比
+                # Followers: a user-level metric tracked on its own timeline, used for "vs last hour" comparison
                 history.setdefault("followers", [])
                 history.setdefault("totalComments", [])
                 history["followers"].append(user_info.get("followersCount", 0))
@@ -270,7 +270,7 @@ def collect_self_data():
                     history["skills"][slug] = {"name":"","downloads":[],"stars":[],"version":[],"versionUpdatedAt":[],"evalScore":[],"evalTime":[],"security":[],"subCategories":[],"claimState":[],"verified":[],"createdAt":[],"comments":[],"category":[],"namespace":[],"requiresKey":[]}
 
                 hs = history["skills"][slug]
-                # 兼容旧版 history.json：补齐新增字段键，避免 KeyError 并完成自动迁移
+                # Compatible with old history.json: backfill new field keys to avoid KeyError and complete auto-migration
                 for _k in ("subCategories","claimState","verified","createdAt","comments","category","namespace","requiresKey"):
                     hs.setdefault(_k, [])
                 hs["name"] = sk["name"]
@@ -278,10 +278,10 @@ def collect_self_data():
                 hs["stars"].append(stats.get("stars", sk.get("stars",0)))
                 hs["version"].append(sk.get("version",""))
                 hs["versionUpdatedAt"].append(sk.get("updatedAt",""))
-                # 发布状态走本地精准追踪(publish_status.json)，不再依赖不准确的 securityReports 源码扫描状态
-                hs.setdefault("security", []).append(publish_status.get(slug, "已发布"))
+                # Publish status uses local precise tracking (publish_status.json), no longer relying on inaccurate securityReports source-scan status
+                hs.setdefault("security", []).append(publish_status.get(slug, "Published"))
 
-                # 新增：核心指标卡所需的静态/慢变元数据与评论数
+                # New: static / slow-changing metadata and comment counts needed by the core metric cards
                 sci = detail.get("skill",{}) if detail else {}
                 hs["subCategories"].append(sci.get("subCategories", []))
                 hs["claimState"].append(sci.get("claim_state", ""))
@@ -289,14 +289,14 @@ def collect_self_data():
                 hs["createdAt"].append(sci.get("createdAt", ""))
                 hs["comments"].append(comment_counts_cache.get(slug, 0))
 
-                # 类目 / namespace / 是否需要key（静态元数据，随详情与列表抓取）
+                # category / namespace / requiresKey (static metadata, fetched with detail and list)
                 hs["category"].append(sci.get("category", ""))
                 _ns = sk.get("namespace", {}) or {}
                 hs["namespace"].append(_ns.get("canonicalName", "") if isinstance(_ns, dict) else "")
                 _lbl = sci.get("labels", {}) or {}
                 hs["requiresKey"].append(str(_lbl.get("requires_api_key", "false")) if isinstance(_lbl, dict) else "false")
 
-                # 测评分数：每5分钟才真正请求一次API，平时复用缓存，降低限流风险
+                # Evaluation score: only hit the API once every 5 min, otherwise reuse cache to reduce rate-limit risk
                 lev = _last_valid(hs["evalScore"])
                 let = _last_valid(hs.get("evalTime",[]))
                 now = time.time()
@@ -327,7 +327,7 @@ def collect_self_data():
                     if len(hs[key]) > MAX_HISTORY:
                         hs[key] = hs[key][-MAX_HISTORY:]
 
-                # 总评论量：全部技能评论数之和，按时间线追踪用于"较上一小时"
+                # Total comments: sum of all skills' comments, tracked on a timeline for "vs last hour"
                 history.setdefault("totalComments", [])
                 _tc = 0
                 for _slug in history["skills"]:
@@ -345,7 +345,7 @@ def collect_self_data():
                     json.dump(history, f, ensure_ascii=False)
             except: pass
 
-        # 昨日下载量基准：跨日快照，供前端"用户总下载量·环比增长"与昨日比较
+        # Yesterday download baseline: a cross-day snapshot for the frontend "total downloads vs yesterday" comparison
         try:
             _now_bj = datetime.now(timezone(timedelta(hours=8)))
             _today_str = _now_bj.strftime("%Y-%m-%d")
@@ -363,9 +363,9 @@ def collect_self_data():
                 history["last_date"] = _today_str
             elif _prev_date != _today_str:
                 if history.get("last_total_dl") is not None:
-                    history["yesterday_dl"] = history["last_total_dl"]   # 累计总量(昨日23:59/今日00:00快照,供环比与每日增量)
+                    history["yesterday_dl"] = history["last_total_dl"]   # cumulative total(yesterday23:59/today00:00snapshot,for day-over-day and daily increment)
                 if history.get("last_dl_by_skill"):
-                    history["yesterday_dl_by_skill"] = dict(history["last_dl_by_skill"])  # 每技能跨日快照，供「日排名」图表
+                    history["yesterday_dl_by_skill"] = dict(history["last_dl_by_skill"])  # Per-skill cross-day snapshot for the 'daily ranking' chart
             history["last_date"] = _today_str
             history["last_total_dl"] = _total_dl_now
             history["last_dl_by_skill"] = _dl_by_skill_now
@@ -375,25 +375,25 @@ def collect_self_data():
         collect_count += 1
         last_error = None
         LAST_OK[0] = time.time()
-        print(f"[{ts}] 个人数据 #{collect_count} | 6技能")
+        print(f"[{ts}] personal data #{collect_count}")
     except Exception as e:
         last_error = friendly_error(e)
-        print(f"[{ts}] 采集失败: {last_error}")
+        print(f"[{ts}] collection failed: {last_error}")
 
-# ========== 市场数据采集 ==========
+# ========== Market Data Collection ==========
 def collect_market_data():
-    """采集市场数据：类目+showcase+竞品"""
+    """Collect market data: categories+showcase+competitor"""
     global market_data
     try:
-        # 类目
+        # Categories
         cats = fetch_json(f"{API_BASE}/api/v1/categories")
         cat_items = cats.get("items", [])
 
-        # showcase 热门
+        # Showcase featured
         showcase = fetch_json(f"{API_BASE}/api/v1/showcase/featured")
         showcase_skills = showcase.get("skills", [])
 
-        # 按类目分组统计
+        # Group stats by category
         cat_stats = {}
         for c in cat_items:
             cat_stats[c["key"]] = {"name": c["name"], "count": 0, "total_dl": 0, "total_st": 0, "skills": []}
@@ -414,7 +414,7 @@ def collect_market_data():
                     "version": sk.get("version",""),
                 })
 
-        # 热度排名：按总下载量
+        # Hotness ranking: by total downloads
         hotness = []
         for key, st in cat_stats.items():
             if st["count"] > 0:
@@ -427,21 +427,21 @@ def collect_market_data():
                 })
         hotness.sort(key=lambda x: -x["avg_dl"])
 
-        # 竞品匹配引擎 v2：名称+介绍双匹配 + 核心专业词过滤 + 排除词 + 自动派生（通用化，不依赖固定竞品列表）
+        # Competitor matching engine v2: name + description dual-match + core-keyword filter + exclude words + auto-derivation (generic, no fixed competitor list)
         import urllib.parse
 
-        # keyword_map 每技能可选字段：
-        #   search: API搜索关键词列表
-        #   name_filter: 名称匹配词（任一命中技能名称即候选）
-        #   desc_filter: 介绍匹配词（任一命中技能介绍即候选；缺省用 search 词，避免泛词误匹配介绍）
-        #   core_filter: 核心专业词（配置后必须命中，确保竞品专业相关）
-        #   strict_name: True=core_filter 必须出现在技能名称中（如劳动仲裁类，排除泛法律技能）
-        #   desc_exclude: 介绍排除词（介绍命中任一即剔除，用于多义缩写消歧义）
-        #   exclude: 排除词（名称命中任一即剔除，如 MBTI/婚姻 等无关领域）
+        # keyword_map optional fields per skill:
+        #   search: API search keyword list
+        #   name_filter: name-match words (any hit on skill name makes it a candidate)
+        #   desc_filter: description-match words (any hit on skill description makes it a candidate; defaults to search words to avoid vague-word mismatches)
+        #   core_filter: core professional keyword (once set, must match to ensure competitor relevance)
+        #   strict_name: True = core_filter must appear in the skill name (e.g. labor-dispute niche, excludes generic legal skills)
+        #   desc_exclude: description exclude words (any hit on description removes it; used to disambiguate polysemous abbreviations)
+        #   exclude: exclude words (any hit on name removes it, e.g. unrelated domains like MBTI / marriage)
         keyword_map = dict(CFG.get("keyword_map", {}) or {})
 
-        # 自动派生：keyword_map 未覆盖的技能，按显示名自动生成搜索词与过滤词
-        # —— 不同用户技能不同，竞品自动不同，无需手工维护统一竞品列表
+        # Auto-derivation: skills not covered by keyword_map get search/filter words auto-generated from their display name
+        # -- Different users have different skills, so competitors differ automatically; no manual unified competitor list needed
         _skill_names_cfg = CFG.get("skill_names", {}) or {}
         for _slug, _disp in _skill_names_cfg.items():
             if _slug in keyword_map:
@@ -471,43 +471,43 @@ def collect_market_data():
                     encoded = urllib.parse.quote(kw)
                     url = f"{API_BASE}/api/skills?keyword={encoded}&page=1&pageSize=20&sortBy=downloads&order=desc"
                     resp = fetch_json(url)
-                    time.sleep(0.2)  # 节流：关键词搜索之间留间隔，降低限流
+                    time.sleep(0.2)  # Throttle: add a gap between keyword searches to reduce rate-limiting
                     skills = []
                     if isinstance(resp, dict):
                         skills = resp.get("data", {}).get("skills", [])
                     for sk in skills:
                         sk_slug = sk.get("slug", "")
                         if sk_slug == slug or sk_slug in _skill_names_cfg:
-                            continue  # 排除自己与自己的其他技能
+                            continue  # Exclude self and own other skills
                         sk_name = sk.get("name", "") or ""
                         sk_desc = sk.get("description", "") or ""
                         name_lc = sk_name.lower()
                         desc_lc = sk_desc.lower()
 
-                        # ① 排除词：名称命中任一排除词直接剔除（如 MBTI人格测试 之类无关技能）
+                        # 1 Exclude words: any name hit removes it directly (e.g. unrelated skills like 'MBTI test')
                         if any(ex.lower() in name_lc for ex in excludes):
                             continue
                         if desc_excludes and any(ex.lower() in desc_lc for ex in desc_excludes):
-                            continue  # 介绍命中排除词：消歧义（如 NPD=产品开发/色谱检测器 的无关技能）
+                            continue  # Description hit on exclude word: disambiguate (e.g. NPD = product-dev / chromatograph-detector unrelated skills)
 
-                        # ② 名称+介绍双匹配：名称命中 name_filter 或 介绍命中 desc_filter
+                        # 2 Name + description dual match: name hits name_filter OR description hits desc_filter
                         matched_kw = None
                         matched_in = None
                         for nf in name_filters:
                             if nf.lower() in name_lc:
-                                matched_kw, matched_in = nf, "名称"
+                                matched_kw, matched_in = nf, "name"
                                 break
                         if not matched_kw:
                             for df in desc_filters:
                                 if df.lower() in desc_lc:
-                                    matched_kw, matched_in = df, "介绍"
+                                    matched_kw, matched_in = df, "description"
                                     break
                         if not matched_kw:
                             continue
 
-                        # ③ 核心专业词校验：确保竞品与本技能专业强相关
-                        #    strict_name=True（如劳动仲裁类）：核心词必须出现在名称中，
-                        #    其他法律类即使介绍提到劳动也不算竞品
+                        # 3 Core-keyword check: ensure competitor is strongly relevant to this skill
+                        #    strict_name=True (e.g. labor-dispute niche): core word must appear in the name,
+                        #    other legal skills mentioning labor in description still do not count as competitors
                         if core_filters:
                             _scope = name_lc if strict_name else (name_lc + " " + desc_lc)
                             if not any(cf.lower() in _scope for cf in core_filters):
@@ -524,14 +524,14 @@ def collect_market_data():
                                 "matchedIn": matched_in,
                             }
                 except Exception as e:
-                    print(f"  [!] 竞品搜索 {kw} 失败: {e}")
+                    print(f"  [!] competitor search {kw} failed: {e}")
 
-            print(f"  [{slug}] 名称+介绍双匹配得到{len(all_matches)}个竞品")
+            print(f"  [{slug}] name+description dual match found {len(all_matches)} competitors")
 
-            # 取下载量TOP15，获取详细信息后再分两个维度
+            # take downloadsTOP15, then fetch details and split into two dimensions
             top_dl_raw = sorted(all_matches.values(), key=lambda x: -x["downloads"])[:15]
 
-            # 获取每个竞品的详情（createdAt/updatedAt）
+            # Fetch details for each competitor (createdAt/updatedAt)
             import time as _time
             for sk in top_dl_raw:
                 try:
@@ -543,17 +543,17 @@ def collect_market_data():
                     sk["createdAt"] = ""
                     sk["updatedAt"] = ""
 
-            # 维度1：下载量TOP10
+            # Dimension 1: Top 10 by downloads
             by_dl = sorted(top_dl_raw, key=lambda x: -x["downloads"])[:10]
 
-            # 维度2：初版上传时间最新TOP10
+            # Dimension 2: Top 10 by earliest-upload time (newest)
             by_new = sorted([m for m in top_dl_raw if m.get("createdAt")], key=lambda x: -(x.get("createdAt") or 0))[:10]
 
             competitors[slug] = {"byDownloads": by_dl, "byNewest": by_new}
-            print(f"  [{slug}] 下载TOP10: {[m['downloads'] for m in by_dl]} | 最新上传: {[m.get('createdAt','') for m in by_new[:3]]}")
+            print(f"  [{slug}] Top10 downloads: {[m['downloads'] for m in by_dl]} | Newest: {[m.get('createdAt','') for m in by_new[:3]]}")
 
-        # 平台技能实时总数（系统现有 Skill 数量）：空关键词搜索返回的 data.total
-        # 保留上次的值作为兜底，API 失败时不归零
+        # Platform live skill total (current number of Skills): data.total from an empty-keyword search
+        # Keep last value as fallback; do not zero out when API fails
         total_skills = market_data.get("total_skills", 0)
         try:
             total_resp = fetch_json(f"{API_BASE}/api/skills?keyword=&page=1&pageSize=1&sortBy=downloads&order=desc")
@@ -562,7 +562,7 @@ def collect_market_data():
                 if _new_total > 0:
                     total_skills = _new_total
         except Exception as e:
-            print(f"[市场] 获取技能总数失败(保留上次值 {total_skills}): {e}")
+            print(f"[market] failed to get skill total (kept last value {total_skills}): {e}")
 
         with market_lock:
             market_data = {
@@ -580,19 +580,19 @@ def collect_market_data():
                     json.dump(market_data, f, ensure_ascii=False)
             except: pass
 
-        print(f"[市场] 类目{len(cat_items)} showcase{len(showcase_skills)} 热度{len(hotness)}")
+        print(f"[market] categories {len(cat_items)} showcase {len(showcase_skills)} hotness {len(hotness)}")
 
     except Exception as e:
-        print(f"[市场] 采集失败: {e}")
+        print(f"[market] collection failed: {e}")
 
-# ========== 采集循环 ==========
+# ========== collection loop ==========
 def collector_loop():
-    # 首次采个人数据（快，不阻塞HTTP服务）；异常不影响后续HTTP服务与循环
+    # First personal-data collection (fast, non-blockingHTTPservice); exceptions do not affect the restHTTPservice and loop
     try:
         collect_self_data()
     except Exception as _e:
-        print(f"[{time.strftime('%H:%M:%S')}] 首次采集异常(已捕获，继续): {_e}")
-    # 延迟加载历史（如果有）
+        print(f"[{time.strftime('%H:%M:%S')}] first collection error (caught, continuing): {_e}")
+    # Lazy-load history if present
     if last_error and os.path.exists(HISTORY_FILE):
         try:
             with open(HISTORY_FILE,"r",encoding="utf-8") as f:
@@ -609,7 +609,7 @@ def collector_loop():
             with market_lock:
                 market_data.clear(); market_data.update(loaded)
         except: pass
-    # 延迟10秒后再采集市场数据（避免阻塞HTTP启动）
+    # Delay market collection by 10s (avoid blocking HTTP startup)
     def delayed_market():
         time.sleep(0.5)
         collect_market_data()
@@ -619,18 +619,18 @@ def collector_loop():
     while True:
         try:
             time.sleep(COLLECT_INTERVAL)
-            # 带超时的采集：35秒内必须完成，否则放弃本轮（冻结看门狗兜底自愈）
+            # Collection with timeout: 35s must complete within the timeout, else skip this round (freeze watchdog self-heals)
             _ct = threading.Thread(target=collect_self_data, daemon=True)
             _ct.start()
             _ct.join(timeout=35)
             if _ct.is_alive():
-                print(f"[{time.strftime('%H:%M:%S')}] 采集超时(>35s)，放弃本轮")
+                print(f"[{time.strftime('%H:%M:%S')}] collection timeout (>35s), skipping this round")
             market_counter += 1
             if market_counter * COLLECT_INTERVAL >= MARKET_INTERVAL:
                 collect_market_data()
                 market_counter = 0
         except Exception as e:
-            print(f"[{time.strftime('%H:%M:%S')}] 采集循环异常(已自愈): {e}")
+            print(f"[{time.strftime('%H:%M:%S')}] collection loop error (self-healed): {e}")
             time.sleep(5)
 
 # ========== HTTP API ==========
@@ -647,7 +647,7 @@ class MonitorHandler(http.server.SimpleHTTPRequestHandler):
         super().end_headers()
 
     def _gzip_compress(self, body):
-        """若客户端支持 gzip 则压缩 body 字节；压缩级别 1 速度优先（1.3MB history 在 localhost 压成 ~150KB）"""
+        """If the client supports  gzip then compress body bytes; compression level  1 speed first (1.3MB history  in localhost compress to ~150KB)"""
         try:
             ae = self.headers.get('Accept-Encoding','')
             if 'gzip' in ae.lower():
@@ -655,7 +655,7 @@ class MonitorHandler(http.server.SimpleHTTPRequestHandler):
                 return gzip.compress(body, compresslevel=1)
         except Exception:
             pass
-        return None  # 不压缩
+        return None  # not compressed
 
     def write_response(self, body, content_type):
         gz = self._gzip_compress(body)
@@ -697,7 +697,7 @@ class MonitorHandler(http.server.SimpleHTTPRequestHandler):
             self.serve_file(path.lstrip("/"))
 
     def serve_file(self, filename):
-        """显式提供静态文件，绕过SimpleHTTPRequestHandler的路径问题"""
+        """Explicitly serve static files, bypassing SimpleHTTPRequestHandlerpath issue"""
         filepath = os.path.join(self.directory, filename)
         if not os.path.isfile(filepath):
             self.send_error(404)
@@ -711,7 +711,7 @@ class MonitorHandler(http.server.SimpleHTTPRequestHandler):
             elif filename.endswith(".json"): ct = "application/json"
             elif filename.endswith(".jpg") or filename.endswith(".jpeg"): ct = "image/jpeg"
             elif filename.endswith(".png"): ct = "image/png"
-            # dashboard.html 频繁刷新且体积较大，gzip 收益高
+            # dashboard.html Frequently refreshed and large in size, gzip high gain
             self.write_response(content, ct)
         except Exception as e:
             self.send_error(500, str(e))
@@ -756,7 +756,7 @@ class MonitorHandler(http.server.SimpleHTTPRequestHandler):
         })
 
     def handle_version(self):
-        # 前端版本自检测接口：返回服务端 dashboard.html 的构建号，供浏览器比对后自动重载
+        # Frontend version self-check endpoint: returns the server-side  dashboard.html 's build number for the browser to compare and auto-reload
         self.send_json({
             "build": get_dashboard_build(),
             "serverTime": time.strftime("%Y-%m-%d %H:%M:%S"),
@@ -787,7 +787,7 @@ class MonitorHandler(http.server.SimpleHTTPRequestHandler):
             self.send_json({"error": str(e)})
 
     def handle_export(self):
-        """导出历史数据为CSV，支持长期趋势分析"""
+        """Export history data as CSV, supports long-term trend analysis"""
         import csv as _csv
         import io as _io
         buf = _io.StringIO()
@@ -823,10 +823,10 @@ class MonitorHandler(http.server.SimpleHTTPRequestHandler):
 
     def send_json(self, data):
         body = json.dumps(data, ensure_ascii=False).encode("utf-8")
-        # 使用 gzip 压缩（history 1.3MB → ~100KB，传输速度提升 10x+）
+        # use gzip compress (history 1.3MB → ~100KB, transfer speed improved 10x+)
         self.write_response(body, "application/json; charset=utf-8")
-        # 不再调用 self.end_headers() 和 self.wfile.write()，因为 write_response 已处理
-        # 兼容旧调用方：如果没压缩则按原方式返回
+        # no longer call self.end_headers()  and self.wfile.write(), because write_response handled
+        # Backward-compatible with old callers: if not compressed, return the original way
         ae = self.headers.get('Accept-Encoding','')
         if 'gzip' not in ae.lower():
             self.send_response(200)
@@ -840,22 +840,22 @@ class MonitorHandler(http.server.SimpleHTTPRequestHandler):
     def log_message(self, format, *args):
         pass
 
-# ========== 冻结看门狗 ==========
+# ========== Freeze watchdog ==========
 def freeze_watchdog():
-    """若距上次成功采集超过 3*COLLECT_INTERVAL 仍无新数据，说明采集线程卡死/冻结，
-    强制退出进程，由 start_monitor.sh 的 while 循环干净重启（重启前会先释放 8866 端口）。
-    彻底杜绝"数据不动了"的长期冻结。"""
+    """If more than  3*COLLECT_INTERVAL still no new data means the collection thread is stuck/freeze,
+    Force-exit the process, handled by  start_monitor.sh 's while loop cleanly restarts (releasing first before restart 8866 port).
+    completely eliminate"data stopped moving"long-term freeze."""
     while True:
         time.sleep(30)
         try:
             since = time.time() - LAST_OK[0]
             if since > 3 * COLLECT_INTERVAL:
-                print(f"[{time.strftime('%H:%M:%S')}] 冻结看门狗触发：距上次成功采集 {int(since)}s 超过阈值 {3*COLLECT_INTERVAL}s，强制重启进程以自愈")
+                print(f"[{time.strftime('%H:%M:%S')}] freeze watchdog triggered: {int(since)}s since last success exceeds threshold {3*COLLECT_INTERVAL}s, forcing process restart to self-heal")
                 os._exit(1)
         except Exception:
             pass
 
-# ========== 启动 ==========
+# ========== start ==========
 def main():
     if os.path.exists(HISTORY_FILE):
         try:
@@ -865,18 +865,18 @@ def main():
                 history.clear(); history.update(loaded)
                 history.setdefault("followers", [])
                 history.setdefault("totalComments", [])
-            print(f"加载历史: {len(history['timestamps'])} 条")
+            print(f"loaded history: {len(history['timestamps'])} points")
         except Exception as e:
-            print(f"加载历史失败: {e}")
+            print(f"load history failed: {e}")
 
-    load_publish_status()  # 启动即加载本地发布状态
+    load_publish_status()  # StartupImmediately load local publish status
     threading.Thread(target=collector_loop, daemon=True).start()
     threading.Thread(target=freeze_watchdog, daemon=True).start()
     server = http.server.ThreadingHTTPServer(("0.0.0.0", PORT), MonitorHandler)
     print(f"\n{'='*50}")
-    print(f"  SkillHub 信息决策平台 v2.0")
-    print(f"  本机: http://localhost:{PORT}")
-    print(f"  平板: http://<本机IP>:{PORT}")
+    print(f"  SkillHub Info & Decision Platform v2.0")
+    print(f"  Local: http://localhost:{PORT}")
+    print(f"  Tablet: http://<local-IP>:{PORT}")
     print(f"{'='*50}\n")
     try:
         server.serve_forever()

@@ -20,7 +20,7 @@
 </p>
 
 <p align="center">
-  English | <a href="README.zh-CN.md">简体中文</a>
+  English
 </p>
 
 ---
@@ -47,7 +47,7 @@ Enter your SkillHub user ID once; the dashboard keeps itself fresh and turns raw
 - **Full-platform competitor search** — keyword match across **name + description** with core-term / exclude-term dual filtering. Dual ranking: **Top-10 by downloads** and **Top-10 newest uploads**.
 - **Category heat ranking** — blue-ocean vs. red-ocean identification with suggested directions.
 - **Version ↔ eval loop** — every card shows `vX released N days ago → eval Y score`, so you can verify whether an iteration moved the needle.
-- **Day-over-day growth** — yesterday's环比 delta computed per metric.
+- **Day-over-day growth** — yesterday's day-over-day delta computed per metric.
 - **Polished UX** — page-turn number animations, dark tech-style UI, cross-device real-time display.
 - **Zero-config detection** — auto-detects your skills; optional `config.json` overrides, no code changes.
 
@@ -95,4 +95,4 @@ If the dashboard helps you ship a better skill or spot a blue ocean, consider sp
 
 ## License
 
-[MIT](LICENSE) — Copyright 2026 Frank Hu (胡景堃).
+[MIT](LICENSE) — Copyright 2026 Frank Hu (Hu Jingkun).
