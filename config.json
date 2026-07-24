@@ -1,0 +1,35 @@
+{
+  "user_id": "user_YOUR_ID_HERE",
+  "port": 8866,
+  "skill_names": {
+    "your-skill-slug-1": "技能简称1",
+    "your-skill-slug-2": "技能简称2"
+  },
+  "keyword_map": {
+    "your-skill-slug-1": {
+      "search": [
+        "赛道关键词1",
+        "赛道关键词2"
+      ],
+      "name_filter": [
+        "名称过滤词1",
+        "名称过滤词2"
+      ],
+      "desc_filter": [
+        "介绍过滤词1",
+        "介绍过滤词2"
+      ],
+      "core_filter": [
+        "核心专业词1"
+      ],
+      "strict_name": false,
+      "exclude": [
+        "排除词1",
+        "排除词2"
+      ],
+      "desc_exclude": [
+        "介绍排除词1"
+      ]
+    }
+  }
+}
