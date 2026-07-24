@@ -1,56 +1,91 @@
-# 📡 Skills Data Hub · SkillHub Developer Analytics Dashboard
+<div align="center">
+  <img src="banner.svg" alt="Skills Data Hub banner" width="100%" />
+  <h1>Skills Data Hub</h1>
+  <p><b>Real-time SkillHub developer analytics dashboard</b> — downloads, eval scores, competitor search, and category heat, unified on a ~50-second refresh.</p>
+</div>
 
-> A real-time decision center for **SkillHub** creators — unified ~50-second polling of downloads, favorites, eval scores, market data, and category heat, plus full-platform competitor search and blue-ocean / red-ocean strategy hints.
+<p align="center">
+  <a href="https://github.com/FrankHu-HK/skills-data-hub/stargazers"><img src="https://img.shields.io/github/stars/FrankHu-HK/skills-data-hub?style=flat-square" alt="Stars"></a>
+  <a href="https://github.com/FrankHu-HK/skills-data-hub/network/members"><img src="https://img.shields.io/github/forks/FrankHu-HK/skills-data-hub?style=flat-square" alt="Forks"></a>
+  <a href="https://github.com/FrankHu-HK/skills-data-hub/issues"><img src="https://img.shields.io/github/issues/FrankHu-HK/skills-data-hub?style=flat-square" alt="Issues"></a>
+  <a href="https://github.com/FrankHu-HK/skills-data-hub/blob/master/LICENSE"><img src="https://img.shields.io/github/license/FrankHu-HK/skills-data-hub?style=flat-square" alt="License"></a>
+  <a href="https://img.shields.io/github/last-commit/FrankHu-HK/skills-data-hub?style=flat-square"><img src="https://img.shields.io/github/last-commit/FrankHu-HK/skills-data-hub?style=flat-square" alt="Last commit"></a>
+  <a href="https://github.com/sponsors/FrankHu-HK"><img src="https://img.shields.io/badge/Sponsor-%E2%9D%A4-brightgreen" alt="Sponsor"></a>
+</p>
 
----
+<p align="center">
+  <img src="https://img.shields.io/badge/Platform-Web%20Dashboard-0ea5e9?style=flat-square" alt="Web">
+  <img src="https://img.shields.io/badge/API%20Key-Not%20required-22c55e?style=flat-square" alt="No API key">
+  <img src="https://img.shields.io/github/languages/top/FrankHu-HK/skills-data-hub?style=flat-square" alt="Language">
+</p>
 
-## ✨ Why this exists
-
-Shipping a skill is half the job; **knowing how it performs** is the other half. Skills Data Hub turns the scattered SkillHub numbers into one command center you can leave open on a second monitor — on PC **or** tablet, over the same Wi-Fi.
-
----
-
-## 🎯 Key Features
-
-- **Unified ~50s live refresh** — Downloads, favorites, eval scores, version time, eval-report time, market data, and category heat are polled together on a ~50-second cadence.
-- **Full-platform competitor search** — Keyword match across **name + description** with core-term / exclude-term dual filtering. Dual ranking: **Top-10 by downloads** and **Top-10 newest uploads**.
-- **Category heat ranking** — Blue-ocean vs. red-ocean identification with suggested skill directions.
-- **Version ↔ eval闭环** — Every skill card shows `vX released N days ago → eval Y score`, so you can verify whether an iteration actually moved the needle.
-- **Day-over-day growth** — Yesterday's环比 (period-over-period) delta computed per metric.
-- **Polished UX** — Page-turn number animations, dark tech-style UI, cross-device real-time display (PC/tablet on same Wi-Fi).
-- **Zero-config detection** — Auto-detects your skills; optional custom config in `config.json` (no code changes needed).
-
----
-
-## 🚀 How to use
-
-1. Open the dashboard (web app shipped in this repo).
-2. Enter your **SkillHub user ID**.
-3. Watch the live board: your skills' real-time metrics, competitor rankings, and category heat.
-4. Use the suggestions to decide *what to build next* and *what to iterate*.
-
-> **Data source:** SkillHub public platform data. An API key is **not** required (`requires_api_key: false`).
+<p align="center">
+  English | <a href="README.zh-CN.md">简体中文</a>
+</p>
 
 ---
 
-## 🧩 What's inside
+## What is Skills Data Hub?
 
-| Path | Purpose |
-|------|---------|
-| `index.html` / app entry | The analytics dashboard |
-| `config.json` | Optional user config (skill auto-detection, custom overrides) |
-| `references/` | Metric definitions, ranking logic, UI notes |
-| `README.md` | This document |
+A real-time **decision center for SkillHub creators**. It unifies ~50-second polling of downloads, favorites, eval scores, market data, and category heat — plus full-platform competitor search and blue-ocean / red-ocean strategy hints — into one board you can leave open on a second monitor (PC or tablet, over the same Wi-Fi).
 
----
+## Why Skills Data Hub?
 
-## 🌍 Who it's for
+### The problem
 
-- **SkillHub skill developers** who want a real operations dashboard, not guesswork.
-- **Indie AI-tool makers** tracking competitor moves and category trends.
-- **Teams** running multiple skills and needing one unified view.
+- Shipping a skill is half the job; **knowing how it performs** is the other half.
+- SkillHub numbers are scattered and easy to misread.
+- Competitor moves and category trends are invisible without constant manual checking.
 
----
+### Core approach: one unified board
+
+Enter your SkillHub user ID once; the dashboard keeps itself fresh and turns raw numbers into **what to build next** and **what to iterate**.
+
+## Features
+
+- **Unified ~50s live refresh** — downloads, favorites, eval scores, version time, eval-report time, market data, and category heat polled together.
+- **Full-platform competitor search** — keyword match across **name + description** with core-term / exclude-term dual filtering. Dual ranking: **Top-10 by downloads** and **Top-10 newest uploads**.
+- **Category heat ranking** — blue-ocean vs. red-ocean identification with suggested directions.
+- **Version ↔ eval loop** — every card shows `vX released N days ago → eval Y score`, so you can verify whether an iteration moved the needle.
+- **Day-over-day growth** — yesterday's环比 delta computed per metric.
+- **Polished UX** — page-turn number animations, dark tech-style UI, cross-device real-time display.
+- **Zero-config detection** — auto-detects your skills; optional `config.json` overrides, no code changes.
+
+## Quick Start
+
+### Prerequisites
+
+- Python 3.10+ (for the bundled server) **or** just open the static dashboard in a browser.
+- A SkillHub user ID.
+
+### Run
+
+```bash
+# Option A: static dashboard (no server)
+open dashboard.html
+
+# Option B: local server with live refresh
+python server.py
+# then visit the printed local URL
+```
+
+Enter your SkillHub user ID in the UI; the board starts polling.
+
+## Development
+
+`server.py` serves the dashboard; `config.json` holds optional overrides; `chart.umd.min.js` is the charting dependency. See [CONTRIBUTING.md](CONTRIBUTING.md) before changing the refresh or ranking logic.
+
+## Roadmap
+
+See [ROADMAP.md](ROADMAP.md).
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md). New ranking signals and clearer strategy hints are welcome.
+
+<a href="https://github.com/FrankHu-HK/skills-data-hub/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=FrankHu-HK/skills-data-hub" />
+</a>
 
 ## 💖 Sponsor
 
@@ -58,10 +93,6 @@ If the dashboard helps you ship a better skill or spot a blue ocean, consider sp
 
 [![Sponsor](https://img.shields.io/badge/Sponsor-%E2%9D%A4-brightgreen)](https://github.com/sponsors/FrankHu-HK)
 
-> GitHub Sponsors is the only official donation channel for this project.
+## License
 
----
-
-## 📄 License
-
-Released under the [MIT License](./LICENSE). Authored by 胡景堃 (Frank Hu).
+[MIT](LICENSE) — Copyright 2026 Frank Hu (胡景堃).
