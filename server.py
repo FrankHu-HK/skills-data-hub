@@ -173,7 +173,7 @@ def calc_security_status(sec_reports):
     """Derive publish/security status from the skill detail's securityReports (source-code security scan: keen/sanbu etc.)
     Returns: Under Security Review / Security Passed / Security Risk / - (no data)"""
     if not isinstance(sec_reports, dict) or not sec_reports:
-        return "—"
+        return "-"
     scanning = False
     risk = False
     for scanner, rep in sec_reports.items():
@@ -199,7 +199,7 @@ def collect_self_data():
     ts = datetime.now(timezone(timedelta(hours=8))).strftime("%Y-%m-%d %H:%M:%S")
     try:
         load_publish_status()  # Reload local publish status on every collection; user edits  publish_status.json  after10s for the web page to take effect
-        # userinfo + skill list — Concurrent fetch; do not overwrite on failure user_info(keep last successful value)
+        # userinfo + skill list - Concurrent fetch; do not overwrite on failure user_info(keep last successful value)
         skills_list = []
         _pool = ThreadPoolExecutor(max_workers=4)
         try:

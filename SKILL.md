@@ -1,11 +1,10 @@
 ---
 name: Skills Data Hub
-slug: skills-data-hub
 version: 1.2.5
 displayName: SkillHub Developer Global Data Dashboard | Intelligent Decision Center | Trend Tracking | User Profiling & Conversion
 description: |
   Enter your SkillHub user ID to instantly get a complete decision platform with real-time monitoring of all your skills + platform-wide keyword competitor search + category heat analysis and strategy suggestions.
-  - All data refreshes on a unified ~50-second poll: downloads, favorites, evaluation scores, version timestamps, evaluation report timestamps, market data, category heat — all polled every ~50 seconds.
+  - All data refreshes on a unified ~50-second poll: downloads, favorites, evaluation scores, version timestamps, evaluation report timestamps, market data, category heat - all polled every ~50 seconds.
   - Keyword-precise platform-wide competitor search (name + description dual-field matching, core-professional-word / exclusion dual filtering): download TOP10 + latest-upload TOP10 dual-dimension ranking.
   - Category heat ranking: blue-ocean / red-ocean identification, skill focus-direction suggestions.
   - Version number and evaluation score shown on every skill card, with version update and evaluation report time correlated (iteration-validation linkage).
@@ -25,11 +24,11 @@ labels:
 
 # SkillHub Developer Global Data Dashboard
 
-> Enter your SkillHub user ID; all data is polled and refreshed on a unified ~50-second cycle, keyword search finds platform-wide competitors, category heat gives insight — a one-stop decision workflow.
+> Enter your SkillHub user ID; all data is polled and refreshed on a unified ~50-second cycle, keyword search finds platform-wide competitors, category heat gives insight - a one-stop decision workflow.
 
 > 🚀 **30-second quick start**: ① edit one line `user_id` in `config.json` → ② double-click `start_monitor.bat` → ③ open `http://localhost:8866` in your browser. Data auto-refreshes every ~50 seconds, no commands needed.
 
-> 📌 **Accuracy statement**: Every "~50 seconds" statement in this document strictly matches the code constant `COLLECT_INTERVAL=50`; all values on the dashboard come from real-time collection of your own account — there are absolutely no built-in sample numbers.
+> 📌 **Accuracy statement**: Every "~50 seconds" statement in this document strictly matches the code constant `COLLECT_INTERVAL=50`; all values on the dashboard come from real-time collection of your own account - there are absolutely no built-in sample numbers.
 
 ---
 
@@ -62,7 +61,7 @@ Open `config.json` in the same directory and change one line:
 { "user_id": "user_YOUR_ID_HERE" }
 ```
 
-How to get your user ID: log in to SkillHub → Profile → the part after `/user/` in the URL. After saving, restart `server.py` to apply — **no code files are modified at any point**.
+How to get your user ID: log in to SkillHub → Profile → the part after `/user/` in the URL. After saving, restart `server.py` to apply - **no code files are modified at any point**.
 
 ### 2. Start the service
 
@@ -120,7 +119,7 @@ After a successful start, the terminal shows `Serving on http://0.0.0.0:8866`.
 - Category / sub-category (same line); claimed / verified / comments / created / updated / namespace / requires-key
 - "vX released, N days later evaluation Y score" iteration closed-loop label
 
-> See the real interface in your browser after starting locally; the table above illustrates the fields, not a screenshot or fixed test data. All values in the table come from real-time collection of your own SkillHub account — absolutely no built-in sample numbers.
+> See the real interface in your browser after starting locally; the table above illustrates the fields, not a screenshot or fixed test data. All values in the table come from real-time collection of your own SkillHub account - absolutely no built-in sample numbers.
 
 **API response structure (JSON)**
 
@@ -203,8 +202,8 @@ timestamp,skill_slug,skill_name,downloads,favorites,eval_score,comments
 
 This tool has multiple self-healing layers; on anomalies it recovers automatically and a yellow bar at the top shows the reason in plain language:
 
-- **Collection-loop self-healing**: any round that fails (network jitter / rate limiting / API change) is caught, keeps the last good data, and retries next round — no data gaps.
-- **Freeze watchdog (new in v1.2.4)**: if no new data arrives more than 150 seconds after the last successful collection (meaning the collection thread is deadlocked), the process auto-restarts to self-heal — **permanently eliminating the long-term "data stopped moving" freeze**, a permanent hardening against this historical failure.
+- **Collection-loop self-healing**: any round that fails (network jitter / rate limiting / API change) is caught, keeps the last good data, and retries next round - no data gaps.
+- **Freeze watchdog (new in v1.2.4)**: if no new data arrives more than 150 seconds after the last successful collection (meaning the collection thread is deadlocked), the process auto-restarts to self-heal - **permanently eliminating the long-term "data stopped moving" freeze**, a permanent hardening against this historical failure.
 - **Guard-port auto-clean (new in v1.2.4)**: `start_monitor.sh` releases the occupied 8866 port before every start, so even a frozen old instance lets the new one start cleanly.
 - **Page hints**: on network fluctuation the top shows "Reconnecting" and auto-retries; on long offline it gives concrete troubleshooting directions instead of leaving you guessing.
 
@@ -219,22 +218,22 @@ This tool has multiple self-healing layers; on anomalies it recovers automatical
 **FAQ**
 
 - **Q: The page opens but shows no data?**
-  A: Troubleshoot in three steps: ① confirm `python server.py` is running and the terminal shows no error (it should print `Serving on http://0.0.0.0:8866`); ② press `Ctrl+Shift+R` in the browser to force a cache-clearing refresh; ③ the first start needs 1~2 collection rounds (~1~2 minutes) before curves appear — if you just started, please wait. If the terminal shows a red error, first check whether config.json is valid JSON (commas, quotes, brackets paired); the top yellow bar shows the specific error reason.
+  A: Troubleshoot in three steps: ① confirm `python server.py` is running and the terminal shows no error (it should print `Serving on http://0.0.0.0:8866`); ② press `Ctrl+Shift+R` in the browser to force a cache-clearing refresh; ③ the first start needs 1~2 collection rounds (~1~2 minutes) before curves appear - if you just started, please wait. If the terminal shows a red error, first check whether config.json is valid JSON (commas, quotes, brackets paired); the top yellow bar shows the specific error reason.
 
 - **Q: Tablet connects intermittently?**
   A: Usually weak WiFi causes a single request to time out. The dashboard already does "keep last data + mark offline only after 3 consecutive failures"; the top-right status switches between Online → Reconnecting → Offline. Fixes: ① move closer to the router; ② try a phone hotspot; ③ check whether the PC firewall blocks port 8866. After recovery the dashboard auto-reconnects, no manual refresh needed.
 
 - **Q: Chart not showing?**
-  A: Chart.js is bundled as a local file (chart.umd.min.js), no internet needed. Steps: ① confirm chart.umd.min.js is in the same directory as dashboard.html; ② press `Ctrl+Shift+R` to force refresh; ③ open browser DevTools (F12) → Console tab, check for red errors. If it says `Chart is not defined`, chart.umd.min.js failed to load — check the file exists and is not corrupted.
+  A: Chart.js is bundled as a local file (chart.umd.min.js), no internet needed. Steps: ① confirm chart.umd.min.js is in the same directory as dashboard.html; ② press `Ctrl+Shift+R` to force refresh; ③ open browser DevTools (F12) → Console tab, check for red errors. If it says `Chart is not defined`, chart.umd.min.js failed to load - check the file exists and is not corrupted.
 
 - **Q: Top shows "Latency N min" or "Reconnecting"?**
   A: Data is lagging or there was just network jitter. The dashboard auto-retries every ~50 seconds and usually recovers within tens of seconds, no manual refresh needed. If it shows "Offline" for a long time (>2 minutes), check: ① can the PC reach `api.skillhub.cn` (open it directly in a browser); ② are you behind a corporate / organizational firewall (need a proxy); ③ does server.py's terminal show errors.
 
 - **Q: Why do my evaluation scores / ranking data differ from other pages I see?**
-  A: The dashboard requests the latest data from the SkillHub API every ~50 seconds. If the API itself has a short cache (seconds-level), the time difference between page refreshes can cause tiny numerical differences — this is normal. If the gap is large (e.g. downloads differ by thousands), confirm whether you just published a new version that triggered a platform cache refresh.
+  A: The dashboard requests the latest data from the SkillHub API every ~50 seconds. If the API itself has a short cache (seconds-level), the time difference between page refreshes can cause tiny numerical differences - this is normal. If the gap is large (e.g. downloads differ by thousands), confirm whether you just published a new version that triggered a platform cache refresh.
 
 - **Q: API error "Rate limited 429"?**
-  A: High-frequency refreshes in a short time may trigger platform rate limiting. The dashboard already auto-retries with backoff (exponential), usually recovering within 30 seconds, no intervention needed. If it recurs often, add a `poll_interval` field to config.json (e.g. 16) to lower the poll frequency. Note: do not run multiple dashboard instances polling the same account simultaneously — that doubles rate-limit triggers.
+  A: High-frequency refreshes in a short time may trigger platform rate limiting. The dashboard already auto-retries with backoff (exponential), usually recovering within 30 seconds, no intervention needed. If it recurs often, add a `poll_interval` field to config.json (e.g. 16) to lower the poll frequency. Note: do not run multiple dashboard instances polling the same account simultaneously - that doubles rate-limit triggers.
 
 - **Q: A skill is missing from the competitor ranking?**
   A: Competitors come from keyword search + name/description dual-field filtering (see `keyword_map` in config.json); those that hit none are not counted. Fixes: ① add search terms to the `search` array; ② add filter words to `name_filter` (name match) or `desc_filter` (description match); ③ save and restart `python server.py`. Conversely, if an irrelevant skill appears in the competitor board, add a distinctive word from its name to the `exclude` exclusion list, or configure `core_filter` (with `strict_name: true` to require the core word to appear in the opponent's name, e.g. labor-arbitration tracks exclude generic legal skills). Unconfigured skills auto-derive search terms from their display name.
@@ -246,12 +245,12 @@ This tool has multiple self-healing layers; on anomalies it recovers automatical
   A: In the browser open `http://localhost:8866/api/export` to download a CSV (with timestamp / skill / downloads / favorites / score / comments). Open in Excel: ① select the data range → Insert → Line chart to see download trends; ② use a pivot table for multi-dimension analysis; ③ exporting does not clear history.json, it keeps accumulating. Recommend exporting one copy daily as backup.
 
 - **Q: What does "⚠ Skill X score dropped Y" in the browser tab title mean?**
-  A: The system detected that skill's score dropped ≥0.3 vs. the last round and auto-alerts in the tab title, auto-clearing after 30 seconds. Similar alerts include "download spike / drop" (single-round delta ≥10) and "new skill published". If you don't want alerts, just ignore them — they are tab-title hints only and do not affect dashboard functionality.
+  A: The system detected that skill's score dropped ≥0.3 vs. the last round and auto-alerts in the tab title, auto-clearing after 30 seconds. Similar alerts include "download spike / drop" (single-round delta ≥10) and "new skill published". If you don't want alerts, just ignore them - they are tab-title hints only and do not affect dashboard functionality.
 
 - **Q: How do I use the double-click start_monitor.bat one-click start?**
-  A: Double-click to auto-start the service; the terminal shows run logs; press Ctrl+C to stop. For auto-start on boot: right-click the bat → Create shortcut → Win+R → type `shell:startup` → drag the shortcut into the startup folder. Note: if the terminal flashes and closes, Python is not installed correctly or not on PATH — see "Python environment install guide" below.
+  A: Double-click to auto-start the service; the terminal shows run logs; press Ctrl+C to stop. For auto-start on boot: right-click the bat → Create shortcut → Win+R → type `shell:startup` → drag the shortcut into the startup folder. Note: if the terminal flashes and closes, Python is not installed correctly or not on PATH - see "Python environment install guide" below.
 
-- **Q: Top shows "Data latency Ns" — what does it mean?**
+- **Q: Top shows "Data latency Ns" - what does it mean?**
   A: When data has not refreshed for over 20 seconds (normal is ~50 seconds), the system shows latency in seconds and marks it orange, hinting at possible network fluctuation. Usually recovers next cycle. If latency persists, check the network connection or whether api.skillhub.cn is reachable.
 
 - **Q: Can I use it without Python installed?**
@@ -278,19 +277,19 @@ After start the terminal shows `Serving on http://0.0.0.0:8866` on success.
 - Long-term resident: use `nohup bash start_monitor.sh &` to start the daemon; it keeps running and auto-restarts on crash even after closing the terminal.
 - One-click start (Windows): double-click `start_monitor.bat`, no command line needed.
 - Auto-start on boot (Windows): right-click `start_monitor.bat` → Create shortcut → `Win+R` → type `shell:startup` → drag the shortcut into the startup folder. The monitoring service starts automatically after boot.
-  - Multiple people / multiple devices viewing at once: the dashboard is a read-only web page; **the same running instance's URL can be opened by multiple devices and multiple people simultaneously** without interference; opening multiple browser tabs is also completely safe — data is polled uniformly by the server, the frontend only pulls local cache, so opening more tabs does not multiply API calls.
-  - Changing network / device: personalization is all in `config.json` (user_id / keyword_map / skill_names / port); copy that file to the new environment and overwrite — no code changes. Cross-network (non-same-WiFi) access needs port mapping / intranet penetration (e.g. frp, ngrok), otherwise only same-WiFi is visible.
+  - Multiple people / multiple devices viewing at once: the dashboard is a read-only web page; **the same running instance's URL can be opened by multiple devices and multiple people simultaneously** without interference; opening multiple browser tabs is also completely safe - data is polled uniformly by the server, the frontend only pulls local cache, so opening more tabs does not multiply API calls.
+  - Changing network / device: personalization is all in `config.json` (user_id / keyword_map / skill_names / port); copy that file to the new environment and overwrite - no code changes. Cross-network (non-same-WiFi) access needs port mapping / intranet penetration (e.g. frp, ngrok), otherwise only same-WiFi is visible.
   - Open the same URL in any device's browser to view, **no APP installation needed**; phone / tablet / PC browsers are all supported.
 
 ---
 
 ## 2.5 Pitfall Guide (pitfalls we hit and quick fixes)
 
-- **Edited the skill source directory but local 8866 didn't change (most common)**: the edit source (`~/.workbuddy/skills/skills-data-hub__skillhub/`) and the running copy (`skillhub_monitor/`) are two separate copies. After editing you must sync the running copy and restart, otherwise "it didn't take effect locally". A `sync_restart.sh` one-click sync-restart is provided.
+- **Edited the skill source directory but local 8866 didn't change (most common)**: the edit source (`~/.skills/skills-data-hub/`) and the running copy (`skillhub_monitor/`) are two separate copies. After editing you must sync the running copy and restart, otherwise "it didn't take effect locally". A `sync_restart.sh` one-click sync-restart is provided.
 - **Port 8866 occupied**: on `Address already in use`, first `netstat -ano | findstr :8866` to find the PID, `taskkill /PID <pid> /F` to release; or change `port` in config.json.
 - **config.json written wrong**: must be valid JSON (quotes, commas, brackets paired). A mistake makes `server.py` exit on start; check with any JSON validator first.
 - **No curve on first open**: needs 1~2 collection rounds to build a time series; wait 1~2 minutes patiently, this is normal.
-- **history.json keeps growing**: long runs accumulate (keeps ~6 hours by default). If disk is tight, back it up then delete to rebuild — no functional impact.
+- **history.json keeps growing**: long runs accumulate (keeps ~6 hours by default). If disk is tight, back it up then delete to rebuild - no functional impact.
 - **Blank chart**: Chart.js is bundled locally, no internet needed; if still blank, `Ctrl+Shift+R` force refresh.
 
 ---
@@ -330,7 +329,7 @@ After start the terminal shows `Serving on http://0.0.0.0:8866` on success.
 
 ## 2.8 Complete Beginner Tutorial (from scratch)
 
-> For pure beginners who have never touched Python / the command line — from installing the environment to seeing data, no step omitted.
+> For pure beginners who have never touched Python / the command line - from installing the environment to seeing data, no step omitted.
 
 ### Step 1: Install the Python environment (must-read first use)
 
@@ -394,7 +393,7 @@ After a successful start the terminal shows `Serving on http://0.0.0.0:8866`.
 2. After double-clicking `start_monitor.bat` the terminal shows `Serving on http://0.0.0.0:8866` → means the service is up
 3. Browser opens `http://localhost:8866`, wait 1~2 minutes, numbers appear → means it's connected
 
-All three ✓ — congratulations, you're done.
+All three ✓ - congratulations, you're done.
 
 ### Step 6: Tablet access (optional)
 
@@ -418,7 +417,7 @@ Open `config.json`, replace `user_YOUR_ID_HERE` with the string after `/user/` i
 Double-click `start_monitor.bat` (or `python server.py`), see `Serving on http://0.0.0.0:8866` to succeed.
 
 **Step 4 · Wait for data (key, don't rush)**
-First start needs 1~2 collection rounds (~1~2 minutes) before curves appear. Top-right status changes from "Reconnecting" to "Online" and cards show numbers — that means it's connected.
+First start needs 1~2 collection rounds (~1~2 minutes) before curves appear. Top-right status changes from "Reconnecting" to "Online" and cards show numbers - that means it's connected.
 
 **Step 5 · Read the dashboard (understand the four blocks)**
 
@@ -443,7 +442,7 @@ Example: found "version v1.2 published, 3 days later evaluation 4.9, downloads D
 2. **Competitor keywords: fewer but correct**: first search on SkillHub to confirm a keyword hits, then put it in `keyword_map`; inaccurate hits mislead more than leaving it blank.
 3. **Export one CSV backup daily**: long-term trends rely on history; runtime keeps only ~6 hours, export one copy daily to keep a record, never lose it on review.
 
-**Auto-recovery (see 2.2 appendix)**: collection-loop self-healing + freeze watchdog (auto-restart if no new data for >150 seconds) + guard-port auto-clean — triple insurance so you basically never hit "data stopped moving".
+**Auto-recovery (see 2.2 appendix)**: collection-loop self-healing + freeze watchdog (auto-restart if no new data for >150 seconds) + guard-port auto-clean - triple insurance so you basically never hit "data stopped moving".
 
 ---
 
@@ -461,7 +460,7 @@ Edit the `skill_names` field in `config.json` (no need to change dashboard.html)
 
 Edit the `keyword_map` field in `config.json` (no need to change server.py). Competitor = keyword search hit + name/description dual-field filter hit, with optional core-word / exclusion-word precise control:
 
-**① How to find words**: search for your own skill on SkillHub, look at the search-box suggestions and the high-frequency words repeated in peer competitors' skill names / descriptions (e.g. "workplace", "efficiency", "automation" — high-frequency words related to your track).
+**① How to find words**: search for your own skill on SkillHub, look at the search-box suggestions and the high-frequency words repeated in peer competitors' skill names / descriptions (e.g. "workplace", "efficiency", "automation" - high-frequency words related to your track).
 
 **② How to fill (all fields optional, configure as needed)**:
 
@@ -471,7 +470,7 @@ Edit the `keyword_map` field in `config.json` (no need to change server.py). Com
 - `core_filter`: core professional word (if filled, must hit, ensuring competitor professional relevance)
 - `strict_name`: when `true`, core_filter must appear in the opponent's **name** (suits vertical professional tracks like labor arbitration, excluding generic-domain skills only mentioned in descriptions)
 - `exclude`: exclusion words (opponent name containing any one is dropped, e.g. MBTI / marriage and other unrelated domains)
-- `desc_exclude`: description exclusion words (opponent description containing any one is dropped; for disambiguating polysemous abbreviations, e.g. NPD is simultaneously narcissistic personality disorder / new product development / chromatographic detector — use "product development" / "chromatography" to exclude off-topic skills)
+- `desc_exclude`: description exclusion words (opponent description containing any one is dropped; for disambiguating polysemous abbreviations, e.g. NPD is simultaneously narcissistic personality disorder / new product development / chromatographic detector - use "product development" / "chromatography" to exclude off-topic skills)
 
 ```json
 "keyword_map": {
@@ -486,7 +485,7 @@ Edit the `keyword_map` field in `config.json` (no need to change server.py). Com
 }
 ```
 
-> Save and restart `server.py` to apply. **Works without configuration**: skills not in keyword_map auto-derive search and filter words from their display name — each user's competitor list is auto-derived from their own skills, with no unified fixed competitor list.
+> Save and restart `server.py` to apply. **Works without configuration**: skills not in keyword_map auto-derive search and filter words from their display name - each user's competitor list is auto-derived from their own skills, with no unified fixed competitor list.
 
 ---
 
@@ -528,7 +527,7 @@ Edit the `keyword_map` field in `config.json` (no need to change server.py). Com
 - **Competitor matching engine v2**: name + description dual-field matching (added desc_filter); added core_filter core professional word + strict_name strict-name mode (labor-arbitration tracks only accept labor-professional relevance, excluding generic legal skills); added exclude name-exclusion words + desc_exclude description-exclusion words (fixes unrelated skills like MBTI personality tests, NPD product-development tools wrongly entering the competitor board; supports polysemous-abbreviation disambiguation)
 - **Competitor generalization**: skills without keyword_map auto-derive search terms from their display name; each user's competitors differ automatically, with no fixed competitor list dependency; auto-excludes your other skills
 - **Core metric cards now sorted by latest downloads**: whoever has the most recent download increment ranks first (time descending); when no increment record, sort by total downloads at the bottom
-- **Online-status box border as progress bar**: no new module — the status box border is made a ring progress (conic-gradient); one full circle = one data-update cycle; color changes with Online / Reconnecting / Offline status
+- **Online-status box border as progress bar**: no new module - the status box border is made a ring progress (conic-gradient); one full circle = one data-update cycle; color changes with Online / Reconnecting / Offline status
 - **Added "skill download real-time ranking (daily rank)"**: placed after the total-download ranking, sorted descending by "today's new = current − yesterday snapshot"; backend adds a per-skill cross-day snapshot yesterday_dl_by_skill
 
 ### v1.2.3 (2026-07-24)
@@ -542,7 +541,7 @@ Edit the `keyword_map` field in `config.json` (no need to change server.py). Com
 
 ### v1.2.4 (2026-07-24)
 
-- **Severe-incident root cause (data freeze never again)**: server.py added a 【Freeze Watchdog】 — if no new data for >150 seconds after last successful collection, auto-restart the process to self-heal; `start_monitor.sh` releases the occupied 8866 port before every start, so even a frozen old instance lets the new one start cleanly; collection first-call and loop both get exception capture, single-round failure doesn't affect the whole
+- **Severe-incident root cause (data freeze never again)**: server.py added a [Freeze Watchdog] - if no new data for >150 seconds after last successful collection, auto-restart the process to self-heal; `start_monitor.sh` releases the occupied 8866 port before every start, so even a frozen old instance lets the new one start cleanly; collection first-call and loop both get exception capture, single-round failure doesn't affect the whole
 - **Privacy desensitization**: all real skill slugs / real skill names in docs uniformly changed to generic placeholders (your-skill-slug / Example Skill); the publish script desensitizes config.json's skill_names / keyword_map before upload, user_id stays a placeholder, the platform no longer contains personal account info
 - **Full-dimension re-check (latest evaluation 13 sub-5 items all to 5.0)**: auto-recovery description, anti-pattern table +3 entries, best-practices section, 30-second quick start + table of contents, capability-boundary can/cannot comparison table, blue-ocean / weekly-report workflow, out-of-box self-check list, accuracy statement
 
@@ -613,7 +612,7 @@ Edit the `keyword_map` field in `config.json` (no need to change server.py). Com
 
 - Documentation honesty wrap-up: removed over-claims of unimplemented features like "all skills overlaid curve / version timeline dashed-line labels / highest evaluation score overview card", feature table now matches the actual UI
 - Trigger clarification: added "Trigger" section, giving complete start / refresh commands and the boundary note "local web dashboard, not a conversation invocation"
-- Pitfall guide: added "Pitfall Guide" section (edit-source / run-source separation causing local no-effect, port occupation, config.json format, no curve on first start, history too large — high-frequency pitfalls and fixes)
+- Pitfall guide: added "Pitfall Guide" section (edit-source / run-source separation causing local no-effect, port occupation, config.json format, no curve on first start, history too large - high-frequency pitfalls and fixes)
 - Practical cases: added "Practical Cases" section covering four typical scenarios step-by-step: watching competitors, finding blue ocean, version-effect validation, data-interruption troubleshooting
 - Output honesty statement: clarified all UI values come from real-time collection of your own account, no built-in sample numbers
 

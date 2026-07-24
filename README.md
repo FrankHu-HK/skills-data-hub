@@ -1,7 +1,7 @@
 <div align="center">
   <img src="banner.svg" alt="Skills Data Hub banner" width="100%" />
   <h1>Skills Data Hub</h1>
-  <p><b>Real-time SkillHub developer analytics dashboard</b> — downloads, eval scores, competitor search, and category heat, unified on a ~50-second refresh.</p>
+  <p><b>Real-time SkillHub developer analytics dashboard</b> - downloads, eval scores, competitor search, and category heat, unified on a ~50-second refresh.</p>
 </div>
 
 <p align="center">
@@ -27,7 +27,7 @@
 
 ## What is Skills Data Hub?
 
-A real-time **decision center for SkillHub creators**. It unifies ~50-second polling of downloads, favorites, eval scores, market data, and category heat — plus full-platform competitor search and blue-ocean / red-ocean strategy hints — into one board you can leave open on a second monitor (PC or tablet, over the same Wi-Fi).
+A real-time **decision center for SkillHub creators**. It unifies ~50-second polling of downloads, favorites, eval scores, market data, and category heat - plus full-platform competitor search and blue-ocean / red-ocean strategy hints - into one board you can leave open on a second monitor (PC or tablet, over the same Wi-Fi).
 
 ## Why Skills Data Hub?
 
@@ -43,13 +43,13 @@ Enter your SkillHub user ID once; the dashboard keeps itself fresh and turns raw
 
 ## Features
 
-- **Unified ~50s live refresh** — downloads, favorites, eval scores, version time, eval-report time, market data, and category heat polled together.
-- **Full-platform competitor search** — keyword match across **name + description** with core-term / exclude-term dual filtering. Dual ranking: **Top-10 by downloads** and **Top-10 newest uploads**.
-- **Category heat ranking** — blue-ocean vs. red-ocean identification with suggested directions.
-- **Version ↔ eval loop** — every card shows `vX released N days ago → eval Y score`, so you can verify whether an iteration moved the needle.
-- **Day-over-day growth** — yesterday's day-over-day delta computed per metric.
-- **Polished UX** — page-turn number animations, dark tech-style UI, cross-device real-time display.
-- **Zero-config detection** — auto-detects your skills; optional `config.json` overrides, no code changes.
+- **Unified ~50s live refresh** - downloads, favorites, eval scores, version time, eval-report time, market data, and category heat polled together.
+- **Full-platform competitor search** - keyword match across **name + description** with core-term / exclude-term dual filtering. Dual ranking: **Top-10 by downloads** and **Top-10 newest uploads**.
+- **Category heat ranking** - blue-ocean vs. red-ocean identification with suggested directions.
+- **Version ↔ eval loop** - every card shows `vX released N days ago → eval Y score`, so you can verify whether an iteration moved the needle.
+- **Day-over-day growth** - yesterday's day-over-day delta computed per metric.
+- **Polished UX** - page-turn number animations, dark tech-style UI, cross-device real-time display.
+- **Zero-config detection** - auto-detects your skills; optional `config.json` overrides, no code changes.
 
 ## Quick Start
 
@@ -95,4 +95,4 @@ If the dashboard helps you ship a better skill or spot a blue ocean, consider sp
 
 ## License
 
-[MIT](LICENSE) — Copyright 2026 Frank Hu (Hu Jingkun).
+[MIT](LICENSE) - Copyright 2026 Frank Hu (Hu Jingkun).

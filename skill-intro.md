@@ -1,6 +1,6 @@
-# Skills-Data-Hub v1.2.4 — Product Introduction
+# Skills-Data-Hub v1.2.4 - Product Introduction
 
-> SkillHub developer global data monitoring and decision platform with a ~50-second refresh. Enter your user ID; all data is polled and refreshed on a unified ~50-second cycle, platform-wide keyword competitor search with dual-dimension ranking, category heat insight — a one-stop decision workflow.
+> SkillHub developer global data monitoring and decision platform with a ~50-second refresh. Enter your user ID; all data is polled and refreshed on a unified ~50-second cycle, platform-wide keyword competitor search with dual-dimension ranking, category heat insight - a one-stop decision workflow.
 
 ## Table of Contents (quick navigation)
 
@@ -80,7 +80,7 @@ Use real-time data to insight value, use continuous iteration to create growth.
 - PC / tablet cross-device real-time viewing on same WiFi
 - Auto-detects your skills; personalization (user_id / short names / competitor keywords / port) all written to `config.json`, no code changes
 - Built-in concurrency, request retry, cache bypass and other stability optimizations (all data unified ~50-second poll)
-- Auto-recovery (v1.2.4): any collection round anomaly auto-retries keeping good data; 【Freeze Watchdog】 auto-restarts the process if no new data for >150 seconds + the daemon script releases the occupied port before start, completely eliminating "data stopped moving"
+- Auto-recovery (v1.2.4): any collection round anomaly auto-retries keeping good data; [Freeze Watchdog] auto-restarts the process if no new data for >150 seconds + the daemon script releases the occupied port before start, completely eliminating "data stopped moving"
 
 ## Quick Start
 
